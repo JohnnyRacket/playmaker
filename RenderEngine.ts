@@ -1,5 +1,5 @@
 import array = require('lodash/array');
-
+import {GameObject} from './Gameobjects/GameObject';
 export class RenderEngine{
     private observers: GameObject[];
     private isRunning: boolean = false;

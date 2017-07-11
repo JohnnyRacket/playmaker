@@ -1,5 +1,3 @@
-class GameObject{
-    public update(){
-        //do something
-    }
+export interface GameObject{
+    update();
 }
