@@ -15,7 +15,7 @@ export class RenderEngine{
     */
     public start(){
         this.isRunning = true;
-        requestAnimationFrame(this.run.bind(this));
+        requestAnimationFrame(() => {this.run();});
     }
 
     /*
@@ -33,7 +33,7 @@ export class RenderEngine{
         //do the timing and call tick a lot
         if(this.isRunning){
             this.tick();
-            requestAnimationFrame(this.run.bind(this));
+            requestAnimationFrame(() => {this.run();});
         }
         
     }

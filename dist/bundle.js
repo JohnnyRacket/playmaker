@@ -8441,8 +8441,9 @@ var RenderEngine = (function () {
     * starts the render loop
     */
     RenderEngine.prototype.start = function () {
+        var _this = this;
         this.isRunning = true;
-        requestAnimationFrame(this.run.bind(this));
+        requestAnimationFrame(function () { _this.run(); });
     };
     /*
     * stops the render loop
@@ -8455,10 +8456,11 @@ var RenderEngine = (function () {
     * for visuals we will relyon the screenrefreshrate from the browser
     */
     RenderEngine.prototype.run = function () {
+        var _this = this;
         //do the timing and call tick a lot
         if (this.isRunning) {
             this.tick();
-            requestAnimationFrame(this.run.bind(this));
+            requestAnimationFrame(function () { _this.run(); });
         }
     };
     /*
