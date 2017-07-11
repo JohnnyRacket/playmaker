@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@types/lodash": "^4.14.68",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "webpack": "^3.1.0"
   }
 }
