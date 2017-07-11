@@ -3,7 +3,7 @@ import { IGameObject } from './GameObjects/GameObject.interface';
 
 export class GameEngine{
 
-    private observers: IGameObject[];
+    private observers: IGameObject[] = [];
     private isRunning: boolean = false;
     private interval;
 
@@ -29,7 +29,7 @@ export class GameEngine{
     * runs the game loop and sets the timing
     */
     private run(){
-        setInterval(this.tick, 33);
+        setInterval(() => {this.tick();}, 33);
     }
 
     /*

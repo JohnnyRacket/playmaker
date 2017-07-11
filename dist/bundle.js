@@ -2946,12 +2946,19 @@ module.exports = baseZipObject;
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameEngine_1 = __webpack_require__(85);
 var RenderEngine_1 = __webpack_require__(235);
+var ViewObject_1 = __webpack_require__(236);
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 var gameEngine = new GameEngine_1.GameEngine();
 var renderEngine = new RenderEngine_1.RenderEngine(ctx);
 console.log('hello world');
-//# sourceMappingURL=app.js.map
+// let testObject = new GameObject();
+// gameEngine.register(testObject);
+// gameEngine.start();
+var testViewObject = new ViewObject_1.ViewObject();
+renderEngine.register(testViewObject);
+renderEngine.start();
+//# sourceMappingURL=index.js.map
 
 /***/ }),
 /* 85 */
@@ -2963,6 +2970,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var array = __webpack_require__(53);
 var GameEngine = (function () {
     function GameEngine() {
+        this.observers = [];
         this.isRunning = false;
     }
     /*
@@ -2985,7 +2993,8 @@ var GameEngine = (function () {
     * runs the game loop and sets the timing
     */
     GameEngine.prototype.run = function () {
-        setInterval(this.tick, 33);
+        var _this = this;
+        setInterval(function () { _this.tick(); }, 33);
     };
     /*
      * Tick represents the passing of time in the game
@@ -8423,6 +8432,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var array = __webpack_require__(53);
 var RenderEngine = (function () {
     function RenderEngine(context) {
+        this.observers = [];
         this.isRunning = false;
         this.context = context;
     }
@@ -8431,6 +8441,7 @@ var RenderEngine = (function () {
     */
     RenderEngine.prototype.start = function () {
         this.isRunning = true;
+        requestAnimationFrame(this.run);
     };
     /*
     * stops the render loop
@@ -8444,16 +8455,17 @@ var RenderEngine = (function () {
     */
     RenderEngine.prototype.run = function () {
         //do the timing and call tick a lot
-        if (this.isRunning) {
-            this.tick();
-            window.requestAnimationFrame(this.run);
-        }
+        //if(this.isRunning){
+        this.tick();
+        requestAnimationFrame(this.run);
+        //}
     };
     /*
     * updates all of the view objects
     */
     RenderEngine.prototype.tick = function () {
         var _this = this;
+        console.log('render!');
         this.observers.forEach(function (obj, index) { return obj.render(_this.context); });
     };
     /*
@@ -8472,6 +8484,24 @@ var RenderEngine = (function () {
 }());
 exports.RenderEngine = RenderEngine;
 //# sourceMappingURL=RenderEngine.js.map
+
+/***/ }),
+/* 236 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ViewObject = (function () {
+    function ViewObject() {
+    }
+    ViewObject.prototype.render = function () {
+        console.log('render loop trigger');
+    };
+    return ViewObject;
+}());
+exports.ViewObject = ViewObject;
+//# sourceMappingURL=ViewObject.js.map
 
 /***/ })
 /******/ ]);

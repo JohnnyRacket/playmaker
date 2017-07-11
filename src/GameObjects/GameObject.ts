@@ -3,6 +3,6 @@ import { IGameObject } from './GameObject.interface';
 export class GameObject implements IGameObject {
     constructor() {}
     public update(){
-        //do something
+        console.log('game engine running');
     }
 }
