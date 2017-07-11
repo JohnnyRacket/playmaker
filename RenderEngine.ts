@@ -1,7 +1,6 @@
 import array = require('lodash/array');
 
-export class GameEngine{
-
+export class RenderEngine{
     private observers: GameObject[];
     private isRunning: boolean = false;
 
