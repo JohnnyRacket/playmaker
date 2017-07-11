@@ -5,7 +5,11 @@ export class RenderEngine{
 
     private observers: IViewObject[];
     private isRunning: boolean = false;
+    private context: CanvasRenderingContext2D;
 
+    public constructor(context: CanvasRenderingContext2D){
+        this.context = context;
+    }
     /*
     * starts the render loop
     */
@@ -26,13 +30,18 @@ export class RenderEngine{
     */
     private run(){
         //do the timing and call tick a lot
+        if(this.isRunning){
+            this.tick();
+            window.requestAnimationFrame(this.run);
+        }
+        
     }
 
     /*
     * updates all of the view objects
     */
     private tick(){
-        this.observers.forEach((obj: IViewObject, index) => obj.render());
+        this.observers.forEach((obj: IViewObject, index) => obj.render(this.context));
     }
 
     /*

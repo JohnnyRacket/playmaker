@@ -5,6 +5,7 @@ export class GameEngine{
 
     private observers: IGameObject[];
     private isRunning: boolean = false;
+    private interval;
 
     /*
     * Starts the game loop
@@ -12,6 +13,7 @@ export class GameEngine{
     public start(){
         //start loop tha calls tick on a set interval
         this.isRunning = true;
+        this.run();
     }
 
     /*
@@ -20,13 +22,14 @@ export class GameEngine{
     public stop(){
         //stop looping
         this.isRunning = false;
+        clearInterval(this.interval);
     }
 
     /*
     * runs the game loop and sets the timing
     */
     private run(){
-
+        setInterval(this.tick, 33);
     }
 
     /*
