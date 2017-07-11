@@ -11,9 +11,9 @@ let renderEngine = new RenderEngine(ctx);
 
 console.log('hello world');
 
-// let testObject = new GameObject();
-// gameEngine.register(testObject);
-// gameEngine.start();
+let testObject = new GameObject();
+gameEngine.register(testObject);
+gameEngine.start();
 
 let testViewObject = new ViewObject();
 renderEngine.register(testViewObject);

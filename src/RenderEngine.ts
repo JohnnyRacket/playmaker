@@ -15,7 +15,7 @@ export class RenderEngine{
     */
     public start(){
         this.isRunning = true;
-        requestAnimationFrame(this.run);
+        requestAnimationFrame(this.run.bind(this));
     }
 
     /*
@@ -33,7 +33,7 @@ export class RenderEngine{
         //do the timing and call tick a lot
         if(this.isRunning){
             this.tick();
-            requestAnimationFrame(this.run);
+            requestAnimationFrame(this.run.bind(this));
         }
         
     }
@@ -42,7 +42,6 @@ export class RenderEngine{
     * updates all of the view objects
     */
     private tick(){
-        console.log('render!');
         this.observers.forEach((obj: IViewObject, index) => obj.render(this.context));
     }
 

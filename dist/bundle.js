@@ -2946,15 +2946,16 @@ module.exports = baseZipObject;
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameEngine_1 = __webpack_require__(85);
 var RenderEngine_1 = __webpack_require__(235);
-var ViewObject_1 = __webpack_require__(236);
+var GameObject_1 = __webpack_require__(236);
+var ViewObject_1 = __webpack_require__(237);
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 var gameEngine = new GameEngine_1.GameEngine();
 var renderEngine = new RenderEngine_1.RenderEngine(ctx);
 console.log('hello world');
-// let testObject = new GameObject();
-// gameEngine.register(testObject);
-// gameEngine.start();
+var testObject = new GameObject_1.GameObject();
+gameEngine.register(testObject);
+gameEngine.start();
 var testViewObject = new ViewObject_1.ViewObject();
 renderEngine.register(testViewObject);
 renderEngine.start();
@@ -8441,7 +8442,7 @@ var RenderEngine = (function () {
     */
     RenderEngine.prototype.start = function () {
         this.isRunning = true;
-        requestAnimationFrame(this.run);
+        requestAnimationFrame(this.run.bind(this));
     };
     /*
     * stops the render loop
@@ -8455,17 +8456,16 @@ var RenderEngine = (function () {
     */
     RenderEngine.prototype.run = function () {
         //do the timing and call tick a lot
-        //if(this.isRunning){
-        this.tick();
-        requestAnimationFrame(this.run);
-        //}
+        if (this.isRunning) {
+            this.tick();
+            requestAnimationFrame(this.run.bind(this));
+        }
     };
     /*
     * updates all of the view objects
     */
     RenderEngine.prototype.tick = function () {
         var _this = this;
-        console.log('render!');
         this.observers.forEach(function (obj, index) { return obj.render(_this.context); });
     };
     /*
@@ -8487,6 +8487,24 @@ exports.RenderEngine = RenderEngine;
 
 /***/ }),
 /* 236 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameObject = (function () {
+    function GameObject() {
+    }
+    GameObject.prototype.update = function () {
+        console.log('game engine running');
+    };
+    return GameObject;
+}());
+exports.GameObject = GameObject;
+//# sourceMappingURL=GameObject.js.map
+
+/***/ }),
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
