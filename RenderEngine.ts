@@ -1,31 +1,51 @@
 import array = require('lodash/array');
-import {GameObject} from './Gameobjects/GameObject';
+import {IViewObject} from './ViewObjects/ViewObject.interface';
+
 export class RenderEngine{
-    private observers: GameObject[];
+
+    private observers: IViewObject[];
     private isRunning: boolean = false;
 
+    /*
+    * starts the render loop
+    */
     public start(){
-        //start loop tha calls tick on a set interval
         this.isRunning = true;
     }
+
+    /*
+    * stops the render loop
+    */
     public stop(){
-        //stop looping
         this.isRunning = false;
     }
 
+    /*
+    * controls the timing at which the tick is called,
+    * for visuals we will relyon the screenrefreshrate from the browser
+    */
     private run(){
         //do the timing and call tick a lot
     }
 
-    //for observers to be updated by the engine
+    /*
+    * updates all of the view objects
+    */
     private tick(){
-        this.observers.forEach((obj: GameObject, index) => obj.update());
+        this.observers.forEach((obj: IViewObject, index) => obj.render());
     }
 
-    public register(obj: GameObject){
+    /*
+    * register a view object to be updated by the game engine
+    */
+    public register(obj: IViewObject){
         this.observers.push(obj);
     }
-    public unregister(obj: GameObject){
+
+    /*
+    * unregister a view object to be updated by the game engine
+    */
+    public unregister(obj: IViewObject){
         array.pull(this.observers, obj);
     }
 }
