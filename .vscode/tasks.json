@@ -8,7 +8,7 @@
             "command": "tsc",
             "isBuildCommand": true,
             "args": ["-p", "."],
-            "showOutput": "silent",
+            "showOutput": "always",
             "problemMatcher": "$tsc"
         },
         {

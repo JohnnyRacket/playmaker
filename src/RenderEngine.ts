@@ -6,9 +6,11 @@ export class RenderEngine{
     private observers: IViewObject[] = [];
     private isRunning: boolean = false;
     private context: CanvasRenderingContext2D;
+    private canvas: HTMLCanvasElement;
 
-    public constructor(context: CanvasRenderingContext2D){
+    public constructor(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement){
         this.context = context;
+        this.canvas = canvas;
     }
     /*
     * starts the render loop
@@ -42,7 +44,7 @@ export class RenderEngine{
     * updates all of the view objects
     */
     private tick(){
-        this.observers.forEach((obj: IViewObject, index) => obj.render(this.context));
+        this.observers.forEach((obj: IViewObject, index) => obj.render(this.context, this.canvas.width, this.canvas.height));
     }
 
     /*

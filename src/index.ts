@@ -4,10 +4,10 @@ import {GameObject} from './Gameobjects/GameObject'
 import {ViewObject} from './ViewObjects/ViewObject'
 
 let canvas : HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("myCanvas");
-let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+let context: CanvasRenderingContext2D = canvas.getContext("2d");
 
 let gameEngine = new GameEngine();
-let renderEngine = new RenderEngine(ctx);
+let renderEngine = new RenderEngine(context, canvas);
 
 console.log('hello world');
 

@@ -2949,9 +2949,9 @@ var RenderEngine_1 = __webpack_require__(235);
 var GameObject_1 = __webpack_require__(236);
 var ViewObject_1 = __webpack_require__(237);
 var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
+var context = canvas.getContext("2d");
 var gameEngine = new GameEngine_1.GameEngine();
-var renderEngine = new RenderEngine_1.RenderEngine(ctx);
+var renderEngine = new RenderEngine_1.RenderEngine(context, canvas);
 console.log('hello world');
 var testObject = new GameObject_1.GameObject();
 gameEngine.register(testObject);
@@ -8432,10 +8432,11 @@ module.exports = zipWith;
 Object.defineProperty(exports, "__esModule", { value: true });
 var array = __webpack_require__(53);
 var RenderEngine = (function () {
-    function RenderEngine(context) {
+    function RenderEngine(context, canvas) {
         this.observers = [];
         this.isRunning = false;
         this.context = context;
+        this.canvas = canvas;
     }
     /*
     * starts the render loop
@@ -8468,7 +8469,7 @@ var RenderEngine = (function () {
     */
     RenderEngine.prototype.tick = function () {
         var _this = this;
-        this.observers.forEach(function (obj, index) { return obj.render(_this.context); });
+        this.observers.forEach(function (obj, index) { return obj.render(_this.context, _this.canvas.width, _this.canvas.height); });
     };
     /*
     * register a view object to be updated by the game engine
@@ -8515,8 +8516,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var ViewObject = (function () {
     function ViewObject() {
     }
-    ViewObject.prototype.render = function () {
+    ViewObject.prototype.render = function (context, width, height) {
         console.log('render loop trigger');
+        context.beginPath();
+        context.arc(width / 2, height / 2, 10, 0, 2 * Math.PI, false);
+        context.fillStyle = 'green';
+        context.fill();
+        context.lineWidth = 5;
+        context.strokeStyle = '#003300';
+        context.stroke();
     };
     return ViewObject;
 }());
