@@ -2,7 +2,7 @@ import {IGameObject} from './GameObject.interface'
 import { ObservableGameObject } from './ObservableGameObject';
 import { IObserver } from "../Observer.interface";
 
-export class PositionableGameObject extends ObservableGameObject{
+export abstract class PositionableGameObject extends ObservableGameObject{
 
     protected x: number;
     protected y: number;
@@ -31,9 +31,6 @@ export class PositionableGameObject extends ObservableGameObject{
         this.deltaYPosition(deltaY);
     }
 
-    tick(): void {
-        throw new Error("Method not implemented.");
-    }
-
+    abstract tick();
 
 }
