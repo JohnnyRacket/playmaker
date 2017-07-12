@@ -14,7 +14,7 @@ export class TestViewObject implements IViewObject{
         console.log('view',this.xPos,this.yPos);
         context.beginPath();
         context.arc(this.xPos, this.yPos, 10, 0, 2 * Math.PI, false);
-        context.fillStyle = 'green';
+        context.fillStyle = 'blue';
         context.fill();
         context.lineWidth = 5;
         context.strokeStyle = '#003300';

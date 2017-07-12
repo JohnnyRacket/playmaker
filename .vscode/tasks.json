@@ -4,17 +4,15 @@
     "version": "0.1.0",
     "tasks":[
         {
-            "taskName": "tsc",
-            "command": "tsc",
+            "taskName": "serve",
+            "group": {
+                "kind": "run",
+                "isDefault": true
+            },
             "isBuildCommand": true,
-            "args": ["-p", "."],
-            "showOutput": "always",
-            "problemMatcher": "$tsc"
-        },
-        {
-            "taskName": "webpack",
-            "command": "./node_modules/.bin/webpack",
-            "args": ["js/index.js", "dist/bundle.js"]
+            "isShellCommand": true,
+            "command": "webpack-dev-server",
+            "args": ["--progress", "--colors"]
         }
     ]
     

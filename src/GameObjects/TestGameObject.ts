@@ -24,8 +24,8 @@ export class TestGameObject implements IGameObject {
 
     public tick(){
         console.log('model',this.xPos, this.yPos);
-        this.xPos += .1;
-        this.yPos += .1;
+        this.xPos += .5;
+        this.yPos += .5;
         this.updateObservers();
     }
 
