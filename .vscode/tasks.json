@@ -12,7 +12,7 @@
             "isBuildCommand": true,
             "isShellCommand": true,
             "command": "webpack-dev-server",
-            "args": ["--progress", "--colors"]
+            "args": ["--progress", "--colors", "--open"]
         }
     ]
     
