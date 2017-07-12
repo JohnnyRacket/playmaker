@@ -1,4 +1,6 @@
-export interface IViewObject{
+import {IObserver} from '../Observer.interface'
+
+export interface IViewObject extends IObserver{
     /*
     * function to draw to the canvas
     */

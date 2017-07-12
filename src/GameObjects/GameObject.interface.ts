@@ -1,3 +1,5 @@
-export interface IGameObject {
-    update() : void;
+import {IObservable} from '../Observable.interface'
+
+export interface IGameObject extends IObservable{
+    tick() : void;
 }

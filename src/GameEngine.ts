@@ -37,7 +37,7 @@ export class GameEngine{
      * and is used to progress the game through it's sequence
      */
     public tick(){
-        this.observers.forEach((obj: IGameObject, index) => obj.update());
+        this.observers.forEach((obj: IGameObject, index) => obj.tick());
     }
 
     /*

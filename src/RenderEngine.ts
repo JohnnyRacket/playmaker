@@ -34,6 +34,7 @@ export class RenderEngine{
     private run(){
         //do the timing and call tick a lot
         if(this.isRunning){
+            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
             this.tick();
             requestAnimationFrame(() => {this.run();});
         }
