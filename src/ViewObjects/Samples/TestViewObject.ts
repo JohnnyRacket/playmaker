@@ -1,5 +1,5 @@
-import {IViewObject} from './ViewObject.interface'
-import {TestGameObject} from '../GameObjects/TestGameObject'
+import {IViewObject} from './../ViewObject.interface'
+import {TestGameObject} from '../../GameObjects/Samples/TestGameObject'
 export class TestViewObject implements IViewObject{
 
     private subject: TestGameObject;

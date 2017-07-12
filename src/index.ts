@@ -1,15 +1,19 @@
-import {GameEngine} from './GameEngine'
-import {RenderEngine} from './RenderEngine'
-import {TestGameObject} from './Gameobjects/TestGameObject'
-import {TestViewObject} from './ViewObjects/TestViewObject'
+import {GameEngine} from './Engines/GameEngine'
+import {RenderEngine} from './Engines/RenderEngine'
+import {TestGameObject} from './GameObjects/Samples/TestGameObject'
+import {TestViewObject} from './ViewObjects/Samples/TestViewObject'
 
-let canvas : HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("myCanvas");
-let context: CanvasRenderingContext2D = canvas.getContext("2d");
+/*
+ * Fetch our environment for our game and configure
+ */
+const canvas : HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("myCanvas");
+const context: CanvasRenderingContext2D = canvas.getContext("2d");
 
-let gameEngine = new GameEngine();
-let renderEngine = new RenderEngine(context, canvas);
-
-console.log('hello world');
+/*
+ * Declare game engines (constant because they will not be changed)
+ */
+const gameEngine = new GameEngine();
+const renderEngine = new RenderEngine(context, canvas);
 
 let testObject = new TestGameObject(0,0);
 gameEngine.register(testObject);

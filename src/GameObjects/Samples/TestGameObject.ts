@@ -1,5 +1,5 @@
-import { IGameObject } from './GameObject.interface';
-import {IObserver} from '../Observer.interface';
+import { IGameObject } from './../GameObject.interface';
+import {IObserver} from '../../Observables/Observer.interface';
 import array = require('lodash/array');
 
 

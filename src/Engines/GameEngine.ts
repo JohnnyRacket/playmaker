@@ -1,17 +1,20 @@
 import array = require('lodash/array');
-import { IGameObject } from './GameObjects/GameObject.interface';
+import { IGameObject } from '../GameObjects/GameObject.interface';
 
 export class GameEngine{
-
-    private observers: IGameObject[] = [];
-    private isRunning: boolean = false;
+    /*
+     * Member variables
+     */
     private interval;
+    private isRunning: boolean = false;
+    private observers: IGameObject[] = [];
+    private tickLength: number = 33;
 
     /*
     * Starts the game loop
     */
     public start(){
-        //start loop tha calls tick on a set interval
+        //start loop the calls tick on a set interval
         this.isRunning = true;
         this.run();
     }
@@ -29,7 +32,7 @@ export class GameEngine{
     * runs the game loop and sets the timing
     */
     private run(){
-        setInterval(() => {this.tick();}, 33);
+        this.interval = setInterval(() => {this.tick();}, this.tickLength);
     }
 
     /*

@@ -1,4 +1,4 @@
-import {IObservable} from '../Observable.interface'
+import {IObservable} from '../Observables/Observable.interface'
 
 export interface IGameObject{
     tick() : void;

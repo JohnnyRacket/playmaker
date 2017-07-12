@@ -1,6 +1,6 @@
 import {IGameObject} from './GameObject.interface'
 import { ObservableGameObject } from './ObservableGameObject';
-import { IObserver } from "../Observer.interface";
+import { IObserver } from "../Observables/Observer.interface";
 
 export abstract class PositionableGameObject extends ObservableGameObject{
 

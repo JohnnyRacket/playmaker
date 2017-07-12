@@ -1,4 +1,4 @@
-import {IObserver} from '../Observer.interface'
+import {IObserver} from '../Observables/Observer.interface'
 
 export interface IViewObject extends IObserver{
     /*

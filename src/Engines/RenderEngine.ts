@@ -1,5 +1,5 @@
 import array = require('lodash/array');
-import {IViewObject} from './ViewObjects/ViewObject.interface';
+import {IViewObject} from '../ViewObjects/ViewObject.interface';
 
 export class RenderEngine{
 
