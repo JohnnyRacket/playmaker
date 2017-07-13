@@ -20,4 +20,8 @@ export abstract class Hitbox{
         this.height = height;
         this.subject = subject;
     }
+
+   public collide(hitbox: Hitbox){
+        this.subject.collide(hitbox.subject);
+    }     
 }
