@@ -19,6 +19,7 @@ export class CollisionManager implements IGameObject{
                     // collision
                     console.log('collision');
                     object1.collide(object2);
+                    object2.collide(object1);
                 }
             }
         }
