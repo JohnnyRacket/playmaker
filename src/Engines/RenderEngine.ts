@@ -1,5 +1,5 @@
 import array = require('lodash/array');
-import {IViewObject} from '../ViewObjects/ViewObject.interface';
+import { IViewObject } from '../ViewObjects/ViewObject.interface';
 
 export class RenderEngine{
 
@@ -29,7 +29,7 @@ export class RenderEngine{
 
     /*
     * controls the timing at which the tick is called,
-    * for visuals we will relyon the screenrefreshrate from the browser
+    * for visuals we will rely on the screenrefreshrate from the browser
     */
     private run(){
         //do the timing and call tick a lot
