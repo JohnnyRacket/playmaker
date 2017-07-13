@@ -13,4 +13,6 @@ export abstract class CollidableGameObject extends PositionableGameObject{
         this.height = height;
         this.hitbox = hitbox;
     }
+    
+    abstract collide(object: CollidableGameObject);
 }
