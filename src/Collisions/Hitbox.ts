@@ -3,6 +3,18 @@ import { IObserver } from '../Observables/Observer.interface';
 
 export abstract class Hitbox{
     
+    protected subject: CollidableGameObject;
+
+    protected _width: number;
+    get width(): number{
+        return this._width;
+    }
+
+    protected _height: number;
+    get height(): number{
+        return this._height;
+    }
+ 
     protected _x: number;
     get x(): number{
         return this.subject.x;
@@ -13,9 +25,9 @@ export abstract class Hitbox{
         return this.subject.y;
     }
 
-    public constructor (public width: number, public height: number, public subject: CollidableGameObject){
-        this.width = width;
-        this.height = height;
+    public constructor  (width: number, height: number, subject: CollidableGameObject){
+        this._width = width;
+        this._height = height;
         this.subject = subject;
     }
 

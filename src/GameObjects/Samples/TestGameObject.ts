@@ -20,7 +20,7 @@ export class TestGameObject implements IGameObject {
     }
 
     public tick(){
-        console.log('model',this.xPos, this.yPos);
+        //console.log('model',this.xPos, this.yPos);
 
         const deltaX = Math.cos(this.angle * Math.PI / 180) * this.speed;
         const deltaY = Math.sin(this.angle * Math.PI / 180) * this.speed;
@@ -37,6 +37,7 @@ export class TestGameObject implements IGameObject {
         } else {
             this.yPos -= deltaY;
         }
+        
         this.updateObservers();
     }
 
