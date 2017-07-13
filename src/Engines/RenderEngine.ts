@@ -5,10 +5,8 @@ export class RenderEngine{
 
     private observers: IViewObject[] = [];
     private isRunning: boolean = false;
-    private context: CanvasRenderingContext2D;
-    private canvas: HTMLCanvasElement;
 
-    public constructor(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement){
+    public constructor(private context: CanvasRenderingContext2D, private canvas: HTMLCanvasElement){
         this.context = context;
         this.canvas = canvas;
     }
