@@ -5,6 +5,8 @@ export class TestViewObject implements IViewObject{
     private subject: TestGameObject;
     private xPos: number;
     private yPos: number;
+    private envWidth: number;
+    private envHeight: number;
 
     public constructor(model: TestGameObject){
         this.subject = model;
@@ -19,10 +21,12 @@ export class TestViewObject implements IViewObject{
         context.lineWidth = 5;
         context.strokeStyle = '#003300';
         context.stroke();
+        this.envWidth = width;
+        this.envHeight = height;
     }
 
     public update(){
-        this.xPos = this.subject.getXPosition();
-        this.yPos = this.subject.getYPosition();
+        this.xPos = this.subject.getXPosition() % this.envWidth;
+        this.yPos = this.subject.getYPosition() % this.envHeight;
     }
 }
