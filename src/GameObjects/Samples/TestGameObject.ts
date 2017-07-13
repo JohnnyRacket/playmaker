@@ -22,11 +22,11 @@ export class TestGameObject implements IGameObject {
     public tick(){
         console.log('model',this.xPos, this.yPos);
 
-        let deltaX = Math.cos(this.angle) * this.speed;
-        let deltaY = Math.sin(this.angle) * this.speed;
+        const deltaX = Math.cos(this.angle * Math.PI / 180) * this.speed;
+        const deltaY = Math.sin(this.angle * Math.PI / 180) * this.speed;
 
         this.updateIncrementModes(deltaX, deltaY);
-
+        
         if( this.incrementX ) {
             this.xPos += deltaX;
         } else {
@@ -64,14 +64,14 @@ export class TestGameObject implements IGameObject {
      * decrementing
      */
     private updateIncrementModes(deltaX: number, deltaY: number) {
-        if(this.xPos + deltaX >= this.maxX) {
+        if(this.xPos + deltaX >= this.maxX || this.xPos + deltaX <= 0) {
             this.incrementX = false;
-        } else if (this.xPos - deltaX < 0) {
+        } else if (this.xPos - deltaX < 0 || this.xPos - deltaX >= this.maxX) {
             this.incrementX = true;
         }
-        if(this.yPos + deltaY >= this.maxY) {
+        if(this.yPos + deltaY >= this.maxY || this.yPos + deltaY < 0) {
             this.incrementY = false;
-        } else if (this.yPos - deltaY < 0) {
+        } else if (this.yPos - deltaY < 0 || this.yPos - deltaY >= this.maxY) {
             this.incrementY = true;
         }
     }

@@ -17,7 +17,7 @@ canvas.width = window.innerWidth;
 const gameEngine = new GameEngine();
 const renderEngine = new RenderEngine(context, canvas);
 
-let testObject = new TestGameObject(0, 0, canvas.width, canvas.height, 6, 45);
+let testObject = new TestGameObject(canvas.width / 2, canvas.height / 2, canvas.width, canvas.height, 5, 45);
 gameEngine.register(testObject);
 gameEngine.start();
 
@@ -26,7 +26,7 @@ testObject.register(testViewObject);
 renderEngine.register(testViewObject);
 renderEngine.start();
 
-let testObject2 = new TestGameObject(0, 60, canvas.width, canvas.height, 3, 45);
+let testObject2 = new TestGameObject(canvas.width / 2, canvas.height / 2, canvas.width, canvas.height, 8, 45);
 gameEngine.register(testObject2);
 let testViewObject2 = new TestViewObject(testObject2);
 testObject2.register(testViewObject2);
