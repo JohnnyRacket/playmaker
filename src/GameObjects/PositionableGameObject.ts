@@ -7,6 +7,12 @@ export abstract class PositionableGameObject extends ObservableGameObject{
     protected x: number;
     protected y: number;
 
+    public constructor(x: number, y: number){
+        super();
+        this.x = x;
+        this.y = y;
+    }
+
     public setXPosition(x: number){
         this.x = x;
     }
