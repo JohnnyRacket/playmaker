@@ -26,7 +26,11 @@ testObject.register(testViewObject);
 renderEngine.register(testViewObject);
 renderEngine.start();
 
+<<<<<<< HEAD
 let testObject2 = new TestGameObject(canvas.width / 2, canvas.height / 2, canvas.width, canvas.height, 8, 45);
+=======
+let testObject2 = new TestGameObject(0, 60, canvas.width, canvas.height, 3, -45);
+>>>>>>> 655bc83f6c398eecd7c42c4bbc90c410b8df6d04
 gameEngine.register(testObject2);
 let testViewObject2 = new TestViewObject(testObject2);
 testObject2.register(testViewObject2);

@@ -4,20 +4,31 @@ import { IObserver } from "../Observables/Observer.interface";
 
 export abstract class PositionableGameObject extends ObservableGameObject{
 
-    protected x: number;
-    protected y: number;
-
-    public setXPosition(x: number){
-        this.x = x;
+    protected _x: number;
+    get x(): number{
+        return this._x;
+    }
+    set x(x: number){
+        this._x = x;
     }
 
-    public setYPosition(y: number){
+    protected _y: number;
+    get y(): number{
+        return this._y;
+    }
+    set y(y: number){
+        this._y = y;
+    }
+
+    public constructor(x: number, y: number){
+        super();
+        this.x = x;
         this.y = y;
     }
 
     public setPosition(x: number, y: number){
-        this.setXPosition(x);
-        this.setYPosition(y);
+        this.x = x;
+        this.y = y;
     }
 
     public deltaXPosition(delta: number){
