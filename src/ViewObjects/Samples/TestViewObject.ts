@@ -22,10 +22,10 @@ export class TestViewObject implements IViewObject{
         this.canvas.height = 32;
         this.context = this.canvas.getContext('2d');
         this.context.beginPath();
-        this.context.arc(12, 12, 10, 0, 24, false);
+        this.context.arc(16, 16, 15, 0, 16, false);
         this.context.fillStyle = 'blue';
         this.context.fill();
-        this.context.lineWidth = 4;
+        this.context.lineWidth = 2;
         this.context.strokeStyle = '#003300';
         this.context.stroke();
 
@@ -45,10 +45,11 @@ export class TestViewObject implements IViewObject{
         // context.strokeStyle = '#003300';
         // context.stroke();
 
-        context.drawImage(this.canvas, this.xPos, this.yPos);
+        context.drawImage(this.canvas, this.xPos - 16, this.yPos - 16);
     }
 
     public update(){
+        console.log("view x", this.subject.x);
         this.xPos = Math.round(this.subject.x);
         this.yPos = Math.round(this.subject.y);
     }
