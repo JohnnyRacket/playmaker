@@ -49,7 +49,6 @@ export class TestViewObject implements IViewObject{
     }
 
     public update(){
-        console.log("view x", this.subject.x);
         this.xPos = Math.round(this.subject.x);
         this.yPos = Math.round(this.subject.y);
     }
