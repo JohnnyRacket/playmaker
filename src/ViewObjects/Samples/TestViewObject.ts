@@ -1,8 +1,9 @@
-import {IViewObject} from './../ViewObject.interface'
-import {TestGameObject} from '../../GameObjects/Samples/TestGameObject'
+import { NewFangledSample } from '../../GameObjects/Samples/NewFangledSample';
+import { TestGameObject } from '../../GameObjects/Samples/TestGameObject';
+import { IViewObject } from './../ViewObject.interface';
 export class TestViewObject implements IViewObject{
 
-    private subject: TestGameObject;
+    private subject: NewFangledSample;
     private xPos: number;
     private yPos: number;
     private envWidth: number;
@@ -10,7 +11,7 @@ export class TestViewObject implements IViewObject{
     private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D;
 
-    public constructor(model: TestGameObject){
+    public constructor(model: NewFangledSample){
         this.subject = model;
         this.preRender();
     }
@@ -48,7 +49,7 @@ export class TestViewObject implements IViewObject{
     }
 
     public update(){
-        this.xPos = Math.round(this.subject.getXPosition());
-        this.yPos = Math.round(this.subject.getYPosition());
+        this.xPos = Math.round(this.subject.x);
+        this.yPos = Math.round(this.subject.y);
     }
 }

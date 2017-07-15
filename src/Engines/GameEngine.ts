@@ -1,5 +1,10 @@
 import array = require('lodash/array');
 import { IGameObject } from '../GameObjects/GameObject.interface';
+import { CollisionManager } from './CollisionManager';
+
+/*
+* This class is a Singleton
+*/
 
 export class GameEngine{
     /*
@@ -9,6 +14,23 @@ export class GameEngine{
     private isRunning: boolean = false;
     private observers: IGameObject[] = [];
     private tickLength: number = 33;
+    public collisionManager: CollisionManager = new CollisionManager();
+
+    private static _instance: GameEngine = new GameEngine();
+  
+    private constructor() {
+        if(GameEngine._instance){
+            throw new Error("Error: Instantiation failed: Use GameEngine.getInstance() instead of new.");
+        }
+        GameEngine._instance = this;
+        this.register(this.collisionManager);
+        //add collision manager to the ticks, add functions for adding and removing stuff
+    }
+ 
+    public static getInstance(): GameEngine
+    {
+        return GameEngine._instance;
+    }
 
     /*
     * Starts the game loop

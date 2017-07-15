@@ -5,8 +5,24 @@ export class RenderEngine{
 
     private observers: IViewObject[] = [];
     private isRunning: boolean = false;
+    private context: CanvasRenderingContext2D;
+    private canvas: HTMLCanvasElement;
 
-    public constructor(private context: CanvasRenderingContext2D, private canvas: HTMLCanvasElement){
+    private static _instance: RenderEngine = new RenderEngine();
+  
+    private constructor() {
+        if(RenderEngine._instance){
+            throw new Error("Error: Instantiation failed: Use GameEngine.getInstance() instead of new.");
+        }
+        RenderEngine._instance = this;
+    }
+ 
+    public static getInstance(): RenderEngine
+    {
+        return RenderEngine._instance;
+    }
+
+    public setCanvas(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D,){
         this.context = context;
         this.canvas = canvas;
     }

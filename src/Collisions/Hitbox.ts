@@ -1,9 +1,12 @@
 import { CollidableGameObject } from '../GameObjects/CollidableGameObject';
 import { IObserver } from '../Observables/Observer.interface';
 
-export abstract class Hitbox{
+export class Hitbox{
     
-    protected subject: CollidableGameObject;
+    protected _subject: CollidableGameObject;
+    get subject(): CollidableGameObject{
+        return this._subject;
+    }
 
     protected _width: number;
     get width(): number{
@@ -28,7 +31,7 @@ export abstract class Hitbox{
     public constructor  (width: number, height: number, subject: CollidableGameObject){
         this._width = width;
         this._height = height;
-        this.subject = subject;
+        this._subject = subject;
     }
 
    public collide(hitbox: Hitbox){
