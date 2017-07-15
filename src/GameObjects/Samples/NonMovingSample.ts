@@ -1,12 +1,11 @@
 import { CollidableGameObject } from '../CollidableGameObject';
 
-export class NewFangledSample extends CollidableGameObject{
+export class NonMovingSample extends CollidableGameObject{
 
     collide(object: CollidableGameObject) {
-        console.log("aye mate watch where youre goin ya cunt");
+        console.log("im a fuqing wall .-.");
     }
     tick() {
-        this.x += 1;
         this.updateObservers();
     }
 

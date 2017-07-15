@@ -18,14 +18,14 @@ export class TestViewObject implements IViewObject{
 
     private preRender(){
         this.canvas = document.createElement('canvas');
-        this.canvas.width = 64;
-        this.canvas.height = 64;
+        this.canvas.width = 32;
+        this.canvas.height = 32;
         this.context = this.canvas.getContext('2d');
         this.context.beginPath();
-        this.context.arc(32, 32, 10, 0, 2 * Math.PI, false);
+        this.context.arc(12, 12, 10, 0, 24, false);
         this.context.fillStyle = 'blue';
         this.context.fill();
-        this.context.lineWidth = 5;
+        this.context.lineWidth = 4;
         this.context.strokeStyle = '#003300';
         this.context.stroke();
 
