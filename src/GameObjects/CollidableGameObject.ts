@@ -4,7 +4,7 @@ import { PositionableGameObject } from './PositionableGameObject';
 
 export abstract class CollidableGameObject extends PositionableGameObject{
 
-    protected hitBoxes: Hitbox[] = [];
+    protected hitbox;
 
     public constructor (x: number, y: number, width: number, height: number){
         super(x,y,width,height);
@@ -12,7 +12,7 @@ export abstract class CollidableGameObject extends PositionableGameObject{
     
     abstract collide(object: CollidableGameObject);
 
-    public addHitBox(hitbox: Hitbox){
-        this.hitBoxes.push(hitbox);
+    public setHitBox(hitbox: Hitbox){
+        this.hitbox = hitbox;
     }
 }
