@@ -8,7 +8,7 @@ export class RouteController extends Controller{
     //I expect this class to change as we think about what needs to happen
     protected route: Route;
     protected started: boolean = true;
-    protected angle: number = 0;;
+    protected angle: number = 0;
     protected routeIndex: number = 0;
     //more to come, need ot think through collisions first
 
@@ -20,7 +20,7 @@ export class RouteController extends Controller{
     decide() {
         let location = new Coordinate(this.subject.x, this.subject.y);
         let destination = this.route.getPoint(this.routeIndex);
-        if(Math.round(location.x) == Math.round(destination.x) && Math.round(location.y) == Math.round(destination.y)){
+        if(this.withinRange(Math.round(location.x), Math.round(destination.x), this.subject.speed) && this.withinRange(Math.round(location.y), Math.round(destination.y), this.subject.speed)){
             this.routeIndex++;
             if(this.routeIndex < this.route.numPoints){
                 destination = this.route.getPoint(this.routeIndex);
@@ -34,6 +34,10 @@ export class RouteController extends Controller{
     act() {
         this.subject.x += this.subject.speed * Math.cos(this.angle);
         this.subject.y += this.subject.speed * Math.sin(this.angle);
+    }
+
+    private withinRange(number: number, rangeCenter: number, delta: number): boolean{
+        return number > (rangeCenter - delta) && number < (rangeCenter + delta);
     }
     
 }
