@@ -29,7 +29,6 @@ export class RouteController extends Controller{
             }
         }
         this.angle = Math.atan2(destination.y - location.y, destination.x - location.x,);
-        console.log(this.angle);
     }
     act() {
         this.subject.x += this.subject.speed * Math.cos(this.angle);

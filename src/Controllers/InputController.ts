@@ -36,11 +36,9 @@ export class InputController extends Controller{
     decide() {
         if(this.right) {
             this.angle += this.subject.speed * Math.PI/180;
-            console.log('rotate right');
         }
         if(this.left){
             this.angle -= this.subject.speed * Math.PI/180;
-            console.log('rotate left');
         } 
 
     }
