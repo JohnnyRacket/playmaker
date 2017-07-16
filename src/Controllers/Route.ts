@@ -2,9 +2,15 @@ import { Coordinate } from './Coordinate';
 
 export class Route{
 
-    public readonly points: Coordinate[] = [];
+    private readonly points: Coordinate[];
+    public readonly numPoints: number = SVGPointList.length;
+    //want to add a length value as well
 
     public constructor(path: Coordinate[]){
         this.points = path;
+    }
+
+    public getPoint(index: number){
+        return this.points[index];
     }
 }

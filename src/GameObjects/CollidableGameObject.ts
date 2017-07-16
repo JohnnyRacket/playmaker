@@ -12,7 +12,10 @@ export abstract class CollidableGameObject extends PositionableGameObject{
     
     abstract collide(object: CollidableGameObject);
 
-    public setHitBox(hitbox: Hitbox){
+    public setHitbox(hitbox: Hitbox){
         this.hitbox = hitbox;
+    }
+    public removeHitbox(){
+        this.hitbox = null;
     }
 }

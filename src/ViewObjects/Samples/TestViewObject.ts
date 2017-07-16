@@ -1,9 +1,10 @@
+import { PositionableGameObject } from '../../GameObjects/PositionableGameObject';
 import { NewFangledSample } from '../../GameObjects/Samples/NewFangledSample';
 import { TestGameObject } from '../../GameObjects/Samples/TestGameObject';
 import { IViewObject } from './../ViewObject.interface';
 export class TestViewObject implements IViewObject{
 
-    private subject: NewFangledSample;
+    private subject: PositionableGameObject;
     private xPos: number;
     private yPos: number;
     private envWidth: number;
@@ -11,7 +12,7 @@ export class TestViewObject implements IViewObject{
     private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D;
 
-    public constructor(model: NewFangledSample){
+    public constructor(model: PositionableGameObject){
         this.subject = model;
         this.preRender();
     }

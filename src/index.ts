@@ -22,8 +22,8 @@ const gameEngine = GameEngine.getInstance();
 const renderEngine = RenderEngine.getInstance();
 renderEngine.setCanvas(canvas, context);
 
-let testObject = new NewFangledSample(100,100,32,32);
-testObject.setHitBox(HitBoxFactory.CreateActiveSquareHitBox(32,32,testObject));
+let testObject = new NewFangledSample(100,100,32,32,1);
+testObject.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(32,32,testObject));
 
 gameEngine.register(testObject);
 gameEngine.start();
@@ -34,7 +34,7 @@ renderEngine.register(testViewObject);
 renderEngine.start();
 
 let testObject2 = new NonMovingSample(200,100,32,32);
-testObject2.setHitBox(HitBoxFactory.CreateActiveSquareHitBox(32,32,testObject2));
+testObject2.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(32,32,testObject2));
 gameEngine.register(testObject2);
 let testViewObject2 = new TestViewObject(testObject2);
 testObject2.register(testViewObject2);
