@@ -8,6 +8,7 @@ import { RenderEngine } from './Engines/RenderEngine';
 import { NewFangledSample } from './GameObjects/Samples/NewFangledSample';
 import { NonMovingSample } from './GameObjects/Samples/NonMovingSample';
 import { TestGameObject } from './GameObjects/Samples/TestGameObject';
+import { SquarePlayerViewObject } from './ViewObjects/Samples/SquarePlayerViewObject';
 import { TestViewObject } from './ViewObjects/Samples/TestViewObject';
 
 /*
@@ -29,12 +30,12 @@ renderEngine.setCanvas(canvas, context);
 let testObject = new NewFangledSample(300,400,32,32,5);
 testObject.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(32,32,testObject));
 //let controller = ControllerFactory.createRouteController(testObject, new Route([new Coordinate(300,300), new Coordinate(500,100)]));
-let controller = ControllerFactory.createInputController(testObject, -90);
+let controller = ControllerFactory.createInputController(testObject);
 testObject.setController(controller);
 gameEngine.register(testObject);
 gameEngine.start();
 
-let testViewObject = new TestViewObject(testObject);
+let testViewObject = new SquarePlayerViewObject(0,0,32,32,0,testObject);
 testObject.register(testViewObject);
 renderEngine.register(testViewObject);
 renderEngine.start();

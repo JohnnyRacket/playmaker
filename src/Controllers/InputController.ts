@@ -8,9 +8,9 @@ export class InputController extends Controller{
     private left: boolean = false;
 
 
-    public constructor(subject: ControllableGameObject, angle?: number){
+    public constructor(subject: ControllableGameObject){
         super(subject);
-        this.angle = angle * Math.PI/180 || 0;
+        this.angle = this.subject.angle || 0;
         window.addEventListener('keydown', (event) => {this.onKeyDown(event);}, false);
         window.addEventListener('keyup', (event) => {this.onKeyUp(event);}, false);
     }
@@ -40,7 +40,7 @@ export class InputController extends Controller{
         if(this.left){
             this.angle -= this.subject.speed * Math.PI/180;
         } 
-
+        this.subject.angle = this.angle;
     }
     act() {
         this.subject.x += this.subject.speed * Math.cos(this.angle);

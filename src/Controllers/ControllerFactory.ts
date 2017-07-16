@@ -12,8 +12,8 @@ export class ControllerFactory{
         return controller;
     }
 
-    public static createInputController(subject: ControllableGameObject, angle: number): InputController{
-        let controller = new InputController(subject, angle);
+    public static createInputController(subject: ControllableGameObject): InputController{
+        let controller = new InputController(subject);
         GameEngine.getInstance().controllerManager.addController(controller);
         return controller;
     }
