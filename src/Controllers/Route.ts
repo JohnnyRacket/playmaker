@@ -10,7 +10,7 @@ export class Route{
         this.points = path;
     }
 
-    public getPoint(index: number){
+    public getPoint(index: number): Coordinate{
         return this.points[index];
     }
 }

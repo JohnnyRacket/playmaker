@@ -4,12 +4,12 @@ import { Hitbox } from './Hitbox';
 
 export class HitBoxFactory{
 
-    public static CreateActiveSquareHitBox(width: number, height: number, subject: CollidableGameObject){
+    public static CreateActiveSquareHitBox(width: number, height: number, subject: CollidableGameObject): Hitbox{
         let hitbox: Hitbox = new Hitbox(width, height, subject);
         GameEngine.getInstance().collisionManager.addActiveHitbox(hitbox);
         return hitbox;    
     }
-    public static CreatePassiveSquareHitBox(width: number, height: number, subject: CollidableGameObject){
+    public static CreatePassiveSquareHitBox(width: number, height: number, subject: CollidableGameObject): Hitbox{
         let hitbox: Hitbox = new Hitbox(width, height, subject);
         GameEngine.getInstance().collisionManager.addPassiveHitbox(hitbox);
         return hitbox;

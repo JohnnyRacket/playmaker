@@ -54,17 +54,6 @@ export abstract class PositionableGameObject extends ObservableGameObject{
         this.y = y;
     }
 
-    public deltaXPosition(delta: number){
-        this.x += delta;
-    }
-    public deltaYPosition(delta: number){
-        this.y += delta;
-    }
-    public deltaPosition(deltaX: number, deltaY: number){
-        this.deltaXPosition(deltaX);
-        this.deltaYPosition(deltaY);
-    }
-
     abstract tick();
 
 }

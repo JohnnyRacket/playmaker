@@ -2,7 +2,7 @@ import { Controller } from '../Controllers/Controller';
 
 export class ControllerManager{
     private _controllers: Controller[] = [];
-    get controllers(){
+    get controllers(): Controller[]{
         return this._controllers;
     }
 
