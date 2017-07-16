@@ -10,7 +10,7 @@ export class NewFangledSample extends ControllableGameObject{
         GameEngine.getInstance().stop();
     }
     tick() {
-        this.x += 1;
+        //this.x += 1;
         this.updateObservers();
     }
 

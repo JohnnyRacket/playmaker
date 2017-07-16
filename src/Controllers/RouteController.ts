@@ -1,3 +1,4 @@
+import { ControllableGameObject } from '../GameObjects/ControllableGameObeject';
 import { Controller } from './Controller';
 import { Coordinate } from './Coordinate';
 import { Route } from './Route';
@@ -11,8 +12,8 @@ export class RouteController extends Controller{
     protected routeIndex: number = 0;
     //more to come, need ot think through collisions first
 
-    public constructor(route: Route){
-        super();
+    public constructor(subject: ControllableGameObject, route: Route){
+        super(subject);
         this.route = route;
     }
 
@@ -27,7 +28,8 @@ export class RouteController extends Controller{
                 //route is complete
             }
         }
-        this.angle = Math.atan2(location.x - destination.x, location.y - destination.y);
+        this.angle = Math.atan2(destination.y - location.y, destination.x - location.x,);
+        console.log(this.angle);
     }
     act() {
         this.subject.x += this.subject.speed * Math.cos(this.angle);

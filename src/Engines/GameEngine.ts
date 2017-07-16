@@ -1,6 +1,7 @@
 import array = require('lodash/array');
 import { IGameObject } from '../GameObjects/GameObject.interface';
 import { CollisionManager } from './CollisionManager';
+import { ControllerManager } from './ControllerManager';
 
 /*
 * This class is a Singleton
@@ -15,6 +16,7 @@ export class GameEngine{
     private observers: IGameObject[] = [];
     private tickLength: number = 33;
     public collisionManager: CollisionManager = new CollisionManager();
+    public controllerManager: ControllerManager = new ControllerManager();
 
     private static _instance: GameEngine = new GameEngine();
   
@@ -63,6 +65,7 @@ export class GameEngine{
      */
     public tick(){
         this.observers.forEach((obj: IGameObject, index) => obj.tick());
+        this.controllerManager.controllers.forEach((obj: IGameObject, index) => obj.tick());
     }
 
     /*

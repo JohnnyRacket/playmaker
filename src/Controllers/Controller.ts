@@ -6,6 +6,10 @@ export abstract class Controller implements IGameObject{
     protected subject: ControllableGameObject;
     protected active: boolean = true;
 
+    public constructor(subject: ControllableGameObject){
+        this.subject = subject;
+    }
+
     tick(): void {
         if(this.active) this.run();
     }

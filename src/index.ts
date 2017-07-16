@@ -1,4 +1,7 @@
 import { HitBoxFactory } from './Collisions/HitBoxFactory';
+import { ControllerFactory } from './Controllers/ControllerFactory';
+import { Coordinate } from './Controllers/Coordinate';
+import { Route } from './Controllers/Route';
 import { CollisionManager } from './Engines/CollisionManager';
 import { GameEngine } from './Engines/GameEngine';
 import { RenderEngine } from './Engines/RenderEngine';
@@ -24,7 +27,8 @@ renderEngine.setCanvas(canvas, context);
 
 let testObject = new NewFangledSample(100,100,32,32,1);
 testObject.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(32,32,testObject));
-
+let controller = ControllerFactory.createRouteController(testObject, new Route([new Coordinate(300,300), new Coordinate(500,100)]));
+testObject.setController(controller);
 gameEngine.register(testObject);
 gameEngine.start();
 
