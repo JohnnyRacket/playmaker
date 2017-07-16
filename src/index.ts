@@ -25,9 +25,10 @@ const gameEngine = GameEngine.getInstance();
 const renderEngine = RenderEngine.getInstance();
 renderEngine.setCanvas(canvas, context);
 
-let testObject = new NewFangledSample(100,100,32,32,5);
+let testObject = new NewFangledSample(300,400,32,32,5);
 testObject.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(32,32,testObject));
-let controller = ControllerFactory.createRouteController(testObject, new Route([new Coordinate(300,300), new Coordinate(500,100)]));
+//let controller = ControllerFactory.createRouteController(testObject, new Route([new Coordinate(300,300), new Coordinate(500,100)]));
+let controller = ControllerFactory.createInputController(testObject, -90);
 testObject.setController(controller);
 gameEngine.register(testObject);
 gameEngine.start();
