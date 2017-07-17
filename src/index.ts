@@ -43,7 +43,7 @@ testObject.register(testViewObject);
 renderEngine.register(testViewObject);
 renderEngine.start();
 //non moving object
-let testObject2 = new NonMovingSample(200,100,32,32);
+let testObject2 = new NonMovingSample(400,340,32,32);
 testObject2.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(16,16,testObject2));
 gameEngine.register(testObject2);
 let testViewObject2 = new SquarePlayerViewObject(0,0,16,16,0,testObject2);
