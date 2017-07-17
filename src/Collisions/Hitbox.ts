@@ -3,6 +3,7 @@ import { IObserver } from '../Observables/Observer.interface';
 
 export class Hitbox{
     
+
     protected _subject: CollidableGameObject;
     get subject(): CollidableGameObject{
         return this._subject;
@@ -27,6 +28,13 @@ export class Hitbox{
     get y(): number{
         return this.subject.y;
     }
+
+    protected _angle: number;
+    get angle(): number{
+        return this.subject.angle;
+    }
+    
+
 
     public constructor  (width: number, height: number, subject: CollidableGameObject){
         this._width = width;
