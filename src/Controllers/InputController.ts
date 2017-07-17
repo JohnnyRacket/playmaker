@@ -10,7 +10,7 @@ export class InputController extends Controller{
 
     public constructor(subject: ControllableGameObject){
         super(subject);
-        this.angle = this.subject.angle || 0;
+        this.angle = this.subject.angle * Math.PI/180 || 0;
         window.addEventListener('keydown', (event) => {this.onKeyDown(event);}, false);
         window.addEventListener('keyup', (event) => {this.onKeyUp(event);}, false);
     }
