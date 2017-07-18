@@ -8,7 +8,6 @@ export class RouteController extends Controller{
     //I expect this class to change as we think about what needs to happen
     protected route: Route;
     protected started: boolean = true;
-    protected angle: number = 0;
     protected routeIndex: number = 0;
     //more to come, need ot think through collisions first
 
@@ -28,11 +27,11 @@ export class RouteController extends Controller{
                 //route is complete
             }
         }
-        this.angle = Math.atan2(destination.y - location.y, destination.x - location.x,);
+        this.subject.angle = Math.atan2(destination.y - location.y, destination.x - location.x,);
     }
     act() {
-        this.subject.x += this.subject.speed * Math.cos(this.angle);
-        this.subject.y += this.subject.speed * Math.sin(this.angle);
+        this.subject.x += this.subject.speed * Math.cos(this.subject.angle);
+        this.subject.y += this.subject.speed * Math.sin(this.subject.angle);
     }
 
     private withinRange(number: number, rangeCenter: number, delta: number): boolean{
