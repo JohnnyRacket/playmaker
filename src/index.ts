@@ -38,6 +38,9 @@ renderEngine.register(field);
 PlayerFactory.createRunner(400,500, -90);
 
 //create a player with a route
+PlayerFactory.createBlocker(300,450,new Route([new Coordinate(300,350), new Coordinate(400,250)]));
+PlayerFactory.createBlocker(350,450,new Route([new Coordinate(350,350), new Coordinate(450,250)]));
 PlayerFactory.createBlocker(400,450,new Route([new Coordinate(400,350), new Coordinate(500,250)]));
+PlayerFactory.createBlocker(450,450,new Route([new Coordinate(450,350), new Coordinate(550,250)]));
 
 
