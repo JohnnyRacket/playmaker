@@ -13,7 +13,7 @@ export class ComposableView extends Dimensionable implements IViewObject{
         this.y = y;
         this.width = width;
         this.height = height;
-        this.canvas = new HTMLCanvasElement();
+        this.canvas = document.createElement('canvas');
         this.canvas.width = width;
         this.canvas.height = height;
         this.context = this.canvas.getContext('2d');
@@ -28,5 +28,9 @@ export class ComposableView extends Dimensionable implements IViewObject{
     update() {
         this.canvas.width = this.width;
         this.canvas.height = this.height;
+    }
+
+    public addView(viewObject: IViewObject){
+        this.children.push(viewObject);
     }
 }

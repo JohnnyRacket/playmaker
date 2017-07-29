@@ -1,3 +1,4 @@
+import { DrawingStrategy } from '../DrawingStrategies/DrawingStrategy';
 import { IViewObject } from './ViewObject.interface';
 
 export abstract class DoubleBufferedViewObject implements IViewObject{
@@ -41,15 +42,24 @@ export abstract class DoubleBufferedViewObject implements IViewObject{
         this._angle = angle;
     }
 
+    protected _drawingStrategy: DrawingStrategy;
+    get drawingStrategy(): DrawingStrategy{
+        return this._drawingStrategy;
+    }
+    set drawingStrategy(strategy: DrawingStrategy){
+        this._drawingStrategy = strategy;
+    }
+
     protected readonly canvas: HTMLCanvasElement;
     protected readonly context: CanvasRenderingContext2D;
 
-    public constructor(x: number, y: number, width: number, height: number, angle: number){
+    public constructor(x: number, y: number, width: number, height: number, angle: number, strategy: DrawingStrategy){
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.angle = angle;
+        this.drawingStrategy = strategy;
         this.canvas = document.createElement('canvas');
         this.canvas.width = width;
         this.canvas.height = height;
@@ -66,8 +76,7 @@ export abstract class DoubleBufferedViewObject implements IViewObject{
     context.rotate(this.angle); 
     context.translate(-this.x,-this.y);
 
-    context.drawImage(this.canvas, this.x - this.width/2, this.y - this.height/2);
-
+    this.drawingStrategy.draw(context, this.canvas, this.x, this.y, this.width, this.height);
 
     context.restore();
 

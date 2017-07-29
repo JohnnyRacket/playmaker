@@ -1,3 +1,4 @@
+import { DrawingStrategy } from '../../DrawingStrategies/DrawingStrategy';
 import { PositionableGameObject } from '../../GameObjects/PositionableGameObject';
 import { DoubleBufferedViewObject } from '../DoubleBufferedViewObject';
 
@@ -5,8 +6,8 @@ export class SquarePlayerViewObject extends DoubleBufferedViewObject{
 
     protected subject: PositionableGameObject;
 
-    public constructor(x: number, y: number, width: number, height: number, angle: number, subject: PositionableGameObject){
-        super(x,y,width,height,angle);
+    public constructor(x: number, y: number, width: number, height: number, angle: number, subject: PositionableGameObject, strategy: DrawingStrategy){
+        super(x,y,width,height,angle, strategy);
         this.subject = subject;
         this.angle = this.subject.angle;
     }

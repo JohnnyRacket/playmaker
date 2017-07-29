@@ -1,3 +1,5 @@
+import { CenterDrawingStrategy } from '../DrawingStrategies/CenterDrawingStrategy';
+import { ComposableView } from '../ViewComposition/ComposableView';
 import { HitBoxFactory } from '../Collisions/HitBoxFactory';
 import { ControllerFactory } from '../Controllers/ControllerFactory';
 import { Route } from '../Controllers/Route';
@@ -15,7 +17,7 @@ export class PlayerFactory{
         let controller = ControllerFactory.createInputController(player);
         player.setController(controller);
         GameEngine.getInstance().register(player);
-        let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player);
+        let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
         player.register(playerVO);
         RenderEngine.getInstance().register(playerVO);
         return player;
@@ -27,7 +29,7 @@ export class PlayerFactory{
         let controller = ControllerFactory.createRouteController(player, route);
         player.setController(controller);
         GameEngine.getInstance().register(player);
-        let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player);
+        let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
         player.register(playerVO);
         RenderEngine.getInstance().register(playerVO);
         return player;
@@ -39,9 +41,21 @@ export class PlayerFactory{
         let controller = ControllerFactory.createRouteController(player, route);
         player.setController(controller);
         GameEngine.getInstance().register(player);
-        let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player);
+        let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
         player.register(playerVO);
         RenderEngine.getInstance().register(playerVO);
+        return player;
+    }
+
+    public static createBlockerInArea(x: number, y: number, route: Route, area: ComposableView){
+        let player = new NewFangledSample(x,y,16,16,2);
+        player.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(16,16,player));
+        let controller = ControllerFactory.createRouteController(player, route);
+        player.setController(controller);
+        GameEngine.getInstance().register(player);
+        let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
+        player.register(playerVO);
+        area.addView(playerVO);
         return player;
     }
 }
