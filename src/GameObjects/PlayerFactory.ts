@@ -22,6 +22,18 @@ export class PlayerFactory{
         RenderEngine.getInstance().register(playerVO);
         return player;
     }
+        public static createRunnerInArea(x: number, y: number, angle: number, area: ComposableView){
+        let player = new NewFangledSample(x,y,16,16,2);
+        player.angle = angle;
+        player.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(16,16,player));
+        let controller = ControllerFactory.createInputController(player);
+        player.setController(controller);
+        GameEngine.getInstance().register(player);
+        let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
+        player.register(playerVO);
+        area.addView(playerVO);
+        return player;
+    }
 
     public static createBlocker(x: number, y: number, route: Route){
         let player = new NewFangledSample(x,y,16,16,2);

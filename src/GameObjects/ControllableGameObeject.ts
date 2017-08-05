@@ -6,7 +6,7 @@ export abstract class ControllableGameObject extends CollidableGameObject{
     get speed(): number{
         return this._speed;
     }
-    set speed(speed: number){
+    set speed(speed: number){ 
         this._speed = speed;
     }
 

@@ -1,3 +1,4 @@
+import { HorizontalCenterDecorator } from './ViewComposition/Decorators/HorizontalCenterDecorator';
 import { TopLeftDrawingStrategy } from './DrawingStrategies/TopLeftDrawingStrategy';
 import { ComposableView } from './ViewComposition/ComposableView';
 import { HitBoxFactory } from './Collisions/HitBoxFactory';
@@ -34,18 +35,19 @@ renderEngine.start();
 
 //create a composable view for game area to exist in
 let gameArea = new ComposableView(100,100,320,480);
-renderEngine.register(gameArea);
+let test = new HorizontalCenterDecorator(gameArea);
+renderEngine.register(test);
 //just the field VO
 let field = new FieldViewObject(0,0,320,480,0, new TopLeftDrawingStrategy());
 gameArea.addView(field);
 
 //create the player you control youreself
-PlayerFactory.createRunner(400,500, -90);
+PlayerFactory.createRunnerInArea(120,340, -90, gameArea);
 
 //create a player with a route
-PlayerFactory.createBlockerInArea(300,450,new Route([new Coordinate(300,350), new Coordinate(400,250)]), gameArea);
-PlayerFactory.createBlocker(350,450,new Route([new Coordinate(350,350), new Coordinate(450,250)]));
-PlayerFactory.createBlocker(400,450,new Route([new Coordinate(400,350), new Coordinate(500,250)]));
-PlayerFactory.createBlocker(450,450,new Route([new Coordinate(450,350), new Coordinate(550,250)]));
+PlayerFactory.createBlockerInArea(60,240,new Route([new Coordinate(60,120), new Coordinate(20,80)]), gameArea);
+PlayerFactory.createBlockerInArea(110,240,new Route([new Coordinate(110,120), new Coordinate(70,80)]), gameArea);
+PlayerFactory.createBlockerInArea(210,240,new Route([new Coordinate(210,120), new Coordinate(170,80)]), gameArea);
+PlayerFactory.createBlockerInArea(260,240,new Route([new Coordinate(260,120), new Coordinate(220,80)]), gameArea);
 
 
