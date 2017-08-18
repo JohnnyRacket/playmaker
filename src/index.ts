@@ -15,6 +15,7 @@ import { TestGameObject } from './GameObjects/Samples/TestGameObject';
 import { FieldViewObject } from './ViewObjects/Samples/FieldViewObject';
 import { SquarePlayerViewObject } from './ViewObjects/Samples/SquarePlayerViewObject';
 import { TestViewObject } from './ViewObjects/Samples/TestViewObject';
+import { VerticalCenterDecorator } from "./ViewComposition/Decorators/VerticalCenterDecorator";
 
 /*
  * Fetch our environment for our game and configure
@@ -35,7 +36,10 @@ renderEngine.start();
 
 //create a composable view for game area to exist in
 let gameArea = new ComposableView(100,100,320,480);
-let test = new HorizontalCenterDecorator(gameArea);
+console.log(gameArea.x, gameArea.y, gameArea.width, gameArea.height);
+
+let test2 = new VerticalCenterDecorator(gameArea);
+let test = new HorizontalCenterDecorator(test2);
 renderEngine.register(test);
 //just the field VO
 let field = new FieldViewObject(0,0,320,480,0, new TopLeftDrawingStrategy());

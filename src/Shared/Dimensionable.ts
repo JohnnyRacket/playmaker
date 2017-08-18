@@ -23,7 +23,7 @@ export abstract class Dimensionable{
     }
     protected _height: number;
     get height(): number{
-        return this._x;
+        return this._height;
     }
     set height(height: number){
         this._height = height;
