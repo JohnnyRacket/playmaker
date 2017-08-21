@@ -36,7 +36,6 @@ renderEngine.start();
 
 //create a composable view for game area to exist in
 let gameArea = new ComposableView(100,100,320,480);
-console.log(gameArea.x, gameArea.y, gameArea.width, gameArea.height);
 
 let test2 = new VerticalCenterDecorator(gameArea);
 let test = new HorizontalCenterDecorator(test2);

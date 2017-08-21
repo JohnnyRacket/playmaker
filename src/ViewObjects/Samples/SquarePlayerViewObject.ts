@@ -36,7 +36,6 @@ export class SquarePlayerViewObject extends DoubleBufferedViewObject{
             this.context.fill();
         }
         if(this.outline){
-            console.log('nononnon');
             this.context.strokeStyle = this.outline;
         }
         this.context.rect(0,0,this.width,this.height); 
