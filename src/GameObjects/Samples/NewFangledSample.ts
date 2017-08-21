@@ -7,7 +7,8 @@ export class NewFangledSample extends ControllableGameObject{
     collide(object: CollidableGameObject) {
         console.log("colliding", this.x);
         //this.x = 100;
-        GameEngine.getInstance().stop();
+        //GameEngine.getInstance().stop();
+        this.controller.collide(object);
     }
     tick() {
         //this.x += 1;

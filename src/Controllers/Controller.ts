@@ -1,7 +1,9 @@
+import { CollidableGameObject } from '../GameObjects/CollidableGameObject';
+import { ICollidable } from '../GameObjects/ICollidable';
 import { ControllableGameObject } from '../GameObjects/ControllableGameObeject';
 import { IGameObject } from '../GameObjects/GameObject.interface';
 
-export abstract class Controller implements IGameObject{
+export abstract class Controller implements IGameObject, ICollidable{
 
     protected subject: ControllableGameObject;
     protected active: boolean = true;
@@ -21,6 +23,7 @@ export abstract class Controller implements IGameObject{
 
     abstract decide();
     abstract act();
+    abstract collide(object: CollidableGameObject);
 
     public deactivate(){
         this.active = false;

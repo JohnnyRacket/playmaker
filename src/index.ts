@@ -45,13 +45,18 @@ renderEngine.register(test);
 let field = new FieldViewObject(0,0,320,480,0, new TopLeftDrawingStrategy());
 gameArea.addView(field);
 
-//create the player you control youreself
-PlayerFactory.createRunnerInArea(120,340, -90, gameArea);
+//create the player you control youreself (runner)
+PlayerFactory.createRunnerInArea(160,350, -90, gameArea);
 
-//create a player with a route
-PlayerFactory.createBlockerInArea(60,240,new Route([new Coordinate(60,120), new Coordinate(20,80)]), gameArea);
-PlayerFactory.createBlockerInArea(110,240,new Route([new Coordinate(110,120), new Coordinate(70,80)]), gameArea);
-PlayerFactory.createBlockerInArea(210,240,new Route([new Coordinate(210,120), new Coordinate(170,80)]), gameArea);
-PlayerFactory.createBlockerInArea(260,240,new Route([new Coordinate(260,120), new Coordinate(220,80)]), gameArea);
-
+//create blockers with aroutes
+PlayerFactory.createBlockerInArea(60,300,new Route([new Coordinate(60,120), new Coordinate(20,80)]), gameArea);
+PlayerFactory.createBlockerInArea(110,300,new Route([new Coordinate(110,120), new Coordinate(70,80)]), gameArea);
+PlayerFactory.createBlockerInArea(210,300,new Route([new Coordinate(210,120), new Coordinate(170,80)]), gameArea);
+PlayerFactory.createBlockerInArea(260,300,new Route([new Coordinate(260,120), new Coordinate(220,80)]), gameArea);
+//create defenders with routes
+PlayerFactory.createDefenderInArea(60,250,new Route([new Coordinate(60,120), new Coordinate(20,40)]), gameArea);
+PlayerFactory.createDefenderInArea(110,250,new Route([new Coordinate(110,120), new Coordinate(70,40)]), gameArea);
+PlayerFactory.createDefenderInArea(210,250,new Route([new Coordinate(210,120), new Coordinate(170,40)]), gameArea);
+PlayerFactory.createDefenderInArea(260,250,new Route([new Coordinate(260,120), new Coordinate(220,40)]), gameArea);
+PlayerFactory.createDefenderInArea(160,250,new Route([new Coordinate(160,120), new Coordinate(120,40)]), gameArea);
 

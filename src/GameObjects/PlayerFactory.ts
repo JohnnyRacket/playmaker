@@ -18,6 +18,8 @@ export class PlayerFactory{
         player.setController(controller);
         GameEngine.getInstance().register(player);
         let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
+        playerVO.color = '#3498db';
+        playerVO.outline = '#ffffff';
         player.register(playerVO);
         RenderEngine.getInstance().register(playerVO);
         return player;
@@ -30,6 +32,8 @@ export class PlayerFactory{
         player.setController(controller);
         GameEngine.getInstance().register(player);
         let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
+        playerVO.color = '#3498db';
+        playerVO.outline = '#ffffff';
         player.register(playerVO);
         area.addView(playerVO);
         return player;
@@ -66,6 +70,20 @@ export class PlayerFactory{
         player.setController(controller);
         GameEngine.getInstance().register(player);
         let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
+        playerVO.color = '#3498db';
+        player.register(playerVO);
+        area.addView(playerVO);
+        return player;
+    }
+
+    public static createDefenderInArea(x: number, y: number, route: Route, area: ComposableView){
+        let player = new NewFangledSample(x,y,16,16,2);
+        player.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(16,16,player));
+        let controller = ControllerFactory.createRouteController(player, route);
+        player.setController(controller);
+        GameEngine.getInstance().register(player);
+        let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
+        playerVO.color = '#e74c3c';
         player.register(playerVO);
         area.addView(playerVO);
         return player;

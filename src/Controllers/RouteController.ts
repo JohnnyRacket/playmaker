@@ -2,6 +2,7 @@ import { ControllableGameObject } from '../GameObjects/ControllableGameObeject';
 import { Controller } from './Controller';
 import { Coordinate } from './Coordinate';
 import { Route } from './Route';
+import { CollidableGameObject } from "../GameObjects/CollidableGameObject";
 
 export class RouteController extends Controller{
 
@@ -17,17 +18,16 @@ export class RouteController extends Controller{
     }
 
     decide() {
-        let location = new Coordinate(this.subject.x, this.subject.y);
-        let destination = this.route.getPoint(this.routeIndex);
-        if(this.withinRange(Math.round(location.x), Math.round(destination.x), this.subject.speed) && this.withinRange(Math.round(location.y), Math.round(destination.y), this.subject.speed)){
-            this.routeIndex++;
-            if(this.routeIndex < this.route.numPoints){
-                destination = this.route.getPoint(this.routeIndex);
-            }else{
-                //route is complete
+        if(this.routeIndex < this.route.numPoints){
+            let location = new Coordinate(this.subject.x, this.subject.y);
+            let destination = this.route.getPoint(this.routeIndex);
+            if(this.withinRange(Math.round(location.x), Math.round(destination.x), this.subject.speed) && this.withinRange(Math.round(location.y), Math.round(destination.y), this.subject.speed)){
+                this.routeIndex++;
             }
+            this.subject.angle = Math.atan2(destination.y - location.y, destination.x - location.x);
+        }else{
+            this.subject.speed = 0;
         }
-        this.subject.angle = Math.atan2(destination.y - location.y, destination.x - location.x,);
     }
     act() {
         this.subject.x += this.subject.speed * Math.cos(this.subject.angle);
@@ -36,6 +36,10 @@ export class RouteController extends Controller{
 
     private withinRange(number: number, rangeCenter: number, delta: number): boolean{
         return number > (rangeCenter - delta) && number < (rangeCenter + delta);
+    }
+
+    collide(object: CollidableGameObject) {
+        this.subject.speed = this.subject.speed/2;
     }
     
 }
