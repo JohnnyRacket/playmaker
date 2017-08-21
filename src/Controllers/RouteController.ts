@@ -18,7 +18,19 @@ export class RouteController extends Controller{
     }
 
     decide() {
-        if(this.routeIndex < this.route.numPoints){
+        this.followRoute();
+    }
+    act() {
+            this.subject.x += this.subject.speed * Math.cos(this.subject.angle);
+            this.subject.y += this.subject.speed * Math.sin(this.subject.angle);
+    }
+
+    protected withinRange(number: number, rangeCenter: number, delta: number): boolean{
+        return number > (rangeCenter - delta) && number < (rangeCenter + delta);
+    }
+
+    protected followRoute(){
+        if(!this.routeComplete()){
             let location = new Coordinate(this.subject.x, this.subject.y);
             let destination = this.route.getPoint(this.routeIndex);
             if(this.withinRange(Math.round(location.x), Math.round(destination.x), this.subject.speed) && this.withinRange(Math.round(location.y), Math.round(destination.y), this.subject.speed)){
@@ -26,16 +38,10 @@ export class RouteController extends Controller{
             }
             this.subject.angle = Math.atan2(destination.y - location.y, destination.x - location.x);
         }else{
-            this.subject.speed = 0;
         }
     }
-    act() {
-        this.subject.x += this.subject.speed * Math.cos(this.subject.angle);
-        this.subject.y += this.subject.speed * Math.sin(this.subject.angle);
-    }
-
-    private withinRange(number: number, rangeCenter: number, delta: number): boolean{
-        return number > (rangeCenter - delta) && number < (rangeCenter + delta);
+    protected routeComplete(): boolean{
+        return this.routeIndex >= this.route.numPoints;
     }
 
     collide(object: CollidableGameObject) {

@@ -16,6 +16,7 @@ export class FieldViewObject extends DoubleBufferedViewObject{
     }
     update() {
         throw new Error("Method not implemented.");
+        //possible set to cheering or set to something else
     }
 
 }

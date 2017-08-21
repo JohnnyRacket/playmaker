@@ -1,3 +1,4 @@
+import { GameMap } from '../Engines/GameMap';
 import { CenterDrawingStrategy } from '../DrawingStrategies/CenterDrawingStrategy';
 import { ComposableView } from '../ViewComposition/ComposableView';
 import { HitBoxFactory } from '../Collisions/HitBoxFactory';
@@ -22,6 +23,7 @@ export class PlayerFactory{
         playerVO.outline = '#ffffff';
         player.register(playerVO);
         RenderEngine.getInstance().register(playerVO);
+        
         return player;
     }
         public static createRunnerInArea(x: number, y: number, angle: number, area: ComposableView){
@@ -36,6 +38,7 @@ export class PlayerFactory{
         playerVO.outline = '#ffffff';
         player.register(playerVO);
         area.addView(playerVO);
+        GameMap.getInstance().addMapObject(player, 'runner');
         return player;
     }
 
@@ -73,6 +76,7 @@ export class PlayerFactory{
         playerVO.color = '#3498db';
         player.register(playerVO);
         area.addView(playerVO);
+        GameMap.getInstance().addMapObject(player, 'blocker');
         return player;
     }
 
@@ -86,6 +90,7 @@ export class PlayerFactory{
         playerVO.color = '#e74c3c';
         player.register(playerVO);
         area.addView(playerVO);
+        GameMap.getInstance().addMapObject(player, 'defender');
         return player;
     }
 }

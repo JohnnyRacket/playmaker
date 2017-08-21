@@ -2,6 +2,7 @@ import array = require('lodash/array');
 import { IGameObject } from '../GameObjects/GameObject.interface';
 import { CollisionManager } from './CollisionManager';
 import { ControllerManager } from './ControllerManager';
+import { GameMap } from "./GameMap";
 
 /*
 * This class is a Singleton
@@ -66,6 +67,7 @@ export class GameEngine{
     public tick(){
         this.observers.forEach((obj: IGameObject, index) => obj.tick());
         this.controllerManager.controllers.forEach((obj: IGameObject, index) => obj.tick());
+        //GameMap.getInstance().printPositions();
     }
 
     /*
