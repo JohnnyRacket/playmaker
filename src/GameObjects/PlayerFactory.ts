@@ -83,7 +83,7 @@ export class PlayerFactory{
     public static createDefenderInArea(x: number, y: number, route: Route, area: ComposableView){
         let player = new NewFangledSample(x,y,16,16,1);
         player.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(16,16,player));
-        let controller = ControllerFactory.createRouteController(player, route);
+        let controller = ControllerFactory.createDefenderController(player, route);
         player.setController(controller);
         GameEngine.getInstance().register(player);
         let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());

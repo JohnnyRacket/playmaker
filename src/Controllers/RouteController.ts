@@ -10,11 +10,13 @@ export class RouteController extends Controller{
     protected route: Route;
     protected started: boolean = true;
     protected routeIndex: number = 0;
+    protected originalSpeed: number = 0;
     //more to come, need ot think through collisions first
 
     public constructor(subject: ControllableGameObject, route: Route){
         super(subject);
         this.route = route;
+        this.originalSpeed = subject.speed;
     }
 
     decide() {
@@ -40,7 +42,7 @@ export class RouteController extends Controller{
             }
             
         }else{
-            console.log('my route is complete');
+            //console.log('my route is complete');
         }
     }
     protected routeComplete(): boolean{
@@ -48,7 +50,7 @@ export class RouteController extends Controller{
     }
 
     collide(object: CollidableGameObject) {
-        this.subject.speed = this.subject.speed/2;
+        this.subject.speed = this.originalSpeed/2;
     }
     
 }

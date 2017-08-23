@@ -1,3 +1,4 @@
+import { DefenderController } from './DefenderController';
 import { BlockerController } from './BlockerController';
 import { GameEngine } from '../Engines/GameEngine';
 import { ControllableGameObject } from '../GameObjects/ControllableGameObeject';
@@ -25,7 +26,7 @@ export class ControllerFactory{
         return controller;
     }
     public static createDefenderController(subject: ControllableGameObject, route: Route): RouteController{
-        let controller = new RouteController(subject, route);//TODO replace
+        let controller = new DefenderController(subject, route);
         GameEngine.getInstance().controllerManager.addController(controller);
         return controller;
     }
