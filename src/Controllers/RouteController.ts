@@ -1,3 +1,5 @@
+import { GameEngine } from '../Engines/GameEngine';
+import { CollisionManager } from '../Engines/CollisionManager';
 import { ControllableGameObject } from '../GameObjects/ControllableGameObeject';
 import { Controller } from './Controller';
 import { Coordinate } from './Coordinate';
@@ -23,8 +25,13 @@ export class RouteController extends Controller{
         this.followRoute();
     }
     act() {
+        //add pre-emptive collision checking to avoid overlap;
+        if(!GameEngine.getInstance().collisionManager.collisionCheckAtPosition(this.subject, this.subject.x + this.subject.speed * Math.cos(this.subject.angle), this.subject.y )){
             this.subject.x += this.subject.speed * Math.cos(this.subject.angle);
+        }
+        if(!GameEngine.getInstance().collisionManager.collisionCheckAtPosition(this.subject, this.subject.x, this.subject.y + this.subject.speed * Math.sin(this.subject.angle))){
             this.subject.y += this.subject.speed * Math.sin(this.subject.angle);
+        }
     }
 
     protected withinRange(number: number, rangeCenter: number, delta: number): boolean{
@@ -47,10 +54,6 @@ export class RouteController extends Controller{
     }
     protected routeComplete(): boolean{
         return this.routeIndex >= this.route.numPoints;
-    }
-
-    collide(object: CollidableGameObject) {
-        this.subject.speed = this.originalSpeed/2;
     }
     
 }

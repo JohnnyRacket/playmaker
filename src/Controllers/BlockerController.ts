@@ -1,15 +1,17 @@
 import { MapObject } from '../GameObjects/MapObject';
 import { GameMap } from '../Engines/GameMap';
 import { RouteController } from './RouteController';
-export class BlockerController extends RouteController{
+import { CollidableGameObject } from "../GameObjects/CollidableGameObject";
+export class BlockerController extends RouteController {
 
     public decide(){
+        if(this.colliding == false) this.subject.speed = this.originalSpeed;
         if(!this.routeComplete()){
             this.followRoute();
         }else{
             //look for defenders to tackle
             let defenders = GameMap.getInstance().getAllOfType('defender');
-            console.log(defenders);
+            //console.log(defenders);
             let min = Number.MAX_VALUE;
             let target;
             defenders.forEach(element => {
@@ -26,8 +28,12 @@ export class BlockerController extends RouteController{
         }
     }
 
-    public collide(){
-        this.subject.speed = this.originalSpeed/2;
+    public collide(object: CollidableGameObject){
+        if(object.type == 'defender'){
+            this.colliding = true;
+            this.subject.speed = this.originalSpeed/2;
+            console.log('harassing a defender!');
+        }
     }
 
     private calculateDistance(object: MapObject): number{

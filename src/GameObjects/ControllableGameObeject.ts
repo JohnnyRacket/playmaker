@@ -19,8 +19,8 @@ export abstract class ControllableGameObject extends CollidableGameObject{
         this.controller = null;
     }
 
-    public constructor (x: number, y: number, width: number, height: number, speed: number){
-        super(x,y,width,height);
+    public constructor (x: number, y: number, width: number, height: number, type: string, speed: number){
+        super(x,y,width,height, type);
         this.speed = speed;
     }
 }

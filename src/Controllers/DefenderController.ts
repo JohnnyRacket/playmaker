@@ -1,9 +1,12 @@
+import { GameEngine } from '../Engines/GameEngine';
 import { MapObject } from '../GameObjects/MapObject';
 import { GameMap } from '../Engines/GameMap';
 import { RouteController } from './RouteController';
-export class DefenderController extends RouteController{
+import { CollidableGameObject } from "../GameObjects/CollidableGameObject";
+export class DefenderController extends RouteController {
 
     public decide(){
+        if(this.colliding == false) this.subject.speed = this.originalSpeed;
         if(!this.routeComplete()){
             this.followRoute();
         }else{
@@ -17,8 +20,15 @@ export class DefenderController extends RouteController{
         }
     }
 
-    public collide(){
-        this.subject.speed = this.originalSpeed/2;
+    public collide(object: CollidableGameObject){
+        if(object.type == 'blocker'){
+            this.colliding = true;
+            this.subject.speed = this.originalSpeed/2;
+            console.log('being slowed by a blocker!');
+        }
+        if(object.type == 'runner'){
+            GameEngine.getInstance().stop();
+        }
     }
 
     private calculateDistance(object: MapObject): number{

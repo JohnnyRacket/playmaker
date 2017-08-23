@@ -12,7 +12,7 @@ import { Coordinate } from "../Controllers/Coordinate";
 
 export class PlayerFactory{
     public static createRunner(x: number, y: number, angle: number){
-        let player = new NewFangledSample(x,y,16,16,2);
+        let player = new NewFangledSample(x,y,16,16,'runner',2);
         player.angle = angle;
         player.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = ControllerFactory.createInputController(player);
@@ -27,7 +27,7 @@ export class PlayerFactory{
         return player;
     }
         public static createRunnerInArea(x: number, y: number, angle: number, area: ComposableView){
-        let player = new NewFangledSample(x,y,16,16,2);
+        let player = new NewFangledSample(x,y,16,16,'runner',2);
         player.angle = angle;
         player.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = ControllerFactory.createInputController(player);
@@ -43,7 +43,7 @@ export class PlayerFactory{
     }
 
     public static createBlocker(x: number, y: number, route: Route){
-        let player = new NewFangledSample(x,y,16,16,2);
+        let player = new NewFangledSample(x,y,16,16,'blocker',2);
         player.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = ControllerFactory.createRouteController(player, route);
         player.setController(controller);
@@ -55,7 +55,7 @@ export class PlayerFactory{
     }
 
     public static createDefender(x: number, y: number, route: Route){
-        let player = new NewFangledSample(x,y,16,16,1);
+        let player = new NewFangledSample(x,y,16,16,'defender',1);
         player.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = ControllerFactory.createRouteController(player, route);
         player.setController(controller);
@@ -67,7 +67,7 @@ export class PlayerFactory{
     }
 
     public static createBlockerInArea(x: number, y: number, route: Route, area: ComposableView){
-        let player = new NewFangledSample(x,y,16,16,1);
+        let player = new NewFangledSample(x,y,16,16,'blocker',1.25);
         player.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = ControllerFactory.createBlockerController(player, route);
         player.setController(controller);
@@ -81,7 +81,7 @@ export class PlayerFactory{
     }
 
     public static createDefenderInArea(x: number, y: number, route: Route, area: ComposableView){
-        let player = new NewFangledSample(x,y,16,16,1);
+        let player = new NewFangledSample(x,y,16,16,'defender',1.5);
         player.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = ControllerFactory.createDefenderController(player, route);
         player.setController(controller);

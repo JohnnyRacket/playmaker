@@ -7,6 +7,7 @@ export abstract class Controller implements IGameObject, ICollidable{
 
     protected subject: ControllableGameObject;
     protected active: boolean = true;
+    protected colliding: boolean = false;
 
     public constructor(subject: ControllableGameObject){
         this.subject = subject;
@@ -19,11 +20,14 @@ export abstract class Controller implements IGameObject, ICollidable{
     protected run(){
         this.decide();
         this.act();
+        this.colliding = false;
     }
 
     abstract decide();
     abstract act();
-    abstract collide(object: CollidableGameObject);
+    collide(object: CollidableGameObject){
+        this.colliding = true;
+    }
 
     public deactivate(){
         this.active = false;

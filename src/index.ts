@@ -45,17 +45,17 @@ let field = new FieldViewObject(0,0,320,480,0, new TopLeftDrawingStrategy());
 gameArea.addView(field);
 
 //create the player you control youreself (runner)
-PlayerFactory.createRunnerInArea(160,350, -90, gameArea);
+PlayerFactory.createRunnerInArea(160,400, -90, gameArea);
 
 //create blockers with aroutes
-PlayerFactory.createBlockerInArea(60,300,new Route([new Coordinate(60,200), new Coordinate(40,180)]), gameArea);
-PlayerFactory.createBlockerInArea(110,300,new Route([new Coordinate(110,200), new Coordinate(90,180)]), gameArea);
-PlayerFactory.createBlockerInArea(210,300,new Route([new Coordinate(210,200), new Coordinate(190,180)]), gameArea);
-PlayerFactory.createBlockerInArea(260,300,new Route([new Coordinate(260,200), new Coordinate(240,180)]), gameArea);
+PlayerFactory.createBlockerInArea(110,300,new Route([new Coordinate(60,280)]), gameArea);
+PlayerFactory.createBlockerInArea(145,300,new Route([new Coordinate(110,280)]), gameArea);
+PlayerFactory.createBlockerInArea(180,300,new Route([new Coordinate(150,280)]), gameArea);
+PlayerFactory.createBlockerInArea(230,300,new Route([new Coordinate(260,280)]), gameArea);
 //create defenders with routes
-PlayerFactory.createDefenderInArea(60,250,new Route([new Coordinate(60,120), new Coordinate(20,100)]), gameArea);
-PlayerFactory.createDefenderInArea(110,250,new Route([new Coordinate(110,150), new Coordinate(70,100)]), gameArea);
-PlayerFactory.createDefenderInArea(210,250,new Route([new Coordinate(210,150), new Coordinate(170,100)]), gameArea);
-PlayerFactory.createDefenderInArea(260,250,new Route([new Coordinate(260,150), new Coordinate(220,100)]), gameArea);
-PlayerFactory.createDefenderInArea(160,250,new Route([new Coordinate(160,150), new Coordinate(120,100)]), gameArea);
+PlayerFactory.createDefenderInArea(60,250,new Route([new Coordinate(80,270)]), gameArea);
+PlayerFactory.createDefenderInArea(110,250,new Route([new Coordinate(130, 270)]), gameArea);
+PlayerFactory.createDefenderInArea(160,250,new Route([new Coordinate(160,150), new Coordinate(170,100)]), gameArea);
+PlayerFactory.createDefenderInArea(260,250,new Route([new Coordinate(240,270)]), gameArea);
+PlayerFactory.createDefenderInArea(210,250,new Route([new Coordinate(190,270)]), gameArea);
 
