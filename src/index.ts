@@ -48,10 +48,10 @@ gameArea.addView(field);
 PlayerFactory.createRunnerInArea(160,350, -90, gameArea);
 
 //create blockers with aroutes
-PlayerFactory.createBlockerInArea(60,300,new Route([new Coordinate(60,120), new Coordinate(20,80)]), gameArea);
-PlayerFactory.createBlockerInArea(110,300,new Route([new Coordinate(110,120), new Coordinate(70,80)]), gameArea);
-PlayerFactory.createBlockerInArea(210,300,new Route([new Coordinate(210,120), new Coordinate(170,80)]), gameArea);
-PlayerFactory.createBlockerInArea(260,300,new Route([new Coordinate(260,120), new Coordinate(220,80)]), gameArea);
+// PlayerFactory.createBlockerInArea(60,300,new Route([new Coordinate(60,200), new Coordinate(40,180)]), gameArea);
+// PlayerFactory.createBlockerInArea(110,300,new Route([new Coordinate(110,200), new Coordinate(90,180)]), gameArea);
+// PlayerFactory.createBlockerInArea(210,300,new Route([new Coordinate(210,200), new Coordinate(190,180)]), gameArea);
+// PlayerFactory.createBlockerInArea(260,300,new Route([new Coordinate(260,200), new Coordinate(240,180)]), gameArea);
 //create defenders with routes
 PlayerFactory.createDefenderInArea(60,250,new Route([new Coordinate(60,120), new Coordinate(20,40)]), gameArea);
 PlayerFactory.createDefenderInArea(110,250,new Route([new Coordinate(110,120), new Coordinate(70,40)]), gameArea);

@@ -31,8 +31,8 @@ export class GameMap {
         this.objects.push(new MapObject(object,type));
     }
 
-    public getAllOfType(type: string){//need to test this
-        let result = this.objects.map( object => {
+    public getAllOfType(type: string): MapObject[]{//need to test this
+        return this.objects.filter( object => {
             if(object.type == type) return object;
         })
     }

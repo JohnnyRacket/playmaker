@@ -35,9 +35,12 @@ export class RouteController extends Controller{
             let destination = this.route.getPoint(this.routeIndex);
             if(this.withinRange(Math.round(location.x), Math.round(destination.x), this.subject.speed) && this.withinRange(Math.round(location.y), Math.round(destination.y), this.subject.speed)){
                 this.routeIndex++;
+            }else{
+                this.subject.angle = Math.atan2(destination.y - location.y, destination.x - location.x);
             }
-            this.subject.angle = Math.atan2(destination.y - location.y, destination.x - location.x);
+            
         }else{
+            console.log('my route is complete');
         }
     }
     protected routeComplete(): boolean{

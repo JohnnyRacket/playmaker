@@ -1,3 +1,4 @@
+import { BlockerController } from './BlockerController';
 import { GameEngine } from '../Engines/GameEngine';
 import { ControllableGameObject } from '../GameObjects/ControllableGameObeject';
 import { InputController } from './InputController';
@@ -14,6 +15,17 @@ export class ControllerFactory{
 
     public static createInputController(subject: ControllableGameObject): InputController{
         let controller = new InputController(subject);
+        GameEngine.getInstance().controllerManager.addController(controller);
+        return controller;
+    }
+
+    public static createBlockerController(subject: ControllableGameObject, route: Route): RouteController{
+        let controller = new BlockerController(subject, route);
+        GameEngine.getInstance().controllerManager.addController(controller);
+        return controller;
+    }
+    public static createDefenderController(subject: ControllableGameObject, route: Route): RouteController{
+        let controller = new RouteController(subject, route);//TODO replace
         GameEngine.getInstance().controllerManager.addController(controller);
         return controller;
     }
