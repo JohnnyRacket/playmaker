@@ -1,6 +1,7 @@
 import { Dimensionable } from '../Shared/Dimensionable';
 import { IViewObject } from '../ViewObjects/ViewObject.interface';
-export class ComposableView extends Dimensionable implements IViewObject{
+import { ComposableViewObject } from "../ViewObjects/ComposableViewObject";
+export class ComposableView extends ComposableViewObject {
 
     //the idea here is to have composition pattern of relative layouts 
     protected canvas: HTMLCanvasElement;
@@ -33,4 +34,5 @@ export class ComposableView extends Dimensionable implements IViewObject{
     public addView(viewObject: IViewObject){
         this.children.push(viewObject);
     }
+
 }

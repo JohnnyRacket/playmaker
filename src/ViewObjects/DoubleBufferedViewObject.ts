@@ -1,39 +1,10 @@
+import { ComposableViewObject } from './ComposableViewObject';
+import { Dimensionable } from '../Shared/Dimensionable';
 import { DrawingStrategy } from '../DrawingStrategies/DrawingStrategy';
 import { IViewObject } from './ViewObject.interface';
 
-export abstract class DoubleBufferedViewObject implements IViewObject{
+export abstract class DoubleBufferedViewObject extends ComposableViewObject{
 
-    protected _x: number;
-    get x(): number{
-        return this._x;
-    }
-    set x(x: number){
-        this._x = x;
-    }
-
-    protected _y: number;
-    get y(): number{
-        return this._y;
-    }
-    set y(y: number){
-        this._y = y;
-    }
-
-    protected _width: number;
-    get width(): number{
-        return this._width;
-    }
-    set width(width: number){
-        this._width = width;
-    }
-
-    protected _height: number;
-    get height(): number{
-        return this._height;
-    }
-    set height(height: number){
-        this._height = height;
-    }
     protected _angle;
     get angle(): number{
         return this._angle;
@@ -54,6 +25,7 @@ export abstract class DoubleBufferedViewObject implements IViewObject{
     protected readonly context: CanvasRenderingContext2D;
 
     public constructor(x: number, y: number, width: number, height: number, angle: number, strategy: DrawingStrategy){
+        super();
         this.x = x;
         this.y = y;
         this.width = width;

@@ -27,7 +27,7 @@ export class PlayerFactory{
         return player;
     }
         public static createRunnerInArea(x: number, y: number, angle: number, area: ComposableView){
-        let player = new NewFangledSample(x,y,16,16,'runner',2);
+        let player = new NewFangledSample(x,y,16,16,'runner',1.75);
         player.angle = angle;
         player.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = ControllerFactory.createInputController(player);

@@ -1,3 +1,5 @@
+import { PauseViewObject } from './MenuViewObjects/PauseViewObject';
+import { PauseGameClickStrategy } from './Clickables/ClickStrategies/PauseGameClickStrategy';
 import { HorizontalCenterDecorator } from './ViewComposition/Decorators/HorizontalCenterDecorator';
 import { TopLeftDrawingStrategy } from './DrawingStrategies/TopLeftDrawingStrategy';
 import { ComposableView } from './ViewComposition/ComposableView';
@@ -44,6 +46,9 @@ renderEngine.register(test);
 let field = new FieldViewObject(0,0,320,480,0, new TopLeftDrawingStrategy());
 gameArea.addView(field);
 
+//pause button test
+let pauseButton = new PauseViewObject(0,0,64,64,0,new TopLeftDrawingStrategy(),new PauseGameClickStrategy());
+//gameArea.addView(pauseButton);
 //create the player you control youreself (runner)
 PlayerFactory.createRunnerInArea(160,400, -90, gameArea);
 

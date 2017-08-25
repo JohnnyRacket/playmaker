@@ -17,7 +17,11 @@ export class ClickableManager{
         // },false);
     }
 
+
     private clickEvents(event: MouseEvent){
-        this.clickables.forEach((obj: Clickable, index) => obj.click());
+        this.clickables.forEach((obj: Clickable, index) => {
+            if(event.x)
+            obj.click()
+        });
     }
 }
