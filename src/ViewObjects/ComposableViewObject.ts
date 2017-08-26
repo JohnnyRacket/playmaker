@@ -14,10 +14,19 @@ export abstract class ComposableViewObject extends Dimensionable implements IVie
     abstract render(context: CanvasRenderingContext2D, width: number, height: number);
     abstract update();
 
-    public calculateGlobalPosition(): Coordinate{
+    public globalX(): number{
         if(this.parent){
+            return this.x + this.parent.globalX();
+        }else{
+            return this.x;
+        } 
+    }
 
-        } //do stuff here 
-        return new Coordinate(0,0);
+    public globalY(): number{
+        if(this.parent){
+            return this.y + this.parent.globalY();
+        }else{
+            return this.y;
+        }
     }
 }

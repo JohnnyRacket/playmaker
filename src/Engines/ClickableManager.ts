@@ -1,7 +1,7 @@
 import { Clickable } from '../Clickables/Clickable';
 export class ClickableManager{
 
-    private clickables: Clickable[];
+    private clickables: Clickable[] = [];
 
     public constructor(canvas : HTMLCanvasElement){
         canvas.addEventListener('click', (evt) => {
@@ -19,9 +19,10 @@ export class ClickableManager{
 
 
     private clickEvents(event: MouseEvent){
+        console.log(event.x, event.y)
         this.clickables.forEach((obj: Clickable, index) => {
-            if(event.x)
-            obj.click()
+            
+            ///obj.click()
         });
     }
 }

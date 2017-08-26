@@ -1,3 +1,4 @@
+import { ClickableManager } from './Engines/ClickableManager';
 import { PauseViewObject } from './MenuViewObjects/PauseViewObject';
 import { PauseGameClickStrategy } from './Clickables/ClickStrategies/PauseGameClickStrategy';
 import { HorizontalCenterDecorator } from './ViewComposition/Decorators/HorizontalCenterDecorator';
@@ -35,6 +36,8 @@ const renderEngine = RenderEngine.getInstance();
 renderEngine.setCanvas(canvas, context);
 gameEngine.start();
 renderEngine.start();
+
+let clickManager = new ClickableManager(canvas);
 
 //create a composable view for game area to exist in
 let gameArea = new ComposableView(100,100,320,480);

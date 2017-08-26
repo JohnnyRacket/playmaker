@@ -13,5 +13,11 @@ export abstract class MenuViewObject extends DoubleBufferedViewObject implements
     click() {
         this.clickStrategy.execute(this);
     }
+    getGlobalX(): number {
+        return this.globalX();
+    }
+    getGlobalY(): number {
+        return this.globalY();
+    }
 
 }
