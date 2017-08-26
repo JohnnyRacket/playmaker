@@ -31,7 +31,8 @@ export class ComposableView extends ComposableViewObject {
         this.canvas.height = this.height;
     }
 
-    public addView(viewObject: IViewObject){
+    public addView(viewObject: ComposableViewObject){
+        viewObject.parent = this;
         this.children.push(viewObject);
     }
 

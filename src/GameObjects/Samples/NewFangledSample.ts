@@ -5,7 +5,7 @@ import { ControllableGameObject } from '../ControllableGameObeject';
 export class NewFangledSample extends ControllableGameObject{
 
     collide(object: CollidableGameObject) {
-        console.log("colliding", this.x);
+        //console.log("colliding", this.x);
         //this.x = 100;
         //GameEngine.getInstance().stop();
         this.controller.collide(object);

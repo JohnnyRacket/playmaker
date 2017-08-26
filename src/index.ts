@@ -51,7 +51,8 @@ gameArea.addView(field);
 
 //pause button test
 let pauseButton = new PauseViewObject(0,0,64,64,0,new TopLeftDrawingStrategy(),new PauseGameClickStrategy());
-//gameArea.addView(pauseButton);
+clickManager.addClickable(pauseButton);
+gameArea.addView(pauseButton);
 //create the player you control youreself (runner)
 PlayerFactory.createRunnerInArea(160,400, -90, gameArea);
 

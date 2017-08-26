@@ -49,7 +49,7 @@ export class CollisionManager implements IGameObject{
                 if (distance < object1.width/2 + object2.width/2 + 1) {
                     // collision detected!
                     // collision
-                    console.log('collision with passive');
+                    //console.log('collision with passive');
                     object1.collide(object2);
                     object2.collide(object1);
                 }
@@ -64,7 +64,7 @@ export class CollisionManager implements IGameObject{
                 if (distance < object1.width/2 + object2.width/2 + 1) {
                     // collision detected!
                     // collision
-                    console.log('collision with active');
+                    //console.log('collision with active');
                     object1.collide(object2);
                     object2.collide(object1);
                 }
