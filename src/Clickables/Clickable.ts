@@ -4,6 +4,8 @@ export interface Clickable{
     click();
     getGlobalX(): number;
     getGlobalY(): number;
+    getWidth(): number;
+    getHeight(): number;
     //perhaps make a hoverable subclass
 
 }

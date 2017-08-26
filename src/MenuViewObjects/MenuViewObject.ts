@@ -19,5 +19,11 @@ export abstract class MenuViewObject extends DoubleBufferedViewObject implements
     getGlobalY(): number {
         return this.globalY();
     }
+    getWidth(): number {
+        return this.width;
+    }
+    getHeight(): number {
+        return this.height;
+    }
 
 }
