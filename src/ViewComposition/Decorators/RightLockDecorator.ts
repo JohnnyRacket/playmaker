@@ -1,5 +1,5 @@
 import { ComposableViewDecorator } from './ComposableViewDecorator';
-export class HorizontalCenterDecorator extends ComposableViewDecorator{
+export class RightLockDecorator extends ComposableViewDecorator{
 
     public render(context: CanvasRenderingContext2D, width: number, height: number){
         //can set x/y here

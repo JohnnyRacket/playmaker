@@ -9,7 +9,7 @@ export class ClickableManager{
         },false);
 
         // canvas.addEventListener('mouseover', (evt) => {
-        //     this.clickEvents(evt);
+        //     this.hoverEvents(evt);
         // },false);
 
         // canvas.addEventListener('click', (evt) => {
@@ -30,6 +30,19 @@ export class ClickableManager{
             ///obj.click()
         });
     }
+
+    // private hoverEvents(event: MouseEvent){
+    //     //console.log(event.x, event.y)
+    //     console.log(this.clickables);
+    //     this.clickables.forEach((obj: Clickable, index) => {
+    //         if(event.x >= obj.getGlobalX() && event.x <= (obj.getGlobalX() + obj.getWidth()) &&
+    //             event.y >= obj.getGlobalY() && event.y <= (obj.getGlobalY() + obj.getHeight())) {
+    //                 console.log("hover match found :)");
+    //                 obj.hover();
+    //             };
+    //         ///obj.click()
+    //     });
+    // }
 
     public addClickable(clickable: Clickable){
         this.clickables.push(clickable);

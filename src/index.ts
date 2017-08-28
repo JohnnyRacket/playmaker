@@ -19,6 +19,7 @@ import { FieldViewObject } from './ViewObjects/Samples/FieldViewObject';
 import { SquarePlayerViewObject } from './ViewObjects/Samples/SquarePlayerViewObject';
 import { TestViewObject } from './ViewObjects/Samples/TestViewObject';
 import { VerticalCenterDecorator } from "./ViewComposition/Decorators/VerticalCenterDecorator";
+import { ButtonViewObject } from "./MenuViewObjects/ButtonViewObject";
 
 /*
  * Fetch our environment for our game and configure
@@ -52,19 +53,30 @@ gameArea.addView(field);
 //pause button test
 let pauseButton = new PauseViewObject(0,0,64,64,0,new TopLeftDrawingStrategy(),new PauseGameClickStrategy());
 clickManager.addClickable(pauseButton);
-gameArea.addView(pauseButton);
-//create the player you control youreself (runner)
-PlayerFactory.createRunnerInArea(160,400, -90, gameArea);
+//gameArea.addView(pauseButton);
 
-//create blockers with aroutes
-PlayerFactory.createBlockerInArea(110,300,new Route([new Coordinate(60,280)]), gameArea);
-PlayerFactory.createBlockerInArea(145,300,new Route([new Coordinate(110,280)]), gameArea);
-PlayerFactory.createBlockerInArea(180,300,new Route([new Coordinate(150,280)]), gameArea);
-PlayerFactory.createBlockerInArea(230,300,new Route([new Coordinate(260,280)]), gameArea);
-//create defenders with routes
-PlayerFactory.createDefenderInArea(60,250,new Route([new Coordinate(80,270)]), gameArea);
-PlayerFactory.createDefenderInArea(110,250,new Route([new Coordinate(130, 270)]), gameArea);
-PlayerFactory.createDefenderInArea(160,250,new Route([new Coordinate(160,150), new Coordinate(170,100)]), gameArea);
-PlayerFactory.createDefenderInArea(260,250,new Route([new Coordinate(240,270)]), gameArea);
-PlayerFactory.createDefenderInArea(210,250,new Route([new Coordinate(190,270)]), gameArea);
+//main menu buttons
+var startButton = new ButtonViewObject(100,200,200,60,0,new TopLeftDrawingStrategy(), new PauseGameClickStrategy(), "Find Match");
+var startButtonCenter = new HorizontalCenterDecorator(startButton);
+clickManager.addClickable(startButton);
+gameArea.addView(startButtonCenter);
+
+var defenseButton = new ButtonViewObject(100,280,200,60,0,new TopLeftDrawingStrategy(), new PauseGameClickStrategy(), "Create Defense");
+var defenseButtonCenter = new HorizontalCenterDecorator(defenseButton);
+clickManager.addClickable(defenseButton);
+gameArea.addView(defenseButtonCenter);
+//create the player you control youreself (runner)
+//PlayerFactory.createRunnerInArea(160,400, -90, gameArea);
+
+// //create blockers with aroutes
+// PlayerFactory.createBlockerInArea(110,300,new Route([new Coordinate(60,280)]), gameArea);
+// PlayerFactory.createBlockerInArea(145,300,new Route([new Coordinate(110,280)]), gameArea);
+// PlayerFactory.createBlockerInArea(180,300,new Route([new Coordinate(150,280)]), gameArea);
+// PlayerFactory.createBlockerInArea(230,300,new Route([new Coordinate(260,280)]), gameArea);
+// //create defenders with routes
+// PlayerFactory.createDefenderInArea(60,250,new Route([new Coordinate(80,270)]), gameArea);
+// PlayerFactory.createDefenderInArea(110,250,new Route([new Coordinate(130, 270)]), gameArea);
+// PlayerFactory.createDefenderInArea(160,250,new Route([new Coordinate(160,150), new Coordinate(170,100)]), gameArea);
+// PlayerFactory.createDefenderInArea(260,250,new Route([new Coordinate(240,270)]), gameArea);
+// PlayerFactory.createDefenderInArea(210,250,new Route([new Coordinate(190,270)]), gameArea);
 

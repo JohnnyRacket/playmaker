@@ -14,5 +14,8 @@ export class PauseViewObject extends MenuViewObject{
         //probably do nothing?
         throw new Error("Method not implemented.");
     }
+    hover(){
+        //do nothing
+    }
 
 }

@@ -11,9 +11,9 @@ export abstract class MenuViewObject extends DoubleBufferedViewObject implements
         this.clickStrategy = clickStrategy;
     }
     click() {
-        console.log('pause button being clicked');
         this.clickStrategy.execute(this);
     }
+    abstract hover();
     getGlobalX(): number {
         return this.globalX();
     }

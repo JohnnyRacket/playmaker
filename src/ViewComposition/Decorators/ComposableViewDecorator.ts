@@ -1,7 +1,8 @@
+import { ComposableViewObject } from '../../ViewObjects/ComposableViewObject';
 import { ComposableView } from '../ComposableView';
 export abstract class ComposableViewDecorator extends ComposableView{
 
-    protected view: ComposableView;
+    protected view: ComposableViewObject;
 
     get x(): number{
         return this.view.x;
@@ -28,7 +29,7 @@ export abstract class ComposableViewDecorator extends ComposableView{
         if (this.view != null) this.view.height = height;
     }
 
-    public constructor(view: ComposableView){
+    public constructor(view: ComposableViewObject){
         super(view.x, view.y, view.width, view.height);
         this.view = view;
         this.x = view.x;

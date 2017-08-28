@@ -42,18 +42,22 @@ export abstract class DoubleBufferedViewObject extends ComposableViewObject{
     protected abstract preRender();
 
     public render(context: CanvasRenderingContext2D, width: number, height: number){
-    context.save();
 
-    context.translate(this.x, this.y);
-    context.rotate(this.angle); 
-    context.translate(-this.x,-this.y);
+        context.save();
 
-    this.drawingStrategy.draw(context, this.canvas, this.x, this.y, this.width, this.height);
+        context.translate(this.x, this.y);
+        context.rotate(this.angle); 
+        context.translate(-this.x,-this.y);
 
-    context.restore();
+        this.drawingStrategy.draw(context, this.canvas, this.x, this.y, this.width, this.height);
 
+        context.restore();
+        this.postRender();
     }
         
     abstract update();
+    public postRender(){
+        //do nothing
+    }
 
 }
