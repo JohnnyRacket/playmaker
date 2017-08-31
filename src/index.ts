@@ -1,3 +1,7 @@
+import {
+    HorizontalCenterPositioningDecorator,
+} from './ViewObjects/PositioningDecorators/HorizontalCenterPositioningDecorator';
+import { LogoViewObject } from './MenuViewObjects/LogoViewObject';
 import { ClickableManager } from './Engines/ClickableManager';
 import { PauseViewObject } from './MenuViewObjects/PauseViewObject';
 import { PauseGameClickStrategy } from './Clickables/ClickStrategies/PauseGameClickStrategy';
@@ -55,15 +59,19 @@ let pauseButton = new PauseViewObject(0,0,64,64,0,new TopLeftDrawingStrategy(),n
 clickManager.addClickable(pauseButton);
 //gameArea.addView(pauseButton);
 
+//logo
+var logo = new LogoViewObject(0,80,300,100,0,new TopLeftDrawingStrategy(),new PauseGameClickStrategy());
+var logoCenter = new HorizontalCenterPositioningDecorator(logo);
+gameArea.addView(logoCenter);
 //main menu buttons
 var startButton = new ButtonViewObject(100,200,200,60,0,new TopLeftDrawingStrategy(), new PauseGameClickStrategy(), "Find Match");
-var startButtonCenter = new HorizontalCenterDecorator(startButton);
-clickManager.addClickable(startButton);
+var startButtonCenter = new HorizontalCenterPositioningDecorator(startButton);
+clickManager.addClickable(startButtonCenter);
 gameArea.addView(startButtonCenter);
 
 var defenseButton = new ButtonViewObject(100,280,200,60,0,new TopLeftDrawingStrategy(), new PauseGameClickStrategy(), "Create Defense");
-var defenseButtonCenter = new HorizontalCenterDecorator(defenseButton);
-clickManager.addClickable(defenseButton);
+var defenseButtonCenter = new HorizontalCenterPositioningDecorator(defenseButton);
+clickManager.addClickable(defenseButtonCenter);
 gameArea.addView(defenseButtonCenter);
 //create the player you control youreself (runner)
 //PlayerFactory.createRunnerInArea(160,400, -90, gameArea);

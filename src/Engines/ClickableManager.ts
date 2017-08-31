@@ -20,11 +20,11 @@ export class ClickableManager{
 
     private clickEvents(event: MouseEvent){
         //console.log(event.x, event.y)
-        console.log(this.clickables);
+        //console.log(this.clickables);
         this.clickables.forEach((obj: Clickable, index) => {
             if(event.x >= obj.getGlobalX() && event.x <= (obj.getGlobalX() + obj.getWidth()) &&
                 event.y >= obj.getGlobalY() && event.y <= (obj.getGlobalY() + obj.getHeight())) {
-                    console.log("click match found :)");
+                    console.log("click match found ", obj);
                     obj.click();
                 };
             ///obj.click()

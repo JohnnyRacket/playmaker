@@ -4,7 +4,13 @@ import { Clickable } from '../Clickables/Clickable';
 import { DoubleBufferedViewObject } from '../ViewObjects/DoubleBufferedViewObject';
 export abstract class MenuViewObject extends DoubleBufferedViewObject implements Clickable{
 
-    protected clickStrategy: ClickStrategy;
+    protected _clickStrategy: ClickStrategy;
+    public get clickStrategy(): ClickStrategy{
+        return this._clickStrategy;
+    }
+    public set clickStrategy(strategy: ClickStrategy){
+        this._clickStrategy = strategy;
+    }
 
     public constructor(x: number,y: number, width: number, height: number, angle: number, drawingStrategy: DrawingStrategy, clickStrategy: ClickStrategy){
         super(x,y,width,height,angle,drawingStrategy);
