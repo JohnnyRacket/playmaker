@@ -1,7 +1,10 @@
+import { IGameObject } from '../GameObjects/GameObject.interface';
+import { ReferenceManager } from './ReferenceManager';
 import { ComposableView } from '../ViewComposition/ComposableView';
 import { Route } from '../Controllers/Route';
 import { PlayerFactory } from "../GameObjects/PlayerFactory";
 import { Coordinate } from "../Controllers/Coordinate";
+import { GameEngine } from "./GameEngine";
 
 export class MatchTemplater {
 
@@ -36,6 +39,16 @@ export class MatchTemplater {
         PlayerFactory.createDefenderInArea(160,250,new Route([new Coordinate(160,150), new Coordinate(170,100)]), this.gameView);
         PlayerFactory.createDefenderInArea(260,250,new Route([new Coordinate(240,270)]), this.gameView);
         PlayerFactory.createDefenderInArea(210,250,new Route([new Coordinate(190,270)]), this.gameView);
+
+        setTimeout(function(){
+            console.log('removing from game loop');
+            let objects = ReferenceManager.getInstance().getReferencesForStage("gameplayStage");
+            objects.forEach(object => {
+                GameEngine.getInstance().unregister(object as IGameObject);
+                //need to chekc that the hitboxes arent being ghosts lmao
+            });
+            
+        }, 1000);
     }
 
 }

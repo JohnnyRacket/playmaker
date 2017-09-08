@@ -1,3 +1,4 @@
+import { ReferenceManager } from '../Engines/ReferenceManager';
 import { GameMap } from '../Engines/GameMap';
 import { CenterDrawingStrategy } from '../DrawingStrategies/CenterDrawingStrategy';
 import { ComposableView } from '../ViewComposition/ComposableView';
@@ -82,6 +83,7 @@ export class PlayerFactory{
 
     public static createDefenderInArea(x: number, y: number, route: Route, area: ComposableView){
         let player = new NewFangledSample(x,y,16,16,'defender',1.5);
+        ReferenceManager.getInstance().addReferenceToStage(player, "gameplayStage");
         player.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = ControllerFactory.createDefenderController(player, route);
         player.setController(controller);
@@ -92,5 +94,19 @@ export class PlayerFactory{
         area.addView(playerVO);
         GameMap.getInstance().addMapObject(player, 'defender');
         return player;
+    }
+
+    public static removeDefenderInArea(player: NewFangledSample, area: ComposableView){
+        
+        // player.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(16,16,player));
+        // let controller = ControllerFactory.createDefenderController(player, route);
+        // player.setController(controller);
+        // GameEngine.getInstance().register(player);
+        // let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
+        // playerVO.color = '#e74c3c';
+        // player.register(playerVO);
+        // area.addView(playerVO);
+        // GameMap.getInstance().addMapObject(player, 'defender');
+        // return player;
     }
 }
