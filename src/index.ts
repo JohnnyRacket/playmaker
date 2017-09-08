@@ -1,3 +1,5 @@
+import { FindMatchClickStrategy } from './Clickables/ClickStrategies/FindMatchClickStrategy';
+import { MatchTemplater } from './Engines/MatchTemplater';
 import {
     HorizontalCenterPositioningDecorator,
 } from './ViewObjects/PositioningDecorators/HorizontalCenterPositioningDecorator';
@@ -46,6 +48,7 @@ let clickManager = new ClickableManager(canvas);
 
 //create a composable view for game area to exist in
 let gameArea = new ComposableView(100,100,320,480);
+let templater = new MatchTemplater(gameArea);
 
 let test2 = new VerticalCenterDecorator(gameArea);
 let test = new HorizontalCenterDecorator(test2);
@@ -64,7 +67,7 @@ var logo = new LogoViewObject(0,80,300,100,0,new TopLeftDrawingStrategy(),new Pa
 var logoCenter = new HorizontalCenterPositioningDecorator(logo);
 gameArea.addView(logoCenter);
 //main menu buttons
-var startButton = new ButtonViewObject(100,200,200,60,0,new TopLeftDrawingStrategy(), new PauseGameClickStrategy(), "Find Match");
+var startButton = new ButtonViewObject(100,200,200,60,0,new TopLeftDrawingStrategy(), new FindMatchClickStrategy(), "Find Match");
 var startButtonCenter = new HorizontalCenterPositioningDecorator(startButton);
 clickManager.addClickable(startButtonCenter);
 gameArea.addView(startButtonCenter);
