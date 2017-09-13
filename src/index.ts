@@ -44,11 +44,20 @@ renderEngine.setCanvas(canvas, context);
 gameEngine.start();
 renderEngine.start();
 
+//services
+let collisionManager = new CollisionManager();
 let clickManager = new ClickableManager(canvas);
 
+gameEngine.register(collisionManager);//should be added first for consistent behaviour (no issue if its not really though)
+
+//factories
+
+let hitBoxFactory = new HitBoxFactory(collisionManager);
+let controllerFactory = new ControllerFactory(collisionManager);
+let playerFactory = new PlayerFactory(hitBoxFactory, controllerFactory);
 //create a composable view for game area to exist in
 let gameArea = new ComposableView(100,100,320,480);
-let templater = new MatchTemplater(gameArea);
+let templater = new MatchTemplater(gameArea, playerFactory);
 
 let test2 = new VerticalCenterDecorator(gameArea);
 let test = new HorizontalCenterDecorator(test2);

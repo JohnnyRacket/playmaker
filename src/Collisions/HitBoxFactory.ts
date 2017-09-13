@@ -1,17 +1,25 @@
+import { CollisionManager } from '../Engines/CollisionManager';
 import { GameEngine } from '../Engines/GameEngine';
 import { CollidableGameObject } from '../GameObjects/CollidableGameObject';
 import { Hitbox } from './Hitbox';
 
 export class HitBoxFactory{
 
-    public static CreateActiveSquareHitBox(width: number, height: number, subject: CollidableGameObject): Hitbox{
+    private collisionManager: CollisionManager;
+    
+    public constructor(collisionManager: CollisionManager){
+        this.collisionManager = collisionManager;
+    }
+
+    public CreateActiveSquareHitBox(width: number, height: number, subject: CollidableGameObject): Hitbox{
         let hitbox: Hitbox = new Hitbox(width, height, subject);
-        GameEngine.getInstance().collisionManager.addActiveHitbox(hitbox);
+        this.collisionManager.addActiveHitbox(hitbox);
         return hitbox;    
     }
-    public static CreatePassiveSquareHitBox(width: number, height: number, subject: CollidableGameObject): Hitbox{
+
+    public CreatePassiveSquareHitBox(width: number, height: number, subject: CollidableGameObject): Hitbox{
         let hitbox: Hitbox = new Hitbox(width, height, subject);
-        GameEngine.getInstance().collisionManager.addPassiveHitbox(hitbox);
+        this.collisionManager.addPassiveHitbox(hitbox);
         return hitbox;
     }
 

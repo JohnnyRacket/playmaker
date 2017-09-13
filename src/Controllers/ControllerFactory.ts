@@ -1,3 +1,4 @@
+import { CollisionManager } from '../Engines/CollisionManager';
 import { DefenderController } from './DefenderController';
 import { BlockerController } from './BlockerController';
 import { GameEngine } from '../Engines/GameEngine';
@@ -8,26 +9,32 @@ import { RouteController } from './RouteController';
 
 export class ControllerFactory{
 
-    public static createRouteController(subject: ControllableGameObject, route: Route): RouteController{
-        let controller = new RouteController(subject, route);
-        GameEngine.getInstance().controllerManager.addController(controller);
+    private collisionManager: CollisionManager;
+
+    public constructor (collisionManager: CollisionManager){
+        this.collisionManager = collisionManager;
+    }
+
+    public createRouteController(subject: ControllableGameObject, route: Route): RouteController{
+        let controller = new RouteController(subject, route, this.collisionManager);
+        GameEngine.getInstance().register(controller);
         return controller;
     }
 
-    public static createInputController(subject: ControllableGameObject): InputController{
+    public createInputController(subject: ControllableGameObject): InputController{
         let controller = new InputController(subject);
-        GameEngine.getInstance().controllerManager.addController(controller);
+        GameEngine.getInstance().register(controller);
         return controller;
     }
 
-    public static createBlockerController(subject: ControllableGameObject, route: Route): RouteController{
-        let controller = new BlockerController(subject, route);
-        GameEngine.getInstance().controllerManager.addController(controller);
+    public createBlockerController(subject: ControllableGameObject, route: Route): RouteController{
+        let controller = new BlockerController(subject, route, this.collisionManager);
+        GameEngine.getInstance().register(controller);
         return controller;
     }
-    public static createDefenderController(subject: ControllableGameObject, route: Route): RouteController{
-        let controller = new DefenderController(subject, route);
-        GameEngine.getInstance().controllerManager.addController(controller);
+    public createDefenderController(subject: ControllableGameObject, route: Route): RouteController{
+        let controller = new DefenderController(subject, route, this.collisionManager);
+        GameEngine.getInstance().register(controller);
         return controller;
     }
 }

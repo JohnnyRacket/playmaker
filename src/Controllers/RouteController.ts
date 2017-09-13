@@ -13,12 +13,14 @@ export class RouteController extends Controller{
     protected started: boolean = true;
     protected routeIndex: number = 0;
     protected originalSpeed: number = 0;
+    private collisionManager: CollisionManager;
     //more to come, need ot think through collisions first
 
-    public constructor(subject: ControllableGameObject, route: Route){
+    public constructor(subject: ControllableGameObject, route: Route, collisionManager: CollisionManager){
         super(subject);
         this.route = route;
         this.originalSpeed = subject.speed;
+        this.collisionManager = collisionManager;
     }
 
     decide() {
@@ -26,10 +28,10 @@ export class RouteController extends Controller{
     }
     act() {
         //add pre-emptive collision checking to avoid overlap;
-        if(!GameEngine.getInstance().collisionManager.collisionCheckAtPosition(this.subject, this.subject.x + this.subject.speed * Math.cos(this.subject.angle), this.subject.y )){
+        if(!this.collisionManager.collisionCheckAtPosition(this.subject, this.subject.x + this.subject.speed * Math.cos(this.subject.angle), this.subject.y )){
             this.subject.x += this.subject.speed * Math.cos(this.subject.angle);
         }
-        if(!GameEngine.getInstance().collisionManager.collisionCheckAtPosition(this.subject, this.subject.x, this.subject.y + this.subject.speed * Math.sin(this.subject.angle))){
+        if(!this.collisionManager.collisionCheckAtPosition(this.subject, this.subject.x, this.subject.y + this.subject.speed * Math.sin(this.subject.angle))){
             this.subject.y += this.subject.speed * Math.sin(this.subject.angle);
         }
     }

@@ -8,6 +8,7 @@ export class CollisionManager implements IGameObject{
     private activeCollidables: Hitbox[] = [];
     private passiveCollidables: Hitbox[] = [];
 
+    //square hitboxs (not rotation support), eventual plan is to implement intersecting axis
     // tick(): void {
     //     for(let i = 0; i < this.activeCollidables.length; ++i){
     //         let object1: Hitbox = this.activeCollidables[i];

@@ -1,7 +1,5 @@
 import array = require('lodash/array');
 import { IGameObject } from '../GameObjects/GameObject.interface';
-import { CollisionManager } from './CollisionManager';
-import { ControllerManager } from './ControllerManager';
 import { GameMap } from "./GameMap";
 
 /*
@@ -16,8 +14,6 @@ export class GameEngine{
     private isRunning: boolean = false;
     private observers: IGameObject[] = [];
     private tickLength: number = 33;
-    public collisionManager: CollisionManager = new CollisionManager();
-    public controllerManager: ControllerManager = new ControllerManager();
 
     private static _instance: GameEngine = new GameEngine();
   
@@ -26,7 +22,7 @@ export class GameEngine{
             throw new Error("Error: Instantiation failed: Use GameEngine.getInstance() instead of new.");
         }
         GameEngine._instance = this;
-        this.register(this.collisionManager);
+        //this.register(this.collisionManager);
         //add collision manager to the ticks, add functions for adding and removing stuff
     }
  
@@ -66,7 +62,7 @@ export class GameEngine{
      */
     public tick(){
         this.observers.forEach((obj: IGameObject, index) => obj.tick());
-        this.controllerManager.controllers.forEach((obj: IGameObject, index) => obj.tick());
+        //this.controllerManager.controllers.forEach((obj: IGameObject, index) => obj.tick());
         //GameMap.getInstance().printPositions();
     }
 
