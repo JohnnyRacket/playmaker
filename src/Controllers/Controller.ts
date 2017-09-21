@@ -35,5 +35,9 @@ export abstract class Controller implements IGameObject, ICollidable{
     public activate(){
         this.active = true;
     }
+
+    public dispose(): void {
+        //do nothing
+    }
     
 }

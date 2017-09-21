@@ -1,6 +1,9 @@
 import { IGameObject } from '../GameObjects/GameObject.interface';
 import { Dimensionable } from '../Shared/Dimensionable';
 export class RelativeArea extends Dimensionable implements IGameObject{
+    dispose(): void {
+        throw new Error("Method not implemented.");
+    }
 
 
     protected children: IGameObject[];

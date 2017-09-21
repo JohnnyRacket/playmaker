@@ -66,6 +66,7 @@ export class GameEngine{
      */
     public tick(){
         this.observers.forEach((obj: IGameObject, index) => obj.tick());
+        this.services.forEach((obj: IModelService, index) => obj.tick());
         //this.controllerManager.controllers.forEach((obj: IGameObject, index) => obj.tick());
         //GameMap.getInstance().printPositions();
     }
@@ -82,6 +83,9 @@ export class GameEngine{
      * progresses in the game
      */
     public unregister(obj: IGameObject){
+        console.log('removing');
+        console.log(obj);
+        obj.dispose();
         array.pull(this.observers, obj);
         
         this.services.forEach(service => {

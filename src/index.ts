@@ -49,7 +49,7 @@ renderEngine.start();
 let collisionManager = new CollisionManager();
 let clickManager = new ClickableManager(canvas);
 
-gameEngine.register(collisionManager);//should be added first for consistent behaviour (no issue if its not really though)
+gameEngine.addService(collisionManager);//should be added first for consistent behaviour (no issue if its not really though)
 
 renderEngine.addService(clickManager);
 //factories

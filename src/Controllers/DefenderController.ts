@@ -6,6 +6,7 @@ import { CollidableGameObject } from "../GameObjects/CollidableGameObject";
 export class DefenderController extends RouteController {
 
     public decide(){
+        console.log('boop');
         if(this.colliding == false) this.subject.speed = this.originalSpeed;
         if(!this.routeComplete()){
             this.followRoute();

@@ -3,6 +3,9 @@ import { NewFangledSample } from '../../GameObjects/Samples/NewFangledSample';
 import { TestGameObject } from '../../GameObjects/Samples/TestGameObject';
 import { IViewObject } from './../ViewObject.interface';
 export class TestViewObject implements IViewObject{
+    observableDisposed() {
+        throw new Error("Method not implemented.");
+    }
 
     private subject: PositionableGameObject;
     private xPos: number;

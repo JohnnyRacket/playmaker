@@ -15,5 +15,8 @@ export class Observable implements IObservable {
     updateObservers() {
         this.observers.forEach((obj: IObserver, index) => obj.update());
     }
+    updateObserversOfDispose(){
+        this.observers.forEach((obj: IObserver, index) => obj.observableDisposed());
+    }
 
  }

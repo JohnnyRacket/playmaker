@@ -60,6 +60,10 @@ export class TestGameObject implements IGameObject {
             this.observers.forEach((obj: IObserver, index) => obj.update());
     }
 
+    public dispose(): void {
+        throw new Error('Not implemented yet.');
+    }
+
     /*
      * Figure out if we should be incrementing or
      * decrementing

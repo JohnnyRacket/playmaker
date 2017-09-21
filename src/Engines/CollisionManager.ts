@@ -1,8 +1,9 @@
 import { Hitbox } from '../Collisions/Hitbox';
 import { CollidableGameObject } from '../GameObjects/CollidableGameObject';
 import { IGameObject } from '../GameObjects/GameObject.interface';
+import { IModelService } from "./IModelService";
 
-export class CollisionManager implements IGameObject{
+export class CollisionManager implements IModelService{
 
 
     private activeCollidables: Hitbox[] = [];
@@ -101,5 +102,25 @@ export class CollisionManager implements IGameObject{
             }
         }
         return false;
+    }
+
+    public add(object: Object) {
+        throw new Error('Not implemented yet.');
+    }
+
+    public remove(object: Object) {
+        
+        let gameObject = object as CollidableGameObject;
+        if(!gameObject.getHitbox) return;
+        console.log(gameObject);
+        console.log(this.activeCollidables);
+        this.activeCollidables = this.activeCollidables.filter(element => {
+            if(element != gameObject.getHitbox()) return element;
+        });
+        console.log('after removing collidable');
+        console.log(this.activeCollidables);
+        this.passiveCollidables = this.passiveCollidables.filter(element => {
+            if(element != gameObject.getHitbox()) return element;
+        });
     }
 }

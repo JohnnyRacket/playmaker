@@ -1,3 +1,4 @@
+import { RenderEngine } from '../Engines/RenderEngine';
 import { Coordinate } from '../Controllers/Coordinate';
 import { IViewObject } from './ViewObject.interface';
 import { Dimensionable } from "../Shared/Dimensionable";
@@ -28,6 +29,10 @@ export abstract class ComposableViewObject extends Dimensionable implements IVie
         }else{
             return this.y;
         }
+    }
+
+    observableDisposed() {
+        RenderEngine.getInstance().unregister(this);
     }
 
     public remove(object: IViewObject) {

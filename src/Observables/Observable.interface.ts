@@ -3,4 +3,5 @@ export interface IObservable{
     register(obj: IObserver);
     unregister(obj: IObserver);
     updateObservers();
+    updateObserversOfDispose();
 }
