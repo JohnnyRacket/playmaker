@@ -83,8 +83,6 @@ export class GameEngine{
      * progresses in the game
      */
     public unregister(obj: IGameObject){
-        console.log('removing');
-        console.log(obj);
         obj.dispose();
         array.pull(this.observers, obj);
         

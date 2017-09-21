@@ -42,15 +42,14 @@ export class MatchTemplater {
         this.playerFactory.createDefenderInArea(260,250,new Route([new Coordinate(240,270)]), this.gameView);
         this.playerFactory.createDefenderInArea(210,250,new Route([new Coordinate(190,270)]), this.gameView);
 
-        setTimeout(function(){
-            console.log('removing from game loop');
-            let objects = GameEngine.getInstance().getReferencesForStage("gameplayStage");
-            objects.forEach(object => {
-                GameEngine.getInstance().unregister(object as IGameObject);
-                //need to chekc that the hitboxes arent being ghosts lmao
-            });
+        // setTimeout(function(){
+        //     let objects = GameEngine.getInstance().getReferencesForStage("gameplayStage");
+        //     objects.forEach(object => {
+        //         GameEngine.getInstance().unregister(object as IGameObject);
+        //         //need to chekc that the hitboxes arent being ghosts lmao
+        //     });
             
-        }, 10000);
+        // }, 10000);
     }
 
 }
