@@ -29,4 +29,8 @@ export abstract class ComposableViewObject extends Dimensionable implements IVie
             return this.y;
         }
     }
+
+    public remove(object: IViewObject) {
+        //do nothing
+    }
 }

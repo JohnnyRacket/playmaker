@@ -1,18 +1,7 @@
 import { StagedReference } from './StagedReference';
 export class ReferenceManager{
-    private static _instance: ReferenceManager = new ReferenceManager();
+    
     private stagedReferences: StagedReference[] =  [];
-
-    private constructor(){
-        if(ReferenceManager._instance){
-            throw new Error("Error: Instantiation failed: .getInstance() instead of new.");
-        }
-        ReferenceManager._instance = this;
-    }
-
-    public static getInstance(): ReferenceManager{
-        return ReferenceManager._instance;
-    }
 
     public getReferencesForStage(stage: string){//accessing these refs will remove them
         let stageReferences = this.stagedReferences.filter( object => {

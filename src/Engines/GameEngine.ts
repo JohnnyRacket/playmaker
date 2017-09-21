@@ -1,3 +1,5 @@
+import { IModelService } from './IModelService';
+import { ReferenceManager } from './ReferenceManager';
 import array = require('lodash/array');
 import { IGameObject } from '../GameObjects/GameObject.interface';
 import { GameMap } from "./GameMap";
@@ -14,6 +16,8 @@ export class GameEngine{
     private isRunning: boolean = false;
     private observers: IGameObject[] = [];
     private tickLength: number = 33;
+    private referenceManager: ReferenceManager = new ReferenceManager();
+    private services: IModelService[] = [];
 
     private static _instance: GameEngine = new GameEngine();
   
@@ -79,5 +83,21 @@ export class GameEngine{
      */
     public unregister(obj: IGameObject){
         array.pull(this.observers, obj);
+        
+        this.services.forEach(service => {
+            service.remove(obj);
+        });
+    }
+
+    public addService(obj: IModelService){
+        this.services.push(obj);
+    }
+
+    public addReferenceToStage(object: Object, stage: string){
+        this.referenceManager.addReferenceToStage(object, stage);
+    }
+
+    public getReferencesForStage(stage: string){
+        return this.referenceManager.getReferencesForStage(stage);
     }
 }

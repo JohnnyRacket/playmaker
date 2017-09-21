@@ -36,4 +36,19 @@ export class ComposableView extends ComposableViewObject {
         this.children.push(viewObject);
     }
 
+    public remove(object: IViewObject){
+        console.log(object);
+        console.log("removing from composable");
+        console.log(this.children);
+        this.children = this.children.filter(element => {
+            console.log(element);
+            if(element != object) return element;
+            else console.log("thing to remove found");
+        });
+
+        this.children.forEach(child => {
+            child.remove(object);
+        });
+    }
+
 }

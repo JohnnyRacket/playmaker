@@ -44,7 +44,7 @@ export class MatchTemplater {
 
         setTimeout(function(){
             console.log('removing from game loop');
-            let objects = ReferenceManager.getInstance().getReferencesForStage("gameplayStage");
+            let objects = GameEngine.getInstance().getReferencesForStage("gameplayStage");
             objects.forEach(object => {
                 GameEngine.getInstance().unregister(object as IGameObject);
                 //need to chekc that the hitboxes arent being ghosts lmao

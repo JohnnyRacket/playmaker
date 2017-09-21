@@ -1,3 +1,4 @@
+import { ReferenceManager } from './Engines/ReferenceManager';
 import { FindMatchClickStrategy } from './Clickables/ClickStrategies/FindMatchClickStrategy';
 import { MatchTemplater } from './Engines/MatchTemplater';
 import {
@@ -50,6 +51,7 @@ let clickManager = new ClickableManager(canvas);
 
 gameEngine.register(collisionManager);//should be added first for consistent behaviour (no issue if its not really though)
 
+renderEngine.addService(clickManager);
 //factories
 
 let hitBoxFactory = new HitBoxFactory(collisionManager);
@@ -75,16 +77,21 @@ clickManager.addClickable(pauseButton);
 var logo = new LogoViewObject(0,80,300,100,0,new TopLeftDrawingStrategy(),new PauseGameClickStrategy());
 var logoCenter = new HorizontalCenterPositioningDecorator(logo);
 gameArea.addView(logoCenter);
+RenderEngine.getInstance().addReferenceToStage(logoCenter, 'menuStage');
+
 //main menu buttons
 var startButton = new ButtonViewObject(100,200,200,60,0,new TopLeftDrawingStrategy(), new FindMatchClickStrategy(), "Find Match");
 var startButtonCenter = new HorizontalCenterPositioningDecorator(startButton);
 clickManager.addClickable(startButtonCenter);
 gameArea.addView(startButtonCenter);
+RenderEngine.getInstance().addReferenceToStage(startButtonCenter, 'menuStage');
 
 var defenseButton = new ButtonViewObject(100,280,200,60,0,new TopLeftDrawingStrategy(), new PauseGameClickStrategy(), "Create Defense");
 var defenseButtonCenter = new HorizontalCenterPositioningDecorator(defenseButton);
 clickManager.addClickable(defenseButtonCenter);
 gameArea.addView(defenseButtonCenter);
+RenderEngine.getInstance().addReferenceToStage(defenseButtonCenter, 'menuStage');
+
 //create the player you control youreself (runner)
 //PlayerFactory.createRunnerInArea(160,400, -90, gameArea);
 

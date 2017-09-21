@@ -92,7 +92,7 @@ export class PlayerFactory{
 
     public createDefenderInArea(x: number, y: number, route: Route, area: ComposableView){
         let player = new NewFangledSample(x,y,16,16,'defender',1.5);
-        ReferenceManager.getInstance().addReferenceToStage(player, "gameplayStage");
+        GameEngine.getInstance().addReferenceToStage(player, "gameplayStage");
         player.setHitbox(this.hitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = this.controllerFactory.createDefenderController(player, route);
         player.setController(controller);

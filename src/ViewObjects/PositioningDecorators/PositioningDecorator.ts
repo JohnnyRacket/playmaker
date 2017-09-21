@@ -41,7 +41,7 @@ export abstract class PositioningDecorator extends MenuViewObject{
     }
 
     public click(){
-        this.view.click();
+        this.view.clickStrategy.execute(this); //.click();
     }
 
 

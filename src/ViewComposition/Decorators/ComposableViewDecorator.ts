@@ -1,3 +1,4 @@
+import { IViewObject } from '../../ViewObjects/ViewObject.interface';
 import { ComposableViewObject } from '../../ViewObjects/ComposableViewObject';
 import { ComposableView } from '../ComposableView';
 export abstract class ComposableViewDecorator extends ComposableView{
@@ -37,5 +38,8 @@ export abstract class ComposableViewDecorator extends ComposableView{
         this.width = view.width;
         this.height = view.height;
         //trying to figure out the best way to create a decorator, this is the best solution I have found so far
+    }
+    public remove(object: IViewObject){
+        this.view.remove(object);
     }
 }

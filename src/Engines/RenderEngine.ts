@@ -1,12 +1,16 @@
+import { ReferenceManager } from './ReferenceManager';
+import { IViewService } from './IViewService';
 import array = require('lodash/array');
 import { IViewObject } from '../ViewObjects/ViewObject.interface';
 
 export class RenderEngine{
 
     private observers: IViewObject[] = [];
+    private services: IViewService[] = [];
     private isRunning: boolean = false;
     private context: CanvasRenderingContext2D;
     private canvas: HTMLCanvasElement;
+    private referenceManager: ReferenceManager =  new ReferenceManager();
 
     private static _instance: RenderEngine = new RenderEngine();
   
@@ -74,5 +78,23 @@ export class RenderEngine{
     */
     public unregister(obj: IViewObject){
         array.pull(this.observers, obj);
+        this.observers.forEach(observer => {
+            observer.remove(obj);
+        })
+        this.services.forEach(service => {
+            service.remove(obj);
+        });
+    }
+
+    public addService(obj: IViewService){
+        this.services.push(obj);
+    }
+
+    public addReferenceToStage(object: Object, stage: string){
+        this.referenceManager.addReferenceToStage(object, stage);
+    }
+
+    public getReferencesForStage(stage: string){
+        return this.referenceManager.getReferencesForStage(stage);
     }
 }

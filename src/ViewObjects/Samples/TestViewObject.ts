@@ -53,4 +53,8 @@ export class TestViewObject implements IViewObject{
         this.xPos = Math.round(this.subject.x);
         this.yPos = Math.round(this.subject.y);
     }
+
+    public remove(object: IViewObject) {
+        throw new Error('Not implemented yet.');
+    }
 }

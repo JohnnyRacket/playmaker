@@ -1,5 +1,20 @@
+import { IViewService } from './IViewService';
 import { Clickable } from '../Clickables/Clickable';
-export class ClickableManager{
+
+export class ClickableManager implements IViewService{
+    add(object: Object) {
+        try{
+            this.clickables.push(object as Clickable);
+        }catch (err){
+            console.log("You can only add objects of type Clickable to the ClickableManager");
+        }
+    }
+    remove(object: Object) {
+        let clickable = object as Clickable;
+        this.clickables = this.clickables.filter(element => {
+            if(element != clickable) return element;
+        });
+    }
 
     private clickables: Clickable[] = [];
 
