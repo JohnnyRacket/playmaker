@@ -36,6 +36,13 @@ const context: CanvasRenderingContext2D = canvas.getContext("2d");
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
 
+function resize(){
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+}
+
+window.addEventListener('resize', resize);
+
 /*
  * Declare game engines (constant because they will not be changed, also are singletons)
  */ 
