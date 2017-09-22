@@ -1,16 +1,20 @@
 import { ControllableGameObject } from '../GameObjects/ControllableGameObeject';
 import { Controller } from './Controller';
 import { CollidableGameObject } from "../GameObjects/CollidableGameObject";
+import { CollisionManager } from "../Engines/CollisionManager";
 
 export class InputController extends Controller{
     
     protected angle: number = 0;
     private right: boolean = false;
     private left: boolean = false;
+    private collisionManager: CollisionManager;
+    
 
 
-    public constructor(subject: ControllableGameObject){
+    public constructor(subject: ControllableGameObject, collisionManager: CollisionManager){
         super(subject);
+        this.collisionManager = collisionManager;
         this.angle = this.subject.angle * Math.PI/180 || 0;
         window.addEventListener('keydown', (event) => {this.onKeyDown(event);}, false);
         window.addEventListener('keyup', (event) => {this.onKeyUp(event);}, false);
@@ -44,8 +48,14 @@ export class InputController extends Controller{
         this.subject.angle = this.angle;
     }
     act() {
-        this.subject.x += this.subject.speed * Math.cos(this.angle);
-        this.subject.y += this.subject.speed * Math.sin(this.angle);
+        // this.subject.x += this.subject.speed * Math.cos(this.angle);
+        // this.subject.y += this.subject.speed * Math.sin(this.angle);
+        if(!this.collisionManager.collisionCheckAtPosition(this.subject, this.subject.x + this.subject.speed * Math.cos(this.subject.angle), this.subject.y )){
+            this.subject.x += this.subject.speed * Math.cos(this.subject.angle);
+        }
+        if(!this.collisionManager.collisionCheckAtPosition(this.subject, this.subject.x, this.subject.y + this.subject.speed * Math.sin(this.subject.angle))){
+            this.subject.y += this.subject.speed * Math.sin(this.subject.angle);
+        }
     }
 
     collide(object: CollidableGameObject) {

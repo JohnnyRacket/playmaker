@@ -22,7 +22,7 @@ export class ControllerFactory{
     }
 
     public createInputController(subject: ControllableGameObject): InputController{
-        let controller = new InputController(subject);
+        let controller = new InputController(subject, this.collisionManager);
         GameEngine.getInstance().register(controller);
         return controller;
     }
