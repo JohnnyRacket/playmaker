@@ -1,7 +1,8 @@
 import { MenuViewObject } from '../../MenuViewObjects/MenuViewObject';
 import { Clickable } from '../../Clickables/Clickable';
 import { ComposableViewObject } from '../../ViewObjects/ComposableViewObject';
-export abstract class PositioningDecorator extends MenuViewObject{
+import { ViewObjectVisitor } from "../../Clickables/ViewObjectVisitor";
+export abstract class PositioningDecorator extends MenuViewObject {
 
     protected view: MenuViewObject;
 
@@ -44,5 +45,8 @@ export abstract class PositioningDecorator extends MenuViewObject{
         this.view.clickStrategy.execute(this); //.click();
     }
 
+    accept(visitor: ViewObjectVisitor){
+        this.view.accept(visitor);
+    }
 
 }

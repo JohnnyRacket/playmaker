@@ -2,7 +2,8 @@ import { DrawingStrategy } from '../DrawingStrategies/DrawingStrategy';
 import { ClickStrategy } from '../Clickables/ClickStrategy';
 import { Clickable } from '../Clickables/Clickable';
 import { DoubleBufferedViewObject } from '../ViewObjects/DoubleBufferedViewObject';
-export abstract class MenuViewObject extends DoubleBufferedViewObject implements Clickable{
+import { ViewObjectVisitor } from "../Clickables/ViewObjectVisitor";
+export abstract class MenuViewObject extends DoubleBufferedViewObject implements Clickable {
 
     protected _clickStrategy: ClickStrategy;
     public get clickStrategy(): ClickStrategy{
@@ -31,6 +32,10 @@ export abstract class MenuViewObject extends DoubleBufferedViewObject implements
     }
     getHeight(): number {
         return this.height;
+    }
+
+    accept(visitor: ViewObjectVisitor) {
+        //do nothing
     }
 
 }

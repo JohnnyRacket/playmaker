@@ -14,4 +14,5 @@ export class Route{
     public getPoint(index: number): Coordinate{
         return this.points[index];
     }
+
 }

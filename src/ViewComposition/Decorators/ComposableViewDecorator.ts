@@ -1,7 +1,8 @@
 import { IViewObject } from '../../ViewObjects/ViewObject.interface';
 import { ComposableViewObject } from '../../ViewObjects/ComposableViewObject';
 import { ComposableView } from '../ComposableView';
-export abstract class ComposableViewDecorator extends ComposableView{
+import { ViewObjectVisitor } from "../../Clickables/ViewObjectVisitor";
+export abstract class ComposableViewDecorator extends ComposableView {
 
     protected view: ComposableViewObject;
 
@@ -42,4 +43,9 @@ export abstract class ComposableViewDecorator extends ComposableView{
     public remove(object: IViewObject){
         this.view.remove(object);
     }
+    
+    accept(visitor: ViewObjectVisitor){
+        this.view.accept(visitor);
+    }
+
 }

@@ -1,3 +1,4 @@
+import { ViewObjectVisitor } from '../Clickables/ViewObjectVisitor';
 import {IObserver} from '../Observables/Observer.interface'
 
 export interface IViewObject extends IObserver{
@@ -6,4 +7,5 @@ export interface IViewObject extends IObserver{
     */
     render(context: CanvasRenderingContext2D, width: number, height: number);
     remove(object: IViewObject);
+    accept(visitor: ViewObjectVisitor);
 }

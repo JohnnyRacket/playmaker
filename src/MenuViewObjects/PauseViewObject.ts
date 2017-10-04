@@ -1,5 +1,5 @@
 import { MenuViewObject } from './MenuViewObject';
-export class PauseViewObject extends MenuViewObject{
+export class PauseViewObject extends MenuViewObject {
 
     protected preRender() {
         //draw a beautiful pause button :p
@@ -17,5 +17,6 @@ export class PauseViewObject extends MenuViewObject{
     hover(){
         //do nothing
     }
+    
 
 }

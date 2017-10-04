@@ -1,4 +1,5 @@
 import { DoubleBufferedViewObject } from '../DoubleBufferedViewObject';
+import { ViewObjectVisitor } from "../../Clickables/ViewObjectVisitor";
 
 export class FieldViewObject extends DoubleBufferedViewObject{
     protected preRender() {
@@ -17,6 +18,10 @@ export class FieldViewObject extends DoubleBufferedViewObject{
     update() {
         throw new Error("Method not implemented.");
         //possible set to cheering or set to something else
+    }
+
+    accept(visitor: ViewObjectVisitor){
+        visitor.visitFieldObject(this);
     }
 
 }

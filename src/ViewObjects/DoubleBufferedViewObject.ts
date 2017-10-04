@@ -2,6 +2,7 @@ import { ComposableViewObject } from './ComposableViewObject';
 import { Dimensionable } from '../Shared/Dimensionable';
 import { DrawingStrategy } from '../DrawingStrategies/DrawingStrategy';
 import { IViewObject } from './ViewObject.interface';
+import { ViewObjectVisitor } from "../Clickables/ViewObjectVisitor";
 
 export abstract class DoubleBufferedViewObject extends ComposableViewObject{
 
@@ -59,5 +60,7 @@ export abstract class DoubleBufferedViewObject extends ComposableViewObject{
     public postRender(){
         //do nothing
     }
+
+    abstract accept(visitor: ViewObjectVisitor);
 
 }

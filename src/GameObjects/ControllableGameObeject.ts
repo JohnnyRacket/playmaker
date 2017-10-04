@@ -11,13 +11,16 @@ export abstract class ControllableGameObject extends CollidableGameObject{
         this._speed = speed;
     }
 
-    protected controller: Controller;
+    protected _controller: Controller;
 
-    public setController(controller: Controller){
-        this.controller = controller;
+    public set controller(controller: Controller){
+        this._controller = controller;
+    }
+    public get controller(): Controller{
+        return this._controller;
     }
     public removeController(){
-        this.controller = null;
+        this._controller = null;
     }
 
     public constructor (x: number, y: number, width: number, height: number, type: string, speed: number){

@@ -1,3 +1,4 @@
+import { RouteViewObject } from './ViewObjects/Samples/RouteViewObject';
 import { ReferenceManager } from './Engines/ReferenceManager';
 import { FindMatchClickStrategy } from './Clickables/ClickStrategies/FindMatchClickStrategy';
 import { MatchTemplater } from './Engines/MatchTemplater';
@@ -19,12 +20,11 @@ import { CollisionManager } from './Engines/CollisionManager';
 import { GameEngine } from './Engines/GameEngine';
 import { RenderEngine } from './Engines/RenderEngine';
 import { PlayerFactory } from './GameObjects/PlayerFactory';
-import { NewFangledSample } from './GameObjects/Samples/NewFangledSample';
+import { Player } from './GameObjects/Samples/Player';
 import { NonMovingSample } from './GameObjects/Samples/NonMovingSample';
 import { TestGameObject } from './GameObjects/Samples/TestGameObject';
 import { FieldViewObject } from './ViewObjects/Samples/FieldViewObject';
 import { SquarePlayerViewObject } from './ViewObjects/Samples/SquarePlayerViewObject';
-import { TestViewObject } from './ViewObjects/Samples/TestViewObject';
 import { VerticalCenterDecorator } from "./ViewComposition/Decorators/VerticalCenterDecorator";
 import { ButtonViewObject } from "./MenuViewObjects/ButtonViewObject";
 
@@ -99,6 +99,9 @@ clickManager.addClickable(defenseButtonCenter);
 gameArea.addView(defenseButtonCenter);
 RenderEngine.getInstance().addReferenceToStage(defenseButtonCenter, 'menuStage');
 
+var testRouteRender = new RouteViewObject(0,0,gameArea.width, gameArea.height,0,new TopLeftDrawingStrategy());
+testRouteRender.updateRoute([new Coordinate(160,250), new Coordinate(160,150), new Coordinate(170,100)]);
+gameArea.addView(testRouteRender);
 //create the player you control youreself (runner)
 //PlayerFactory.createRunnerInArea(160,400, -90, gameArea);
 

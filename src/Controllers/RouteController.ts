@@ -9,7 +9,13 @@ import { CollidableGameObject } from "../GameObjects/CollidableGameObject";
 export class RouteController extends Controller{
 
     //I expect this class to change as we think about what needs to happen
-    protected route: Route;
+    protected _route: Route;
+    public get route(): Route{
+        return this._route;
+    }
+    public set route(route: Route){
+        this._route = route;
+    }
     protected started: boolean = true;
     protected routeIndex: number = 0;
     protected originalSpeed: number = 0;

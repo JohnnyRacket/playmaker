@@ -1,10 +1,11 @@
+import { ControllableGameObject } from '../../GameObjects/ControllableGameObeject';
+import { ViewObjectVisitor } from '../../Clickables/ViewObjectVisitor';
 import { DrawingStrategy } from '../../DrawingStrategies/DrawingStrategy';
-import { PositionableGameObject } from '../../GameObjects/PositionableGameObject';
 import { DoubleBufferedViewObject } from '../DoubleBufferedViewObject';
 
 export class SquarePlayerViewObject extends DoubleBufferedViewObject{
 
-    protected subject: PositionableGameObject;
+    protected subject: ControllableGameObject;
     protected _color: string;
     get color(): string{
         return this._color;
@@ -22,7 +23,7 @@ export class SquarePlayerViewObject extends DoubleBufferedViewObject{
         this.preRender();
     }
 
-    public constructor(x: number, y: number, width: number, height: number, angle: number, subject: PositionableGameObject, strategy: DrawingStrategy){
+    public constructor(x: number, y: number, width: number, height: number, angle: number, subject: ControllableGameObject, strategy: DrawingStrategy){
         super(x,y,width,height,angle, strategy);
         this.subject = subject;
         this.angle = this.subject.angle;
@@ -46,6 +47,10 @@ export class SquarePlayerViewObject extends DoubleBufferedViewObject{
         this.x = this.subject.x;
         this.y = this.subject.y;
         this.angle = this.subject.angle;
+    }
+
+    accept(visitor: ViewObjectVisitor){
+        visitor.visitPlayerObject(this);
     }
 
 }

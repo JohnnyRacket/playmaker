@@ -1,5 +1,6 @@
 import { PositioningDecorator } from './PositioningDecorator';
-export class HorizontalCenterPositioningDecorator extends PositioningDecorator{
+import { ViewObjectVisitor } from "../../Clickables/ViewObjectVisitor";
+export class HorizontalCenterPositioningDecorator extends PositioningDecorator {
 
     private offsetX: number = 0;
     hover() {
@@ -21,6 +22,10 @@ export class HorizontalCenterPositioningDecorator extends PositioningDecorator{
     public getGlobalX(){
         return this.offsetX + this.parent.x;
         
+    }
+    
+    accept(visitor: ViewObjectVisitor){
+        this.view.accept(visitor);
     }
 
 }

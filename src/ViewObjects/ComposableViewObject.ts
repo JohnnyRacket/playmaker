@@ -1,3 +1,4 @@
+import { ViewObjectVisitor } from '../Clickables/ViewObjectVisitor';
 import { RenderEngine } from '../Engines/RenderEngine';
 import { Coordinate } from '../Controllers/Coordinate';
 import { IViewObject } from './ViewObject.interface';
@@ -38,4 +39,6 @@ export abstract class ComposableViewObject extends Dimensionable implements IVie
     public remove(object: IViewObject) {
         //do nothing
     }
+
+    abstract accept(visitor: ViewObjectVisitor);
 }

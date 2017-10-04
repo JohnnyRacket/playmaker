@@ -31,7 +31,7 @@ export class MatchTemplater {
         this.playerFactory.createRunnerInArea(160,400, -90, this.gameView);
 
         //create blockers with aroutes
-        this.playerFactory.createBlockerInArea(110,300,new Route([new Coordinate(60,280)]), this.gameView);
+        this.playerFactory.createBlockerInArea(110,300,new Route([new Coordinate(90,280)]), this.gameView);
         this.playerFactory.createBlockerInArea(145,300,new Route([new Coordinate(110,280)]), this.gameView);
         this.playerFactory.createBlockerInArea(180,300,new Route([new Coordinate(150,280)]), this.gameView);
         this.playerFactory.createBlockerInArea(230,300,new Route([new Coordinate(260,280)]), this.gameView);

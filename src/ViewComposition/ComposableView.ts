@@ -1,6 +1,7 @@
 import { Dimensionable } from '../Shared/Dimensionable';
 import { IViewObject } from '../ViewObjects/ViewObject.interface';
 import { ComposableViewObject } from "../ViewObjects/ComposableViewObject";
+import { ViewObjectVisitor } from "../Clickables/ViewObjectVisitor";
 export class ComposableView extends ComposableViewObject {
 
     //the idea here is to have composition pattern of relative layouts 
@@ -44,6 +45,12 @@ export class ComposableView extends ComposableViewObject {
 
         this.children.forEach(child => {
             child.remove(object);
+        });
+    }
+
+    accept(visitor: ViewObjectVisitor) {
+        this.children.forEach(child => {
+            child.accept(visitor);
         });
     }
 
