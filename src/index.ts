@@ -27,6 +27,7 @@ import { FieldViewObject } from './ViewObjects/Samples/FieldViewObject';
 import { SquarePlayerViewObject } from './ViewObjects/Samples/SquarePlayerViewObject';
 import { VerticalCenterDecorator } from "./ViewComposition/Decorators/VerticalCenterDecorator";
 import { ButtonViewObject } from "./MenuViewObjects/ButtonViewObject";
+import { PlayerViewObjectFactory } from './ViewObjects/PlayerViewObjectFactory';
 
 /*
  * Fetch our environment for our game and configure
@@ -64,9 +65,10 @@ renderEngine.addService(clickManager);
 let hitBoxFactory = new HitBoxFactory(collisionManager);
 let controllerFactory = new ControllerFactory(collisionManager);
 let playerFactory = new PlayerFactory(hitBoxFactory, controllerFactory);
+let playerViewObjectFactory = new PlayerViewObjectFactory();
 //create a composable view for game area to exist in
 let gameArea = new ComposableView(100,100,320,480);
-let templater = new MatchTemplater(gameArea, playerFactory);
+let templater = new MatchTemplater(gameArea, playerFactory, playerViewObjectFactory);
 
 let test2 = new VerticalCenterDecorator(gameArea);
 let test = new HorizontalCenterDecorator(test2);

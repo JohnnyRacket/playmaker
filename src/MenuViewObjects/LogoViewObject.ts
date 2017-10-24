@@ -1,5 +1,5 @@
-import { MenuViewObject } from './MenuViewObject';
-export class LogoViewObject extends MenuViewObject{
+import { ClickableViewObject } from './ClickableViewObject';
+export class LogoViewObject extends ClickableViewObject{
     hover() {
         throw new Error("Method not implemented.");
     }

@@ -1,6 +1,6 @@
-import { MenuViewObject } from './MenuViewObject';
+import { ClickableViewObject } from './ClickableViewObject';
 import { ClickStrategy } from "../Clickables/ClickStrategy";
-export class CountDownViewObject extends MenuViewObject {
+export class CountDownViewObject extends ClickableViewObject {
 
     protected _clickStrategy: ClickStrategy = null;
     

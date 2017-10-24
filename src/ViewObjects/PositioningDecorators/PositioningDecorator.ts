@@ -1,10 +1,10 @@
-import { MenuViewObject } from '../../MenuViewObjects/MenuViewObject';
+import { ClickableViewObject } from '../../MenuViewObjects/ClickableViewObject';
 import { Clickable } from '../../Clickables/Clickable';
 import { ComposableViewObject } from '../../ViewObjects/ComposableViewObject';
 import { ViewObjectVisitor } from "../../Clickables/ViewObjectVisitor";
-export abstract class PositioningDecorator extends MenuViewObject {
+export abstract class PositioningDecorator extends ClickableViewObject {
 
-    protected view: MenuViewObject;
+    protected view: ClickableViewObject;
 
     get x(): number{
         return this.view.x;
@@ -31,7 +31,7 @@ export abstract class PositioningDecorator extends MenuViewObject {
         if (this.view != null) this.view.height = height;
     }
 
-    public constructor(view: MenuViewObject){
+    public constructor(view: ClickableViewObject){
         super(view.x,view.y,view.width,view.y,view.angle,view.drawingStrategy,view.clickStrategy);
         this.view = view;
         this.x = view.x;

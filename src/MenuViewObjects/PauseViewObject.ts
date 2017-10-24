@@ -1,5 +1,5 @@
-import { MenuViewObject } from './MenuViewObject';
-export class PauseViewObject extends MenuViewObject {
+import { ClickableViewObject } from './ClickableViewObject';
+export class PauseViewObject extends ClickableViewObject {
 
     protected preRender() {
         //draw a beautiful pause button :p

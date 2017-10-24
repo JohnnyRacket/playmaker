@@ -3,7 +3,7 @@ import { ClickStrategy } from '../Clickables/ClickStrategy';
 import { Clickable } from '../Clickables/Clickable';
 import { DoubleBufferedViewObject } from '../ViewObjects/DoubleBufferedViewObject';
 import { ViewObjectVisitor } from "../Clickables/ViewObjectVisitor";
-export abstract class MenuViewObject extends DoubleBufferedViewObject implements Clickable {
+export abstract class ClickableViewObject extends DoubleBufferedViewObject implements Clickable {
 
     protected _clickStrategy: ClickStrategy;
     public get clickStrategy(): ClickStrategy{

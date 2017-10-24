@@ -1,7 +1,7 @@
-import { MenuViewObject } from './MenuViewObject';
+import { ClickableViewObject } from './ClickableViewObject';
 import { DrawingStrategy } from "../DrawingStrategies/DrawingStrategy";
 import { ClickStrategy } from "../Clickables/ClickStrategy";
-export class ButtonViewObject extends MenuViewObject {
+export class ButtonViewObject extends ClickableViewObject {
 
     protected _text: string;
     public get text(): string{

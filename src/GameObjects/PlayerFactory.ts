@@ -21,86 +21,36 @@ export class PlayerFactory{
         this.controllerFactory = controllerFactory;
     }
 
+
     public createRunner(x: number, y: number, angle: number){
-        let player = new Player(x,y,16,16,'runner',2);
-        player.angle = angle;
-        player.setHitbox(this.hitBoxFactory.CreateActiveSquareHitBox(16,16,player));
-        let controller = this.controllerFactory.createInputController(player);
-        player.controller = controller;
-        GameEngine.getInstance().register(player);
-        let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
-        playerVO.color = '#3498db';
-        playerVO.outline = '#ffffff';
-        player.register(playerVO);
-        RenderEngine.getInstance().register(playerVO);
-        
-        return player;
-    }
-        public createRunnerInArea(x: number, y: number, angle: number, area: ComposableView){
         let player = new Player(x,y,16,16,'runner',1.75);
         player.angle = angle;
         player.setHitbox(this.hitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = this.controllerFactory.createInputController(player);
         player.controller = controller;
         GameEngine.getInstance().register(player);
-        let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
-        playerVO.color = '#3498db';
-        playerVO.outline = '#ffffff';
-        player.register(playerVO);
-        area.addView(playerVO);
+
         GameMap.getInstance().addMapObject(player, 'runner');
         return player;
     }
-
-    public createBlocker(x: number, y: number, route: Route){
-        let player = new Player(x,y,16,16,'blocker',2);
-        player.setHitbox(this.hitBoxFactory.CreateActiveSquareHitBox(16,16,player));
-        let controller = this.controllerFactory.createRouteController(player, route);
-        player.controller = controller;
-        GameEngine.getInstance().register(player);
-        let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
-        player.register(playerVO);
-        RenderEngine.getInstance().register(playerVO);
-        return player;
-    }
-
-    public createDefender(x: number, y: number, route: Route){
-        let player = new Player(x,y,16,16,'defender',1);
-        player.setHitbox(this.hitBoxFactory.CreateActiveSquareHitBox(16,16,player));
-        let controller = this.controllerFactory.createRouteController(player, route);
-        player.controller = controller;
-        GameEngine.getInstance().register(player);
-        let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
-        player.register(playerVO);
-        RenderEngine.getInstance().register(playerVO);
-        return player;
-    }
-
-    public createBlockerInArea(x: number, y: number, route: Route, area: ComposableView){
+    
+    public createBlocker(x: number, y: number, route: Route, area: ComposableView){
         let player = new Player(x,y,16,16,'blocker',1.25);
         player.setHitbox(this.hitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = this.controllerFactory.createBlockerController(player, route);
         player.controller = controller;
         GameEngine.getInstance().register(player);
-        let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
-        playerVO.color = '#3498db';
-        player.register(playerVO);
-        area.addView(playerVO);
         GameMap.getInstance().addMapObject(player, 'blocker');
         return player;
     }
 
-    public createDefenderInArea(x: number, y: number, route: Route, area: ComposableView){
+    public createDefender(x: number, y: number, route: Route, area: ComposableView){
         let player = new Player(x,y,16,16,'defender',1.5);
         GameEngine.getInstance().addReferenceToStage(player, "gameplayStage");
         player.setHitbox(this.hitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = this.controllerFactory.createDefenderController(player, route);
         player.controller = controller;
         GameEngine.getInstance().register(player);
-        let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
-        playerVO.color = '#e74c3c';
-        player.register(playerVO);
-        area.addView(playerVO);
         GameMap.getInstance().addMapObject(player, 'defender');
         return player;
     }
