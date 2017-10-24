@@ -1,3 +1,4 @@
+import { ClickableManager } from './ClickableManager';
 import { SquarePlayerViewObject } from '../ViewObjects/Samples/SquarePlayerViewObject';
 import { Player } from '../GameObjects/Samples/Player';
 import { GameMap } from './GameMap';
@@ -10,6 +11,7 @@ import { Coordinate } from "../Controllers/Coordinate";
 import { GameEngine } from "./GameEngine";
 import { MapObject } from '../GameObjects/MapObject';
 import { PlayerViewObjectFactory } from '../ViewObjects/PlayerViewObjectFactory';
+import { RouteDrawingStageVisitor } from '../Clickables/RouteDrawingStageVisitor';
 
 export class MatchTemplater {
 
@@ -17,14 +19,16 @@ export class MatchTemplater {
     private gameView: ComposableView;
     private playerFactory: PlayerFactory;
     private playerVOFactory: PlayerViewObjectFactory;
+    private clickManager: ClickableManager;
 
-    public constructor(gameView: ComposableView, playerFactory: PlayerFactory, playerVOFactory: PlayerViewObjectFactory) {
+    public constructor(gameView: ComposableView, playerFactory: PlayerFactory, playerVOFactory: PlayerViewObjectFactory, clickManager: ClickableManager) {
         if(MatchTemplater._instance){
             throw new Error("Error: Instantiation failed: Use MatchTemplater.getInstance() instead of new.");
         }
         this.gameView = gameView;
         this.playerFactory = playerFactory;
         this.playerVOFactory = playerVOFactory;
+        this.clickManager = clickManager;
         MatchTemplater._instance = this;
     }
  
@@ -57,7 +61,6 @@ export class MatchTemplater {
         let defenders: Player[] = [];
         let defenderVOs: SquarePlayerViewObject[] = [];
 
-
         defenders.push(this.playerFactory.createDefender(60,250,new Route([new Coordinate(80,270)]), this.gameView));
         defenders.push(this.playerFactory.createDefender(110,250,new Route([new Coordinate(130, 270)]), this.gameView));
         defenders.push(this.playerFactory.createDefender(160,250,new Route([new Coordinate(160,150), new Coordinate(170,100)]), this.gameView));
@@ -67,10 +70,12 @@ export class MatchTemplater {
         defenders.forEach(defender => {
             defenderVOs.push(this.playerVOFactory.CreateDefenderInArea(defender, this.gameView));
         });
-
+        GameEngine.getInstance().stop();
+        
         //this will moack stage 2 being hit where routes need to be drawn
+        let visitor = new RouteDrawingStageVisitor(this.clickManager, this.gameView);
         blockerVOs.forEach(blockerVO => {
-            blockerVO.accept(null);
+            blockerVO.accept(visitor);
         });
 
 

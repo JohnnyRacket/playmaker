@@ -1,9 +1,12 @@
+import { Clickable } from '../../Clickables/Clickable';
 import { ControllableGameObject } from '../../GameObjects/ControllableGameObeject';
 import { ViewObjectVisitor } from '../../Clickables/ViewObjectVisitor';
 import { DrawingStrategy } from '../../DrawingStrategies/DrawingStrategy';
 import { DoubleBufferedViewObject } from '../DoubleBufferedViewObject';
+import { ClickableViewObject } from '../../MenuViewObjects/ClickableViewObject';
 
-export class SquarePlayerViewObject extends DoubleBufferedViewObject{
+export class SquarePlayerViewObject extends ClickableViewObject{
+
 
     protected subject: ControllableGameObject;
     protected _color: string;
@@ -24,7 +27,7 @@ export class SquarePlayerViewObject extends DoubleBufferedViewObject{
     }
 
     public constructor(x: number, y: number, width: number, height: number, angle: number, subject: ControllableGameObject, strategy: DrawingStrategy){
-        super(x,y,width,height,angle, strategy);
+        super(x,y,width,height,angle, strategy, null);
         this.subject = subject;
         this.angle = this.subject.angle;
     }
@@ -51,6 +54,10 @@ export class SquarePlayerViewObject extends DoubleBufferedViewObject{
 
     accept(visitor: ViewObjectVisitor){
         visitor.visitPlayerObject(this);
+    }
+
+    hover() {
+        throw new Error("Method not implemented.");
     }
 
 }

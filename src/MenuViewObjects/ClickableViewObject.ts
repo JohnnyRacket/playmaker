@@ -18,7 +18,7 @@ export abstract class ClickableViewObject extends DoubleBufferedViewObject imple
         this.clickStrategy = clickStrategy;
     }
     click() {
-        this.clickStrategy.execute(this);
+        if(this.clickStrategy) this.clickStrategy.execute(this);
     }
     abstract hover();
     getGlobalX(): number {

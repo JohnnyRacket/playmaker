@@ -2,9 +2,7 @@ import { RouteViewObject } from './ViewObjects/Samples/RouteViewObject';
 import { ReferenceManager } from './Engines/ReferenceManager';
 import { FindMatchClickStrategy } from './Clickables/ClickStrategies/FindMatchClickStrategy';
 import { MatchTemplater } from './Engines/MatchTemplater';
-import {
-    HorizontalCenterPositioningDecorator,
-} from './ViewObjects/PositioningDecorators/HorizontalCenterPositioningDecorator';
+import { HorizontalCenterPositioningDecorator } from './ViewObjects/PositioningDecorators/HorizontalCenterPositioningDecorator';
 import { LogoViewObject } from './MenuViewObjects/LogoViewObject';
 import { ClickableManager } from './Engines/ClickableManager';
 import { PauseViewObject } from './MenuViewObjects/PauseViewObject';
@@ -68,7 +66,7 @@ let playerFactory = new PlayerFactory(hitBoxFactory, controllerFactory);
 let playerViewObjectFactory = new PlayerViewObjectFactory();
 //create a composable view for game area to exist in
 let gameArea = new ComposableView(100,100,320,480);
-let templater = new MatchTemplater(gameArea, playerFactory, playerViewObjectFactory);
+let templater = new MatchTemplater(gameArea, playerFactory, playerViewObjectFactory, clickManager);
 
 let test2 = new VerticalCenterDecorator(gameArea);
 let test = new HorizontalCenterDecorator(test2);
@@ -76,7 +74,6 @@ renderEngine.register(test);
 //just the field VO
 let field = new FieldViewObject(0,0,320,480,0, new TopLeftDrawingStrategy());
 gameArea.addView(field);
-
 //pause button test
 let pauseButton = new PauseViewObject(0,0,64,64,0,new TopLeftDrawingStrategy(),new PauseGameClickStrategy());
 clickManager.addClickable(pauseButton);
@@ -101,9 +98,9 @@ clickManager.addClickable(defenseButtonCenter);
 gameArea.addView(defenseButtonCenter);
 RenderEngine.getInstance().addReferenceToStage(defenseButtonCenter, 'menuStage');
 
-var testRouteRender = new RouteViewObject(0,0,gameArea.width, gameArea.height,0,new TopLeftDrawingStrategy());
-testRouteRender.updateRoute([new Coordinate(160,250), new Coordinate(160,150), new Coordinate(170,100)]);
-gameArea.addView(testRouteRender);
+// var testRouteRender = new RouteViewObject(0,0,gameArea.width, gameArea.height,0,new TopLeftDrawingStrategy());
+// testRouteRender.updateRoute([new Coordinate(160,250), new Coordinate(160,150), new Coordinate(170,100)]);
+// gameArea.addView(testRouteRender);
 //create the player you control youreself (runner)
 //PlayerFactory.createRunnerInArea(160,400, -90, gameArea);
 

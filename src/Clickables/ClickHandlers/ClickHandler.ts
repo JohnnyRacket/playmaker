@@ -1,3 +1,3 @@
 export interface ClickHandler{
-    handle(x: number, y: number);
+    handle(event: MouseEvent);
 }

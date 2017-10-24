@@ -39,17 +39,17 @@ export class ClickableManager implements IViewService{
 
     private clickEvents(event: MouseEvent){
         //console.log(event.x, event.y)
-        if(this.clickInterceptor) this.clickInterceptor.handle(event.x, event.y);
-
-
-        this.clickables.forEach((obj: Clickable, index) => {
-            if(event.x >= obj.getGlobalX() && event.x <= (obj.getGlobalX() + obj.getWidth()) &&
-                event.y >= obj.getGlobalY() && event.y <= (obj.getGlobalY() + obj.getHeight())) {
-                    console.log("click match found ", obj);
-                    obj.click();
-                };
-            ///obj.click()
-        });
+        if(this.clickInterceptor) this.clickInterceptor.handle(event);
+        else{
+            this.clickables.forEach((obj: Clickable, index) => {
+                if(event.x >= obj.getGlobalX() && event.x <= (obj.getGlobalX() + obj.getWidth()) &&
+                    event.y >= obj.getGlobalY() && event.y <= (obj.getGlobalY() + obj.getHeight())) {
+                        console.log("click match found ", obj);
+                        obj.click();
+                    };
+                ///obj.click()
+            });
+        }
     }
 
     // private hoverEvents(event: MouseEvent){

@@ -31,4 +31,5 @@ export class RouteViewObject extends DoubleBufferedViewObject {
         this.update();
     }
 
+
 }
