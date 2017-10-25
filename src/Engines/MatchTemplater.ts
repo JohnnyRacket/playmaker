@@ -21,6 +21,7 @@ import { MapObject } from '../GameObjects/MapObject';
 import { PlayerViewObjectFactory } from '../ViewObjects/PlayerViewObjectFactory';
 import { RouteDrawingStageVisitor } from '../Clickables/RouteDrawingStageVisitor';
 import { StartGameClickStrategy } from '../Clickables/ClickStrategies/StartGameClickStrategy';
+import { IViewObject } from '../ViewObjects/ViewObject.interface';
 
 export class MatchTemplater {
 
@@ -87,7 +88,13 @@ export class MatchTemplater {
             blockerVO.accept(visitor);
         });
 
-        let startButton = new ButtonViewObject(50,45,100,50,0,new TopLeftDrawingStrategy(), new StartGameClickStrategy(), 'Start');
+        let startButton = new ButtonViewObject(50,45,100,50,0,new TopLeftDrawingStrategy(), null, 'Start', () => {
+            GameEngine.getInstance().start();
+            let refs = RenderEngine.getInstance().getReferencesForStage('routeStage');
+            refs.forEach(element => {
+                RenderEngine.getInstance().unregister(element as IViewObject);
+            });
+        });
         let hcent = new HorizontalCenterPositioningDecorator(startButton);
         this.gameView.addView(hcent);
         this.clickManager.addClickable(hcent);

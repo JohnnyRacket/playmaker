@@ -47,7 +47,7 @@ export class DrawRouteClickStrategy extends ClickStrategy {
         this.clickableManager.clickInterceptor = new RouteClickHandler(this.player, route, routeView, this.gameArea, this.clickableManager, this);
         this.gameArea.addView(routeView);
 
-        let text = new ButtonViewObject(10,45, 180, 50, 0, new TopLeftDrawingStrategy(), null, 'Save Route');
+        let text = new ButtonViewObject(10,45, 180, 50, 0, new TopLeftDrawingStrategy(), null, 'Save Route', null);
         this.text = new HorizontalCenterPositioningDecorator(text);
         this.gameArea.addView(this.text);
         

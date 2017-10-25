@@ -13,12 +13,22 @@ export abstract class ClickableViewObject extends DoubleBufferedViewObject imple
         this._clickStrategy = strategy;
     }
 
-    public constructor(x: number,y: number, width: number, height: number, angle: number, drawingStrategy: DrawingStrategy, clickStrategy: ClickStrategy){
+    protected _callback: Function;
+    public get callback(): Function{
+        return this._callback;
+    }
+    public set callback(callback: Function){
+        this._callback = callback;
+    }
+
+    public constructor(x: number,y: number, width: number, height: number, angle: number, drawingStrategy: DrawingStrategy, clickStrategy: ClickStrategy, callback: Function){
         super(x,y,width,height,angle,drawingStrategy);
         this.clickStrategy = clickStrategy;
+        this.callback = callback;
     }
     click() {
         if(this.clickStrategy) this.clickStrategy.execute(this);
+        if(this.callback) this.callback();
     }
     abstract hover();
     getGlobalX(): number {

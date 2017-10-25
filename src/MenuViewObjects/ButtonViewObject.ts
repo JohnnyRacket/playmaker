@@ -13,8 +13,8 @@ export class ButtonViewObject extends ClickableViewObject {
 
     private isHovered: boolean = false;
 
-    public constructor(x: number,y: number, width: number, height: number, angle: number, drawingStrategy: DrawingStrategy, clickStrategy: ClickStrategy, text: string){
-        super(x,y,width,height,angle,drawingStrategy,clickStrategy);
+    public constructor(x: number,y: number, width: number, height: number, angle: number, drawingStrategy: DrawingStrategy, clickStrategy: ClickStrategy, text: string, callback: Function){
+        super(x,y,width,height,angle,drawingStrategy,clickStrategy, callback);
         this.text = text;
         this.preRender();
     }

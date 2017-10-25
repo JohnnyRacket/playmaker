@@ -33,7 +33,7 @@ export class SquarePlayerViewObject extends ClickableViewObject{
     }
 
     public constructor(x: number, y: number, width: number, height: number, angle: number, subject: ControllableGameObject, strategy: DrawingStrategy){
-        super(x,y,width,height,angle, strategy, null);
+        super(x,y,width,height,angle, strategy, null, null);
         this.subject = subject;
         this.angle = this.subject.angle;
     }

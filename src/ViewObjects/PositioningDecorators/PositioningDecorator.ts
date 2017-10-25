@@ -32,7 +32,7 @@ export abstract class PositioningDecorator extends ClickableViewObject {
     }
 
     public constructor(view: ClickableViewObject){
-        super(view.x,view.y,view.width,view.y,view.angle,view.drawingStrategy,view.clickStrategy);
+        super(view.x,view.y,view.width,view.y,view.angle,view.drawingStrategy,view.clickStrategy, view.callback);
         this.view = view;
         this.x = view.x;
         this.y = view.y;
@@ -42,7 +42,7 @@ export abstract class PositioningDecorator extends ClickableViewObject {
     }
 
     public click(){
-        this.view.clickStrategy.execute(this); //.click();
+        this.view.click();//.execute(this); //.click();
     }
 
     accept(visitor: ViewObjectVisitor){

@@ -48,7 +48,7 @@ window.addEventListener('resize', resize);
 const gameEngine = GameEngine.getInstance();
 const renderEngine = RenderEngine.getInstance();
 renderEngine.setCanvas(canvas, context);
-gameEngine.start();
+//gameEngine.start();
 renderEngine.start();
 
 //services
@@ -75,24 +75,24 @@ renderEngine.register(test);
 let field = new FieldViewObject(0,0,320,480,0, new TopLeftDrawingStrategy());
 gameArea.addView(field);
 //pause button test
-let pauseButton = new PauseViewObject(0,0,64,64,0,new TopLeftDrawingStrategy(),new PauseGameClickStrategy());
+let pauseButton = new PauseViewObject(0,0,64,64,0,new TopLeftDrawingStrategy(),new PauseGameClickStrategy(), null);
 clickManager.addClickable(pauseButton);
 //gameArea.addView(pauseButton);
 
 //logo
-var logo = new LogoViewObject(0,80,300,100,0,new TopLeftDrawingStrategy(),new PauseGameClickStrategy());
+var logo = new LogoViewObject(0,80,300,100,0,new TopLeftDrawingStrategy(),new PauseGameClickStrategy(), null);
 var logoCenter = new HorizontalCenterPositioningDecorator(logo);
 gameArea.addView(logoCenter);
 RenderEngine.getInstance().addReferenceToStage(logoCenter, 'menuStage');
 
 //main menu buttons
-var startButton = new ButtonViewObject(100,200,200,60,0,new TopLeftDrawingStrategy(), new FindMatchClickStrategy(), "Find Match");
+var startButton = new ButtonViewObject(100,200,200,60,0,new TopLeftDrawingStrategy(), new FindMatchClickStrategy(), "Find Match", null);
 var startButtonCenter = new HorizontalCenterPositioningDecorator(startButton);
 clickManager.addClickable(startButtonCenter);
 gameArea.addView(startButtonCenter);
 RenderEngine.getInstance().addReferenceToStage(startButtonCenter, 'menuStage');
 
-var defenseButton = new ButtonViewObject(100,280,200,60,0,new TopLeftDrawingStrategy(), new PauseGameClickStrategy(), "Create Defense");
+var defenseButton = new ButtonViewObject(100,280,200,60,0,new TopLeftDrawingStrategy(), new PauseGameClickStrategy(), "Create Defense", null);
 var defenseButtonCenter = new HorizontalCenterPositioningDecorator(defenseButton);
 clickManager.addClickable(defenseButtonCenter);
 gameArea.addView(defenseButtonCenter);
