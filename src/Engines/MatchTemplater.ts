@@ -1,3 +1,6 @@
+import { ResumeGameClickStrategy } from '../Clickables/ClickStrategies/ResumeGameClickStrategy';
+import { TopLeftDrawingStrategy } from '../DrawingStrategies/TopLeftDrawingStrategy';
+import { ButtonViewObject } from '../MenuViewObjects/ButtonViewObject';
 import { ClickableManager } from './ClickableManager';
 import { SquarePlayerViewObject } from '../ViewObjects/Samples/SquarePlayerViewObject';
 import { Player } from '../GameObjects/Samples/Player';
@@ -78,7 +81,9 @@ export class MatchTemplater {
             blockerVO.accept(visitor);
         });
 
-
+        let startButton = new ButtonViewObject(50,10,100,100,0,new TopLeftDrawingStrategy(), new ResumeGameClickStrategy(), 'Start');
+        this.gameView.addView(startButton);
+        this.clickManager.addClickable(startButton);
         // setTimeout(function(){
         //     let objects = GameEngine.getInstance().getReferencesForStage("gameplayStage");
         //     objects.forEach(object => {

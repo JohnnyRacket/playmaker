@@ -1,3 +1,6 @@
+import { DrawRouteClickStrategy } from '../ClickStrategies/DrawRouteClickStrategy';
+import { ClickableManager } from '../../Engines/ClickableManager';
+import { RenderEngine } from '../../Engines/RenderEngine';
 import { ComposableView } from '../../ViewComposition/ComposableView';
 import { RouteViewObject } from '../../ViewObjects/Samples/RouteViewObject';
 import { ControllableGameObject } from '../../GameObjects/ControllableGameObeject';
@@ -9,16 +12,26 @@ export class RouteClickHandler implements ClickHandler{
     private viewObject: RouteViewObject;
     private route: Coordinate[];
     private gameArea: ComposableView;
+    private clickManager: ClickableManager;
+    private drawRouteClickStrategy: DrawRouteClickStrategy;
 
-    public constructor(gameObject: ControllableGameObject, route: Coordinate[], viewObject: RouteViewObject, gameArea: ComposableView){
+    public constructor(gameObject: ControllableGameObject, route: Coordinate[], viewObject: RouteViewObject, gameArea: ComposableView, clickManager: ClickableManager, drawRouteClickStrategy: DrawRouteClickStrategy){
         this.gameObject = gameObject;
         this.route = route;
         this.viewObject = viewObject;
         this.gameArea = gameArea;
+        this.clickManager = clickManager;
+        this.drawRouteClickStrategy = drawRouteClickStrategy;
     }
 
     handle(event: MouseEvent) {
         console.log('handling intercepted click');
+        if(event.y - this.gameArea.y < 120){
+            console.log("what");
+            this.clickManager.clickInterceptor = null;
+            this.drawRouteClickStrategy.finish(this.route);
+            return;
+        }
         this.route.push(new Coordinate(event.x - this.gameArea.x, event.y - this.gameArea.y));
         this.viewObject.updateRoute(this.route);
     }

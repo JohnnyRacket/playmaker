@@ -8,7 +8,13 @@ import { ClickableViewObject } from '../../MenuViewObjects/ClickableViewObject';
 export class SquarePlayerViewObject extends ClickableViewObject{
 
 
-    protected subject: ControllableGameObject;
+    protected _subject: ControllableGameObject;
+    get subject(): ControllableGameObject{
+        return this._subject;
+    }
+    set subject(subject: ControllableGameObject){
+        this._subject = subject;
+    }
     protected _color: string;
     get color(): string{
         return this._color;
