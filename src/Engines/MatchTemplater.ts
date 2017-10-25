@@ -1,3 +1,8 @@
+import { RenderEngine } from './RenderEngine';
+import {
+    HorizontalCenterPositioningDecorator,
+} from '../ViewObjects/PositioningDecorators/HorizontalCenterPositioningDecorator';
+import { HorizontalCenterDecorator } from '../ViewComposition/Decorators/HorizontalCenterDecorator';
 import { ResumeGameClickStrategy } from '../Clickables/ClickStrategies/ResumeGameClickStrategy';
 import { TopLeftDrawingStrategy } from '../DrawingStrategies/TopLeftDrawingStrategy';
 import { ButtonViewObject } from '../MenuViewObjects/ButtonViewObject';
@@ -15,6 +20,7 @@ import { GameEngine } from "./GameEngine";
 import { MapObject } from '../GameObjects/MapObject';
 import { PlayerViewObjectFactory } from '../ViewObjects/PlayerViewObjectFactory';
 import { RouteDrawingStageVisitor } from '../Clickables/RouteDrawingStageVisitor';
+import { StartGameClickStrategy } from '../Clickables/ClickStrategies/StartGameClickStrategy';
 
 export class MatchTemplater {
 
@@ -81,9 +87,11 @@ export class MatchTemplater {
             blockerVO.accept(visitor);
         });
 
-        let startButton = new ButtonViewObject(50,10,100,100,0,new TopLeftDrawingStrategy(), new ResumeGameClickStrategy(), 'Start');
-        this.gameView.addView(startButton);
-        this.clickManager.addClickable(startButton);
+        let startButton = new ButtonViewObject(50,45,100,50,0,new TopLeftDrawingStrategy(), new StartGameClickStrategy(), 'Start');
+        let hcent = new HorizontalCenterPositioningDecorator(startButton);
+        this.gameView.addView(hcent);
+        this.clickManager.addClickable(hcent);
+        RenderEngine.getInstance().addReferenceToStage(hcent, 'routeStage');
         // setTimeout(function(){
         //     let objects = GameEngine.getInstance().getReferencesForStage("gameplayStage");
         //     objects.forEach(object => {

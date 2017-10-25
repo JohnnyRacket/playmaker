@@ -1,3 +1,9 @@
+import { ComposableViewObject } from '../../ViewObjects/ComposableViewObject';
+import {
+    HorizontalCenterPositioningDecorator,
+} from '../../ViewObjects/PositioningDecorators/HorizontalCenterPositioningDecorator';
+import { ButtonViewObject } from '../../MenuViewObjects/ButtonViewObject';
+import { ReferenceManager } from '../../Engines/ReferenceManager';
 import { SquarePlayerViewObject } from '../../ViewObjects/Samples/SquarePlayerViewObject';
 import { DoubleBufferedViewObject } from '../../ViewObjects/DoubleBufferedViewObject';
 import { Player } from '../../GameObjects/Samples/Player';
@@ -19,7 +25,7 @@ export class DrawRouteClickStrategy extends ClickStrategy {
     private clickableManager: ClickableManager;
     private gameArea: ComposableView;
 
-    private text: XViewObject;
+    private text: ComposableViewObject;
     private player: ControllableGameObject;
 
     constructor(clickableManager: ClickableManager, gameArea: ComposableView){
@@ -37,10 +43,12 @@ export class DrawRouteClickStrategy extends ClickStrategy {
         console.log("bloopely");
         route.push(new Coordinate(this.player.x, this.player.y));
         let routeView = new RouteViewObject(0,0,this.gameArea.width, this.gameArea.height,0,new TopLeftDrawingStrategy());
+        RenderEngine.getInstance().addReferenceToStage(routeView, 'routeStage');
         this.clickableManager.clickInterceptor = new RouteClickHandler(this.player, route, routeView, this.gameArea, this.clickableManager, this);
         this.gameArea.addView(routeView);
 
-        this.text = new XViewObject(10,26, 300, 100, 0, new TopLeftDrawingStrategy(), null);
+        let text = new ButtonViewObject(10,45, 180, 50, 0, new TopLeftDrawingStrategy(), null, 'Save Route');
+        this.text = new HorizontalCenterPositioningDecorator(text);
         this.gameArea.addView(this.text);
         
         //grey out everything else and message that says click the player again to finalize the route

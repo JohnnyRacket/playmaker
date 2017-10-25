@@ -1,3 +1,4 @@
+import { ReferenceManager } from '../Engines/ReferenceManager';
 import { ComposableView } from '../ViewComposition/ComposableView';
 import { ClickableManager } from '../Engines/ClickableManager';
 import { DrawRouteClickStrategy } from './ClickStrategies/DrawRouteClickStrategy';
