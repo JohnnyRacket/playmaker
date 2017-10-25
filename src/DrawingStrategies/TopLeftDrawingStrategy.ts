@@ -1,10 +1,10 @@
 import { DrawingStrategy } from './DrawingStrategy';
 export class TopLeftDrawingStrategy implements DrawingStrategy{
-    calculateGlobalPositionXEffect(x: number, width: number): number {
-        return x;
+    calculateGlobalPositionXEffect(width: number): number {
+        return 0;
     }
-    calculateGlobalPositionYEffect(y: number, height: number): number {
-        return y;
+    calculateGlobalPositionYEffect(height: number): number {
+        return 0;
     }
     draw(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement, x: number, y: number, width: number, height: number) {
         context.drawImage(canvas, x, y);

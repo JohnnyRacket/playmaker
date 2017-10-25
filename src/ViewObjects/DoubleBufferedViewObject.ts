@@ -63,4 +63,21 @@ export abstract class DoubleBufferedViewObject extends ComposableViewObject{
 
     abstract accept(visitor: ViewObjectVisitor);
 
+    public globalX(): number{
+        if(this.parent){
+            console.log(this.x, this.parent.globalX(), this.drawingStrategy.calculateGlobalPositionXEffect(this.width))
+            return this.x + this.parent.globalX() + this.drawingStrategy.calculateGlobalPositionXEffect(this.width);
+        }else{
+            console.log(this.x, this.drawingStrategy.calculateGlobalPositionXEffect(this.width));
+            return this.x + this.drawingStrategy.calculateGlobalPositionXEffect(this.width);
+        } 
+    }
+
+    public globalY(): number{
+        if(this.parent){
+            return this.y + this.parent.globalY() + this.drawingStrategy.calculateGlobalPositionYEffect(this.height);
+        }else{
+            return this.y + this.drawingStrategy.calculateGlobalPositionYEffect(this.height);
+        } 
+    }
 }
