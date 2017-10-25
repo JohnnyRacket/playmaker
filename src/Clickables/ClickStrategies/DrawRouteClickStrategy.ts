@@ -51,7 +51,9 @@ export class DrawRouteClickStrategy extends ClickStrategy {
     }
 
     public finish(route: Coordinate[]){
+        route.splice(0,1);
         (this.player.controller as RouteController).route = new Route(route);
+        console.log((this.player.controller as RouteController).route);
         this.gameArea.remove(this.text);
     }
 
