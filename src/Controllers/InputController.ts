@@ -48,12 +48,17 @@ export class InputController extends Controller{
         this.subject.angle = this.angle;
     }
     act() {
+        console.log(this.subject.x + (this.subject.speed * Math.cos(this.angle)));
         // this.subject.x += this.subject.speed * Math.cos(this.angle);
         // this.subject.y += this.subject.speed * Math.sin(this.angle);
-        if(!this.collisionManager.collisionCheckAtPosition(this.subject, this.subject.x + this.subject.speed * Math.cos(this.subject.angle), this.subject.y )){
+        if(!this.collisionManager.collisionCheckAtPosition(this.subject, this.subject.x + this.subject.speed * Math.cos(this.subject.angle), this.subject.y ) 
+        && !this.collisionManager.wallCollisionCheckAtPosition(this.subject, this.subject.x + this.subject.speed * Math.cos(this.subject.angle), this.subject.y )
+        ){
             this.subject.x += this.subject.speed * Math.cos(this.subject.angle);
         }
-        if(!this.collisionManager.collisionCheckAtPosition(this.subject, this.subject.x, this.subject.y + this.subject.speed * Math.sin(this.subject.angle))){
+        if(!this.collisionManager.collisionCheckAtPosition(this.subject, this.subject.x, this.subject.y + this.subject.speed * Math.sin(this.subject.angle))
+        && !this.collisionManager.wallCollisionCheckAtPosition(this.subject, this.subject.x, this.subject.y + this.subject.speed * Math.sin(this.subject.angle))
+        ){
             this.subject.y += this.subject.speed * Math.sin(this.subject.angle);
         }
     }

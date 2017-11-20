@@ -90,8 +90,20 @@ export class MatchTemplater {
         //add endzone to score in
         let endzone = this.fieldFactory.CreateEndZone(0,0)//new Endzone(0,0,320,120,'endzone');
         //GameEngine.getInstance().register(endzone);
-        let endzoneVO = new DebugViewObject(endzone.x, endzone.y,endzone.width, endzone.height, 0, endzone, new TopLeftDrawingStrategy())
-        this.gameView.addView(endzoneVO);
+        //let endzoneVO = new DebugViewObject(endzone.x, endzone.y,endzone.width, endzone.height, 0, endzone, new TopLeftDrawingStrategy())
+        //this.gameView.addView(endzoneVO);
+
+        //create walls
+        let wall1 = this.fieldFactory.CreateWall(0,0,10,480);
+        let wall1VO = new DebugViewObject(wall1.x, wall1.y, wall1.width, wall1.height,0,wall1,new TopLeftDrawingStrategy());
+        this.gameView.addView(wall1VO);
+
+        let wall2 = this.fieldFactory.CreateWall(310,0,10,480);
+        let wall2VO = new DebugViewObject(wall2.x, wall2.y, wall2.width, wall2.height,0,wall2,new TopLeftDrawingStrategy());
+        this.gameView.addView(wall2VO);
+
+
+
         //this will moack stage 2 being hit where routes need to be drawn
         let visitor = new RouteDrawingStageVisitor(this.clickManager, this.gameView);
         blockerVOs.forEach(blockerVO => {

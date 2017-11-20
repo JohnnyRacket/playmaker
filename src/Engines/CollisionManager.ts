@@ -97,6 +97,24 @@ export class CollisionManager implements IModelService{
         this.passiveCollidables.push(hitbox);
     }
 
+    public wallCollisionCheckAtPosition(object: CollidableGameObject, x: number, y: number): boolean{
+        for(let j = 0; j < this.passiveCollidables.length; ++j){
+            let object2: Hitbox = this.passiveCollidables[j];
+            if (x <= object2.x + object2.width   && x + object.width   >= object2.x &&
+                y <= object2.y + object2.height  && y + object.height  >= object2.y){
+                // collision
+                //console.log('collision with passive');
+                //console.log("player", object.x, object.width);
+                //console.log(object2.x, object2.width);
+                if(object2.subject.type == 'wall') return true;
+                
+                //object.collide(object2);
+                //object2.collide(object);
+            }
+        }
+        return false;
+    }
+
     public collisionCheckAtPosition(object: CollidableGameObject, x: number, y: number): boolean{
         //active v active collisions
         for(let i = 0; i < this.activeCollidables.length; ++i){
@@ -115,6 +133,7 @@ export class CollisionManager implements IModelService{
             }else{
                 //console.log("omg im finding myself");
             }
+            
         }
         return false;
     }

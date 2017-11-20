@@ -2,6 +2,8 @@ import { GameMap } from '../Engines/GameMap';
 import { Endzone } from './Samples/Endzone';
 import { HitBoxFactory } from "../Collisions/HitBoxFactory";
 import { ControllerFactory } from "../Controllers/ControllerFactory";
+import { Wall } from './Samples/Wall';
+import { GameEngine } from '../Engines/GameEngine';
 
 export class FieldFactory{
 
@@ -22,5 +24,12 @@ export class FieldFactory{
 
         GameMap.getInstance().addMapObject(endzone, 'endzone');
         return endzone;
+    }
+
+    public CreateWall(x: number, y:number, width: number, height: number){
+        let wall = new Wall(x,y,width,height,'wall');
+        wall.setHitbox(this.hitBoxFactory.CreatePassiveSquareHitBox(width,height,wall));
+        GameMap.getInstance().addMapObject(wall, 'wall');
+        return wall;
     }
 }
