@@ -9,11 +9,11 @@ export class FieldViewObject extends DoubleBufferedViewObject{
         this.context.rect(0,this.height/4*i ,this.width,this.height/4); 
         this.context.fill();
         }
-        this.context.beginPath();
-        this.context.rect(0,0 ,this.width,this.height); 
-        this.context.lineWidth = 40;
-        this.context.strokeStyle = 'white';
-        this.context.stroke();
+        // this.context.beginPath();
+        // this.context.rect(0,0 ,this.width,this.height); 
+        // this.context.lineWidth = 40;
+        // this.context.strokeStyle = 'white';
+        // this.context.stroke();
     }
     update() {
         throw new Error("Method not implemented.");

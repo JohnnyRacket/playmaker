@@ -1,3 +1,4 @@
+import { FieldFactory } from './GameObjects/FieldFactory';
 import { RouteViewObject } from './ViewObjects/Samples/RouteViewObject';
 import { ReferenceManager } from './Engines/ReferenceManager';
 import { FindMatchClickStrategy } from './Clickables/ClickStrategies/FindMatchClickStrategy';
@@ -64,9 +65,10 @@ let hitBoxFactory = new HitBoxFactory(collisionManager);
 let controllerFactory = new ControllerFactory(collisionManager);
 let playerFactory = new PlayerFactory(hitBoxFactory, controllerFactory);
 let playerViewObjectFactory = new PlayerViewObjectFactory();
+let fieldFactory = new FieldFactory(hitBoxFactory, controllerFactory);
 //create a composable view for game area to exist in
 let gameArea = new ComposableView(100,100,320,480);
-let templater = new MatchTemplater(gameArea, playerFactory, playerViewObjectFactory, clickManager);
+let templater = new MatchTemplater(gameArea, playerFactory, playerViewObjectFactory, fieldFactory, clickManager);
 
 let test2 = new VerticalCenterDecorator(gameArea);
 let test = new HorizontalCenterDecorator(test2);

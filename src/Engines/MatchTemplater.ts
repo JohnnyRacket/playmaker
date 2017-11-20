@@ -1,3 +1,6 @@
+import { DebugViewObject } from '../ViewObjects/Samples/DebugViewObject';
+import { CollisionManager } from './CollisionManager';
+import { Endzone } from '../GameObjects/Samples/Endzone';
 import { RenderEngine } from './RenderEngine';
 import {
     HorizontalCenterPositioningDecorator,
@@ -22,6 +25,7 @@ import { PlayerViewObjectFactory } from '../ViewObjects/PlayerViewObjectFactory'
 import { RouteDrawingStageVisitor } from '../Clickables/RouteDrawingStageVisitor';
 import { StartGameClickStrategy } from '../Clickables/ClickStrategies/StartGameClickStrategy';
 import { IViewObject } from '../ViewObjects/ViewObject.interface';
+import { FieldFactory } from '../GameObjects/FieldFactory';
 
 export class MatchTemplater {
 
@@ -29,15 +33,17 @@ export class MatchTemplater {
     private gameView: ComposableView;
     private playerFactory: PlayerFactory;
     private playerVOFactory: PlayerViewObjectFactory;
+    private fieldFactory: FieldFactory;
     private clickManager: ClickableManager;
 
-    public constructor(gameView: ComposableView, playerFactory: PlayerFactory, playerVOFactory: PlayerViewObjectFactory, clickManager: ClickableManager) {
+    public constructor(gameView: ComposableView, playerFactory: PlayerFactory, playerVOFactory: PlayerViewObjectFactory, fieldFactory: FieldFactory, clickManager: ClickableManager) {
         if(MatchTemplater._instance){
             throw new Error("Error: Instantiation failed: Use MatchTemplater.getInstance() instead of new.");
         }
         this.gameView = gameView;
         this.playerFactory = playerFactory;
         this.playerVOFactory = playerVOFactory;
+        this.fieldFactory = fieldFactory;
         this.clickManager = clickManager;
         MatchTemplater._instance = this;
     }
@@ -80,8 +86,12 @@ export class MatchTemplater {
         defenders.forEach(defender => {
             defenderVOs.push(this.playerVOFactory.CreateDefenderInArea(defender, this.gameView));
         });
-        GameEngine.getInstance().stop();
-        
+        //GameEngine.getInstance().stop();
+        //add endzone to score in
+        let endzone = this.fieldFactory.CreateEndZone(0,0)//new Endzone(0,0,320,120,'endzone');
+        //GameEngine.getInstance().register(endzone);
+        let endzoneVO = new DebugViewObject(endzone.x, endzone.y,endzone.width, endzone.height, 0, endzone, new TopLeftDrawingStrategy())
+        this.gameView.addView(endzoneVO);
         //this will moack stage 2 being hit where routes need to be drawn
         let visitor = new RouteDrawingStageVisitor(this.clickManager, this.gameView);
         blockerVOs.forEach(blockerVO => {

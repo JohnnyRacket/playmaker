@@ -9,6 +9,10 @@ export class CollisionManager implements IModelService{
     private activeCollidables: Hitbox[] = [];
     private passiveCollidables: Hitbox[] = [];
 
+    //there has been some pivot on how this works, and could all be eventually superceded by IAT
+    //however for now active hitboxes will be circular and passive collision will be a square collision
+    //I think this provides the most adaptability while not overcomplicating code
+
     //square hitboxs (not rotation support), eventual plan is to implement intersecting axis
     // tick(): void {
     //     for(let i = 0; i < this.activeCollidables.length; ++i){
@@ -44,18 +48,29 @@ export class CollisionManager implements IModelService{
             //active v passive collisions
             for(let j = 0; j < this.passiveCollidables.length; ++j){
                 let object2: Hitbox = this.passiveCollidables[j];
-                var dx = object1.x - object2.x;
-                var dy = object1.y - object2.y;
-                var distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < object1.width/2 + object2.width/2 + 1) {
-                    // collision detected!
+                if (object1.x <= object2.x + object2.width  && object1.x + object1.width  >= object2.x &&
+                    object1.y <= object2.y + object2.height && object1.y + object1.height >= object2.y){
                     // collision
-                    //console.log('collision with passive');
+                    console.log('collision with passive');
                     object1.collide(object2);
                     object2.collide(object1);
                 }
             }
+            //NOTE: Below is the circular collision code
+            // for(let j = 0; j < this.passiveCollidables.length; ++j){
+            //     let object2: Hitbox = this.passiveCollidables[j];
+            //     var dx = object1.x - object2.x;
+            //     var dy = object1.y - object2.y;
+            //     var distance = Math.sqrt(dx * dx + dy * dy);
+
+            //     if (distance < object1.width/2 + object2.width/2 + 1) {
+            //         // collision detected!
+            //         // collision
+            //         //console.log('collision with passive');
+            //         object1.collide(object2);
+            //         object2.collide(object1);
+            //     }
+            // }
             //active v active collisions
             for(let j = i + 1; j < this.activeCollidables.length; ++j){
                 let object2: Hitbox = this.activeCollidables[j];

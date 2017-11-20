@@ -59,7 +59,10 @@ export class InputController extends Controller{
     }
 
     collide(object: CollidableGameObject) {
-        //nothing right now
+        if(object.type == 'endzone'){
+            console.log("ENDZONE, YOU WIN!!!!");
+            //console.log('being slowed by a blocker!');
+        }
     }
 
 }

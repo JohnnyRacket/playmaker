@@ -19,6 +19,7 @@ export class HitBoxFactory{
 
     public CreatePassiveSquareHitBox(width: number, height: number, subject: CollidableGameObject): Hitbox{
         let hitbox: Hitbox = new Hitbox(width, height, subject);
+        console.log("added passive hitbox");
         this.collisionManager.addPassiveHitbox(hitbox);
         return hitbox;
     }
