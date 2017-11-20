@@ -102,6 +102,10 @@ export class MatchTemplater {
         let wall2VO = new DebugViewObject(wall2.x, wall2.y, wall2.width, wall2.height,0,wall2,new TopLeftDrawingStrategy());
         this.gameView.addView(wall2VO);
 
+        let wall3 = this.fieldFactory.CreateWall(0,470,320,10);
+        let wall3VO = new DebugViewObject(wall3.x, wall3.y, wall3.width, wall3.height,0,wall3,new TopLeftDrawingStrategy());
+        this.gameView.addView(wall3VO);
+
 
 
         //this will moack stage 2 being hit where routes need to be drawn
