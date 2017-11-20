@@ -48,7 +48,7 @@ export class CollisionManager implements IModelService{
             //active v passive collisions
             for(let j = 0; j < this.passiveCollidables.length; ++j){
                 let object2: Hitbox = this.passiveCollidables[j];
-                if (object1.x <= object2.x + object2.width  && object1.x + object1.width  >= object2.x &&
+                if (object1.x - object1.width/2 <= object2.x + object2.width  && object1.x + object1.width/2  >= object2.x &&
                     object1.y <= object2.y + object2.height && object1.y + object1.height >= object2.y){
                     // collision
                     console.log('collision with passive');
@@ -100,7 +100,7 @@ export class CollisionManager implements IModelService{
     public wallCollisionCheckAtPosition(object: CollidableGameObject, x: number, y: number): boolean{
         for(let j = 0; j < this.passiveCollidables.length; ++j){
             let object2: Hitbox = this.passiveCollidables[j];
-            if (x <= object2.x + object2.width   && x + object.width   >= object2.x &&
+            if (x - object.width/2 <= object2.x + object2.width   && x + object.width/2   >= object2.x &&
                 y <= object2.y + object2.height  && y + object.height  >= object2.y){
                 // collision
                 //console.log('collision with passive');
