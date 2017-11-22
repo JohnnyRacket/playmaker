@@ -1,3 +1,4 @@
+import { StickerTextViewObject } from '../MenuViewObjects/StickerTextViewObject';
 import { DebugViewObject } from '../ViewObjects/Samples/DebugViewObject';
 import { CollisionManager } from './CollisionManager';
 import { Endzone } from '../GameObjects/Samples/Endzone';
@@ -26,6 +27,7 @@ import { RouteDrawingStageVisitor } from '../Clickables/RouteDrawingStageVisitor
 import { StartGameClickStrategy } from '../Clickables/ClickStrategies/StartGameClickStrategy';
 import { IViewObject } from '../ViewObjects/ViewObject.interface';
 import { FieldFactory } from '../GameObjects/FieldFactory';
+import { ComposableViewObject } from '../ViewObjects/ComposableViewObject';
 
 export class MatchTemplater {
 
@@ -35,6 +37,7 @@ export class MatchTemplater {
     private playerVOFactory: PlayerViewObjectFactory;
     private fieldFactory: FieldFactory;
     private clickManager: ClickableManager;
+    private messages: ComposableViewObject[] = [];
 
     public constructor(gameView: ComposableView, playerFactory: PlayerFactory, playerVOFactory: PlayerViewObjectFactory, fieldFactory: FieldFactory, clickManager: ClickableManager) {
         if(MatchTemplater._instance){
@@ -55,7 +58,7 @@ export class MatchTemplater {
 
     public createGame(){
         //create the player you control youreself (runner)
-        let runner: Player = this.playerFactory.createRunner(160,400, -90);
+        let runner: Player = this.playerFactory.createRunner(160,380, -90);
         let runnerViewObject = this.playerVOFactory.CreateRunnerInArea(runner, this.gameView);
 
 
@@ -94,19 +97,29 @@ export class MatchTemplater {
         //this.gameView.addView(endzoneVO);
 
         //create walls
-        let wall1 = this.fieldFactory.CreateWall(0,0,10,480);
+        let wall1 = this.fieldFactory.CreateWall(-10,0,10,480);
         let wall1VO = new DebugViewObject(wall1.x, wall1.y, wall1.width, wall1.height,0,wall1,new TopLeftDrawingStrategy());
         this.gameView.addView(wall1VO);
 
-        let wall2 = this.fieldFactory.CreateWall(310,0,10,480);
+        let wall2 = this.fieldFactory.CreateWall(320,0,10,480);
         let wall2VO = new DebugViewObject(wall2.x, wall2.y, wall2.width, wall2.height,0,wall2,new TopLeftDrawingStrategy());
         this.gameView.addView(wall2VO);
 
-        let wall3 = this.fieldFactory.CreateWall(0,470,320,10);
+        let wall3 = this.fieldFactory.CreateWall(0,480,320,10);
         let wall3VO = new DebugViewObject(wall3.x, wall3.y, wall3.width, wall3.height,0,wall3,new TopLeftDrawingStrategy());
         this.gameView.addView(wall3VO);
 
 
+        let text = new StickerTextViewObject(10,20, 280, 50, 0, new TopLeftDrawingStrategy(), null, null, "Tap Your Defenders");
+        text.backgroundColor = '#2ecc71';
+        text.font = "bold 26px Arial"
+        let text2 = new StickerTextViewObject(10,60, 280, 50, 0, new TopLeftDrawingStrategy(), null, null, "To Draw Their Routes");
+        text2.backgroundColor = '#2ecc71';
+        text2.font = "bold 26px Arial";
+        this.messages.push(new HorizontalCenterPositioningDecorator(text));
+        this.gameView.addView(this.messages[0]);
+        this.messages.push(new HorizontalCenterPositioningDecorator(text2));
+        this.gameView.addView(this.messages[1]);
 
         //this will moack stage 2 being hit where routes need to be drawn
         let visitor = new RouteDrawingStageVisitor(this.clickManager, this.gameView);
@@ -114,12 +127,16 @@ export class MatchTemplater {
             blockerVO.accept(visitor);
         });
 
-        let startButton = new ButtonViewObject(50,45,100,50,0,new TopLeftDrawingStrategy(), null, 'Start', () => {
+        let startButton = new ButtonViewObject(50,410,100,50,0,new TopLeftDrawingStrategy(), null, 'Start', () => {
             GameEngine.getInstance().start();
             let refs = RenderEngine.getInstance().getReferencesForStage('routeStage');
             refs.forEach(element => {
                 RenderEngine.getInstance().unregister(element as IViewObject);
             });
+            this.messages.forEach(element =>{
+                this.gameView.remove(element);
+            });
+            this.messages = [];
         });
         let hcent = new HorizontalCenterPositioningDecorator(startButton);
         this.gameView.addView(hcent);

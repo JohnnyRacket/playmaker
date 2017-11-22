@@ -45,7 +45,7 @@ export class PlayerFactory{
     }
 
     public createDefender(x: number, y: number, route: Route, area: ComposableView){
-        let player = new Player(x,y,16,16,'defender',.5);
+        let player = new Player(x,y,16,16,'defender',1.5);
         GameEngine.getInstance().addReferenceToStage(player, "gameplayStage");
         player.setHitbox(this.hitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = this.controllerFactory.createDefenderController(player, route);

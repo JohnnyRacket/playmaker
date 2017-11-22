@@ -3,7 +3,7 @@ export class Endzone extends CollidableGameObject{
 
     collide(object: CollidableGameObject) {
 
-        //console.log("you win!!!!!!");
+        if(object.type == 'runner') console.log("TOUCHDOWN");
     }
     tick() {
         throw new Error("Method not implemented.");

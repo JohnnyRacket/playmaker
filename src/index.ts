@@ -82,19 +82,19 @@ clickManager.addClickable(pauseButton);
 //gameArea.addView(pauseButton);
 
 //logo
-var logo = new LogoViewObject(0,80,300,100,0,new TopLeftDrawingStrategy(),new PauseGameClickStrategy(), null);
+var logo = new LogoViewObject(0,30,300,100,0,new TopLeftDrawingStrategy(),new PauseGameClickStrategy(), null, 'WILDCAT!');
 var logoCenter = new HorizontalCenterPositioningDecorator(logo);
 gameArea.addView(logoCenter);
 RenderEngine.getInstance().addReferenceToStage(logoCenter, 'menuStage');
 
 //main menu buttons
-var startButton = new ButtonViewObject(100,200,200,60,0,new TopLeftDrawingStrategy(), new FindMatchClickStrategy(), "Find Match", null);
+var startButton = new ButtonViewObject(100,170,200,60,0,new TopLeftDrawingStrategy(), new FindMatchClickStrategy(), "Single Player", null);
 var startButtonCenter = new HorizontalCenterPositioningDecorator(startButton);
 clickManager.addClickable(startButtonCenter);
 gameArea.addView(startButtonCenter);
 RenderEngine.getInstance().addReferenceToStage(startButtonCenter, 'menuStage');
 
-var defenseButton = new ButtonViewObject(100,280,200,60,0,new TopLeftDrawingStrategy(), new PauseGameClickStrategy(), "Create Defense", null);
+var defenseButton = new ButtonViewObject(100,250,200,60,0,new TopLeftDrawingStrategy(), new PauseGameClickStrategy(), "Instructions", null);
 var defenseButtonCenter = new HorizontalCenterPositioningDecorator(defenseButton);
 clickManager.addClickable(defenseButtonCenter);
 gameArea.addView(defenseButtonCenter);

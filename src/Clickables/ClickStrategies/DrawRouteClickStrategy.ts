@@ -1,3 +1,4 @@
+import { StickerTextViewObject } from '../../MenuViewObjects/StickerTextViewObject';
 import { ComposableViewObject } from '../../ViewObjects/ComposableViewObject';
 import {
     HorizontalCenterPositioningDecorator,
@@ -19,6 +20,7 @@ import { ControllableGameObject } from '../../GameObjects/ControllableGameObejec
 import { ClickStrategy } from '../ClickStrategy';
 import { Route } from "../../Controllers/Route";
 import { TopLeftDrawingStrategy } from '../../DrawingStrategies/TopLeftDrawingStrategy';
+import { LogoViewObject } from '../../MenuViewObjects/LogoViewObject';
 
 export class DrawRouteClickStrategy extends ClickStrategy {
 
@@ -26,6 +28,7 @@ export class DrawRouteClickStrategy extends ClickStrategy {
     private gameArea: ComposableView;
 
     private text: ComposableViewObject;
+    private text2: ComposableViewObject;
     private player: ControllableGameObject;
 
     constructor(clickableManager: ClickableManager, gameArea: ComposableView){
@@ -47,9 +50,14 @@ export class DrawRouteClickStrategy extends ClickStrategy {
         this.clickableManager.clickInterceptor = new RouteClickHandler(this.player, route, routeView, this.gameArea, this.clickableManager, this);
         this.gameArea.addView(routeView);
 
-        let text = new ButtonViewObject(10,45, 180, 50, 0, new TopLeftDrawingStrategy(), null, 'Save Route', null);
+        let text = new StickerTextViewObject(10,20, 280, 50, 0, new TopLeftDrawingStrategy(), null, null, "Click Endzone");
+        text.backgroundColor = '#2ecc71';
+        let text2 = new StickerTextViewObject(10,60, 280, 50, 0, new TopLeftDrawingStrategy(), null, null, "To Save Route");
+        text2.backgroundColor = '#2ecc71';
         this.text = new HorizontalCenterPositioningDecorator(text);
         this.gameArea.addView(this.text);
+        this.text2 = new HorizontalCenterPositioningDecorator(text2);
+        this.gameArea.addView(this.text2);
         
         //grey out everything else and message that says click the player again to finalize the route
         //also create the route route view object
@@ -63,6 +71,7 @@ export class DrawRouteClickStrategy extends ClickStrategy {
         (this.player.controller as RouteController).route = new Route(route);
         console.log((this.player.controller as RouteController).route);
         this.gameArea.remove(this.text);
+        this.gameArea.remove(this.text2);
     }
 
 }
