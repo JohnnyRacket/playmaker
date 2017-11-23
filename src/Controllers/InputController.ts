@@ -40,10 +40,10 @@ export class InputController extends Controller{
 
     decide() {
         if(this.right) {
-            this.angle += this.subject.speed * 1.5 * Math.PI/180;
+            this.angle += this.subject.speed * 2 * Math.PI/180;
         }
         if(this.left){
-            this.angle -= this.subject.speed * 1.5 * Math.PI/180;
+            this.angle -= this.subject.speed * 2 * Math.PI/180;
         } 
         this.subject.angle = this.angle;
     }

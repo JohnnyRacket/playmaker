@@ -26,7 +26,7 @@ export class PlayerFactory{
 
 
     public createRunner(x: number, y: number, angle: number){
-        let player = new Player(x,y,16,16,'runner',1.75);
+        let player = new Player(x,y,16,16,'runner',1.8);
         player.angle = angle;
         player.setHitbox(this.hitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = this.controllerFactory.createInputController(player);
@@ -38,7 +38,7 @@ export class PlayerFactory{
     }
     
     public createBlocker(x: number, y: number, route: Route, area: ComposableView){
-        let player = new Player(x,y,16,16,'blocker',1.25);
+        let player = new Player(x,y,16,16,'blocker',1.2);
         player.setHitbox(this.hitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = this.controllerFactory.createBlockerController(player, route);
         player.controller = controller;
@@ -48,7 +48,7 @@ export class PlayerFactory{
     }
 
     public createDefender(x: number, y: number, route: Route, area: ComposableView){
-        let player = new Player(x,y,16,16,'defender',1.5);
+        let player = new Player(x,y,16,16,'defender',1.4);
         GameEngine.getInstance().addReferenceToStage(player, "gameplayStage");
         player.setHitbox(this.hitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = this.controllerFactory.createDefenderController(player, route);
