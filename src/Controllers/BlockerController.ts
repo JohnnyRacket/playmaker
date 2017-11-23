@@ -32,6 +32,7 @@ export class BlockerController extends RouteController {
         if(object.type == 'defender'){
             this.colliding = true;
             this.subject.speed = this.originalSpeed/2;
+            this.endRoute();
             //console.log('harassing a defender!');
         }
     }

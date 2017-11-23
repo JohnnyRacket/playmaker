@@ -24,6 +24,7 @@ export class DefenderController extends RouteController {
         if(object.type == 'blocker'){
             this.colliding = true;
             this.subject.speed = this.originalSpeed/2;
+            this.endRoute();
             //console.log('being slowed by a blocker!');
         }
         if(object.type == 'runner'){

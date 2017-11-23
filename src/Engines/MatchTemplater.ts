@@ -1,3 +1,5 @@
+import { BottomLockPositioningDecorator } from '../ViewObjects/PositioningDecorators/BottomLockPositioningDecorator';
+import { ScoreViewObject } from '../MenuViewObjects/ScoreViewObject';
 import { StickerTextViewObject } from '../MenuViewObjects/StickerTextViewObject';
 import { DebugViewObject } from '../ViewObjects/Samples/DebugViewObject';
 import { CollisionManager } from './CollisionManager';
@@ -28,6 +30,7 @@ import { StartGameClickStrategy } from '../Clickables/ClickStrategies/StartGameC
 import { IViewObject } from '../ViewObjects/ViewObject.interface';
 import { FieldFactory } from '../GameObjects/FieldFactory';
 import { ComposableViewObject } from '../ViewObjects/ComposableViewObject';
+import { RightLockPositioningDecorator } from '../ViewObjects/PositioningDecorators/RightLockPositioningDecorator';
 
 export class MatchTemplater {
 
@@ -66,10 +69,10 @@ export class MatchTemplater {
         let blockers: Player[] = [];
         let blockerVOs: SquarePlayerViewObject[] = [];
 
-        blockers.push(this.playerFactory.createBlocker(110,300,new Route([new Coordinate(90,280)]), this.gameView));
+        blockers.push(this.playerFactory.createBlocker(110,300,null, this.gameView));
         blockers.push(this.playerFactory.createBlocker(145,300,new Route([new Coordinate(130,290)]), this.gameView));
         blockers.push(this.playerFactory.createBlocker(180,300,new Route([new Coordinate(150,280)]), this.gameView));
-        blockers.push(this.playerFactory.createBlocker(230,300,new Route([new Coordinate(260,280)]), this.gameView));
+        blockers.push(this.playerFactory.createBlocker(215,300,new Route([new Coordinate(260,280)]), this.gameView));
         
         //create the view objects for each blocker
         blockers.forEach(blocker => {
@@ -77,15 +80,35 @@ export class MatchTemplater {
         });
         
         //create defenders with routes
+        let defenderPositions: Coordinate[][] = [
+            [new Coordinate(60, 260), new Coordinate(110, 260), new Coordinate(160, 260), new Coordinate(210, 260), new Coordinate(260, 260)],
+            [new Coordinate(100, 260), new Coordinate(130, 260), new Coordinate(160, 260), new Coordinate(190, 260), new Coordinate(220, 260)],
+            [new Coordinate(60, 160), new Coordinate(110, 260), new Coordinate(160, 260), new Coordinate(210, 260), new Coordinate(260, 160)],
+            [new Coordinate(80, 260), new Coordinate(133, 260), new Coordinate(186, 260), new Coordinate(240, 260), new Coordinate(160, 160)],
+            [new Coordinate(60, 260), new Coordinate(110, 260), new Coordinate(160, 260), new Coordinate(210, 260), new Coordinate(260, 260)],
+            [new Coordinate(80, 260), new Coordinate(160, 260), new Coordinate(240, 260), new Coordinate(120, 160), new Coordinate(200, 160)]
+        ];
+        let defenderRoutes: Coordinate[][] = [
+            [new Coordinate(40,0), new Coordinate(0,40)], //right then down
+            [new Coordinate(-40,0),new Coordinate(0,40)], // left then down
+            [new Coordinate(0,30)], //straight down
+            [new Coordinate(30,30)], //downright
+            [new Coordinate(-30,30)], //downleft
+            [new Coordinate(0,-60)], //drop into coverage
+        ];
         let defenders: Player[] = [];
         let defenderVOs: SquarePlayerViewObject[] = [];
-
-        defenders.push(this.playerFactory.createDefender(60,250,new Route([new Coordinate(80,270)]), this.gameView));
-        defenders.push(this.playerFactory.createDefender(110,250,new Route([new Coordinate(130, 270)]), this.gameView));
-        defenders.push(this.playerFactory.createDefender(160,250,new Route([new Coordinate(160,150), new Coordinate(170,100)]), this.gameView));
-        defenders.push(this.playerFactory.createDefender(260,250,new Route([new Coordinate(240,270)]), this.gameView));
-        defenders.push(this.playerFactory.createDefender(210,250,new Route([new Coordinate(190,270)]), this.gameView));
-
+        let defenderPositionIndex = Math.floor(Math.random() * defenderPositions.length);
+        
+        for(let i = 0; i < 5; ++i){
+            console.log(defenderPositionIndex);
+            var route = defenderRoutes[Math.floor(Math.random()*defenderRoutes.length)];
+            var newRoute: Coordinate[] = [];
+            route.forEach(coordinate => {
+                newRoute.push( new Coordinate(coordinate.x + defenderPositions[defenderPositionIndex][i].x, coordinate.y + defenderPositions[defenderPositionIndex][i].y));
+            });
+            defenders.push(this.playerFactory.createDefender(defenderPositions[defenderPositionIndex][i].x,defenderPositions[defenderPositionIndex][i].y,new Route(newRoute), this.gameView));
+        }
         defenders.forEach(defender => {
             defenderVOs.push(this.playerVOFactory.CreateDefenderInArea(defender, this.gameView));
         });
@@ -108,6 +131,10 @@ export class MatchTemplater {
         let wall3 = this.fieldFactory.CreateWall(0,480,320,10);
         let wall3VO = new DebugViewObject(wall3.x, wall3.y, wall3.width, wall3.height,0,wall3,new TopLeftDrawingStrategy());
         this.gameView.addView(wall3VO);
+
+        let scoreVO = new ScoreViewObject(20,0,100,40,0,new TopLeftDrawingStrategy(), null, null);
+        let bottomLockScore = new BottomLockPositioningDecorator(scoreVO, 10)
+        this.gameView.addView(bottomLockScore);
 
 
         let text = new StickerTextViewObject(10,20, 280, 50, 0, new TopLeftDrawingStrategy(), null, null, "Tap Your Defenders");
@@ -138,7 +165,7 @@ export class MatchTemplater {
             });
             this.messages = [];
         });
-        let hcent = new HorizontalCenterPositioningDecorator(startButton);
+        let hcent = new RightLockPositioningDecorator(startButton, 20);
         this.gameView.addView(hcent);
         this.clickManager.addClickable(hcent);
         RenderEngine.getInstance().addReferenceToStage(hcent, 'routeStage');

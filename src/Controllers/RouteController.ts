@@ -53,7 +53,7 @@ export class RouteController extends Controller{
             if(this.withinRange(Math.round(location.x), Math.round(destination.x), this.subject.speed) && this.withinRange(Math.round(location.y), Math.round(destination.y), this.subject.speed)){
                 this.routeIndex++;
             }else{
-                this.subject.angle = Math.atan2(destination.y - location.y, destination.x - location.x);
+                this.subject.angle = Math.atan2(destination.y - location.y, destination.x - location.x); 
             }
             
         }else{
@@ -61,7 +61,11 @@ export class RouteController extends Controller{
         }
     }
     protected routeComplete(): boolean{
+        if(!this.route) return true;
         return this.routeIndex >= this.route.numPoints;
+    }
+    protected endRoute(){
+        if(this.route) this.routeIndex += this.route.numPoints;
     }
     
 }

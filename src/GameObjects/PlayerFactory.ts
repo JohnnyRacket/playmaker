@@ -16,6 +16,9 @@ export class PlayerFactory{
     private hitBoxFactory: HitBoxFactory;
     private controllerFactory: ControllerFactory;
 
+    
+
+
     public constructor(hitboxFactory: HitBoxFactory, controllerFactory: ControllerFactory){
         this.hitBoxFactory = hitboxFactory;
         this.controllerFactory = controllerFactory;
