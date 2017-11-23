@@ -37,4 +37,8 @@ export class GameMap {
         })
     }
 
+    public clearGameMap(){
+        this.objects = [];
+    }
+
 }

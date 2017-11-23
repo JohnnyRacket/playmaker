@@ -68,7 +68,7 @@ let playerViewObjectFactory = new PlayerViewObjectFactory();
 let fieldFactory = new FieldFactory(hitBoxFactory, controllerFactory);
 //create a composable view for game area to exist in
 let gameArea = new ComposableView(100,100,320,480);
-let templater = new MatchTemplater(gameArea, playerFactory, playerViewObjectFactory, fieldFactory, clickManager);
+let templater = new MatchTemplater(gameArea, playerFactory, playerViewObjectFactory, fieldFactory, clickManager, collisionManager);
 
 let test2 = new VerticalCenterDecorator(gameArea);
 let test = new HorizontalCenterDecorator(test2);

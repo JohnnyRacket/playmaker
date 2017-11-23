@@ -44,6 +44,7 @@ export class MatchTemplater {
     private playerVOFactory: PlayerViewObjectFactory;
     private fieldFactory: FieldFactory;
     private clickManager: ClickableManager;
+    private collisionManager: CollisionManager;
     private messages: ComposableViewObject[] = [];
 
     private blockers: Player[] = [];
@@ -58,7 +59,7 @@ export class MatchTemplater {
     private runner: Player;
     private runnerViewObject: SquarePlayerViewObject;
 
-    public constructor(gameView: ComposableView, playerFactory: PlayerFactory, playerVOFactory: PlayerViewObjectFactory, fieldFactory: FieldFactory, clickManager: ClickableManager) {
+    public constructor(gameView: ComposableView, playerFactory: PlayerFactory, playerVOFactory: PlayerViewObjectFactory, fieldFactory: FieldFactory, clickManager: ClickableManager, collisionManager: CollisionManager) {
         if(MatchTemplater._instance){
             throw new Error("Error: Instantiation failed: Use MatchTemplater.getInstance() instead of new.");
         }
@@ -67,6 +68,7 @@ export class MatchTemplater {
         this.playerVOFactory = playerVOFactory;
         this.fieldFactory = fieldFactory;
         this.clickManager = clickManager;
+        this.collisionManager = collisionManager;
         MatchTemplater._instance = this;
         ScoreKeeper.getInstance().matchTemplater = this;
     }
@@ -97,6 +99,16 @@ export class MatchTemplater {
             RenderEngine.getInstance().unregister(defender);
         });
         this.blockers = []; this.defenders = []; this.blockerVOs = []; this.defenderVOs = [];
+        GameEngine.getInstance().unregister(this.runner);
+        RenderEngine.getInstance().unregister(this.runnerViewObject);
+        this.runner = null;
+        this.runnerViewObject = null;
+        this.collisionManager.dumpActiveHitboxes();
+        GameMap.getInstance().clearGameMap();
+
+        this.runner = this.playerFactory.createRunner(160,380, -90);
+        this.runnerViewObject = this.playerVOFactory.CreateRunnerInArea(this.runner, this.gameView);
+
         this.playSelectStage();
     }
     public createGame(){

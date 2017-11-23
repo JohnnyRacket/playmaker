@@ -142,6 +142,10 @@ export class CollisionManager implements IModelService{
         throw new Error('Not implemented yet.');
     }
 
+    public dumpActiveHitboxes(){
+        this.activeCollidables = [];
+    }
+
     public remove(object: Object) {
         
         let gameObject = object as CollidableGameObject;

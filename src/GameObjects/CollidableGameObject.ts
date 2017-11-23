@@ -23,4 +23,5 @@ export abstract class CollidableGameObject extends PositionableGameObject{
     public removeHitbox(){
         this.hitbox = null;
     }
+
 }

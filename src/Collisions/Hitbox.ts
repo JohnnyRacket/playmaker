@@ -1,3 +1,4 @@
+import { GameEngine } from '../Engines/GameEngine';
 import { CollidableGameObject } from '../GameObjects/CollidableGameObject';
 import { IObserver } from '../Observables/Observer.interface';
 
@@ -45,4 +46,5 @@ export class Hitbox{
    public collide(hitbox: Hitbox){
         this.subject.collide(hitbox.subject);
     }     
+
 }
