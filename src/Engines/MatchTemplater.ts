@@ -1,3 +1,6 @@
+import { CenterDrawingStrategy } from '../DrawingStrategies/CenterDrawingStrategy';
+import { ClickStrategy } from '../Clickables/ClickStrategy';
+import { PlaySelectViewObject } from '../MenuViewObjects/PlaySelectViewObject';
 import { BottomLockPositioningDecorator } from '../ViewObjects/PositioningDecorators/BottomLockPositioningDecorator';
 import { ScoreViewObject } from '../MenuViewObjects/ScoreViewObject';
 import { StickerTextViewObject } from '../MenuViewObjects/StickerTextViewObject';
@@ -31,6 +34,7 @@ import { IViewObject } from '../ViewObjects/ViewObject.interface';
 import { FieldFactory } from '../GameObjects/FieldFactory';
 import { ComposableViewObject } from '../ViewObjects/ComposableViewObject';
 import { RightLockPositioningDecorator } from '../ViewObjects/PositioningDecorators/RightLockPositioningDecorator';
+import { ScoreKeeper } from './ScoreKeeper';
 
 export class MatchTemplater {
 
@@ -48,6 +52,12 @@ export class MatchTemplater {
     private defenders: Player[] = [];
     private defenderVOs: SquarePlayerViewObject[] = [];
 
+    private playSelection: number = 0;
+    private blockerPositions : Coordinate[][] = [];
+
+    private runner: Player;
+    private runnerViewObject: SquarePlayerViewObject;
+
     public constructor(gameView: ComposableView, playerFactory: PlayerFactory, playerVOFactory: PlayerViewObjectFactory, fieldFactory: FieldFactory, clickManager: ClickableManager) {
         if(MatchTemplater._instance){
             throw new Error("Error: Instantiation failed: Use MatchTemplater.getInstance() instead of new.");
@@ -58,6 +68,7 @@ export class MatchTemplater {
         this.fieldFactory = fieldFactory;
         this.clickManager = clickManager;
         MatchTemplater._instance = this;
+        ScoreKeeper.getInstance().matchTemplater = this;
     }
  
     public static getInstance(): MatchTemplater
@@ -65,14 +76,37 @@ export class MatchTemplater {
         return MatchTemplater._instance;
     }
 
+    public resetGame(){
+        GameEngine.getInstance().stop();
+        ScoreKeeper.getInstance().unlockScoring();
+        this.runner.x = 160;
+        this.runner.y = 380;
+        this.runner.angle = -90;
+        this.runnerViewObject.update();
+
+        this.blockers.forEach(blocker => {
+            GameEngine.getInstance().unregister(blocker);
+        });
+        this.defenders.forEach(defender => {
+            GameEngine.getInstance().unregister(defender);
+        });
+        this.blockerVOs.forEach(blocker => {
+            RenderEngine.getInstance().unregister(blocker);
+        });
+        this.defenderVOs.forEach(defender => {
+            RenderEngine.getInstance().unregister(defender);
+        });
+        this.blockers = []; this.defenders = []; this.blockerVOs = []; this.defenderVOs = [];
+        this.playSelectStage();
+    }
     public createGame(){
         //create the player you control youreself (runner)
-        let runner: Player = this.playerFactory.createRunner(160,380, -90);
-        let runnerViewObject = this.playerVOFactory.CreateRunnerInArea(runner, this.gameView);
+        this.runner = this.playerFactory.createRunner(160,380, -90);
+        this.runnerViewObject = this.playerVOFactory.CreateRunnerInArea(this.runner, this.gameView);
 
         //GameEngine.getInstance().stop();
         //add endzone to score in
-        let endzone = this.fieldFactory.CreateEndZone(0,0)//new Endzone(0,0,320,120,'endzone');
+        let endzone = this.fieldFactory.CreateEndZone(0,0);//new Endzone(0,0,320,120,'endzone');
         //GameEngine.getInstance().register(endzone);
         //let endzoneVO = new DebugViewObject(endzone.x, endzone.y,endzone.width, endzone.height, 0, endzone, new TopLeftDrawingStrategy())
         //this.gameView.addView(endzoneVO);
@@ -109,23 +143,85 @@ export class MatchTemplater {
     }
 
     private playSelectStage(){
+        let blockerIndex = 0;
+        this.blockerPositions = [
+            [new Coordinate(110, 300), new Coordinate(145, 300), new Coordinate(180, 300), new Coordinate(215, 300)],
+            [new Coordinate(70, 300), new Coordinate(105, 300), new Coordinate(140, 300), new Coordinate(200, 300)],
+            [new Coordinate(120, 300), new Coordinate(185, 300), new Coordinate(220, 300), new Coordinate(255, 300)],
+            [new Coordinate(70, 300), new Coordinate(105, 300), new Coordinate(220, 300), new Coordinate(255, 300)],
+        ]
 
-        this.createBlockers(0);
-    }
-
-    private createBlockers(play: number){
-        //create blockers with aroutes
-        this.blockers.push(this.playerFactory.createBlocker(110,300,null, this.gameView));
-        this.blockers.push(this.playerFactory.createBlocker(145,300,new Route([new Coordinate(130,290)]), this.gameView));
-        this.blockers.push(this.playerFactory.createBlocker(180,300,new Route([new Coordinate(150,280)]), this.gameView));
-        this.blockers.push(this.playerFactory.createBlocker(215,300,new Route([new Coordinate(260,280)]), this.gameView));
+        this.blockers.push(this.playerFactory.createBlocker(this.blockerPositions[0][0].x,this.blockerPositions[0][0].y,null, this.gameView));
+        this.blockers.push(this.playerFactory.createBlocker(this.blockerPositions[0][1].x,this.blockerPositions[0][1].y,null, this.gameView));
+        this.blockers.push(this.playerFactory.createBlocker(this.blockerPositions[0][2].x,this.blockerPositions[0][2].y,null, this.gameView));
+        this.blockers.push(this.playerFactory.createBlocker(this.blockerPositions[0][3].x,this.blockerPositions[0][3].y,null, this.gameView));
         
-        //create the view objects for each blocker
+        //create the view objects for each blocker 
         this.blockers.forEach(blocker => {
             this.blockerVOs.push(this.playerVOFactory.CreateBlockerInArea(blocker, this.gameView));
         });
-               
-        this.routeDrawStage();
+        let leftButton = new ButtonViewObject(20,215,50,50,0,new TopLeftDrawingStrategy(), null, '<', () => {
+            this.setPlay(this.playSelection - 1);
+            this.changeBlockerLayout(this.playSelection);
+        });
+
+        let rightButton = new ButtonViewObject(250,215,50,50,0,new TopLeftDrawingStrategy(), null, '>', () => {
+            this.setPlay(this.playSelection + 1);
+            this.changeBlockerLayout(this.playSelection);
+        });
+        this.clickManager.addClickable(leftButton);
+
+        this.clickManager.addClickable(rightButton);
+        
+        this.gameView.addView(leftButton);
+        this.gameView.addView(rightButton);
+        RenderEngine.getInstance().addReferenceToStage(leftButton, 'playSelectStage');
+        RenderEngine.getInstance().addReferenceToStage(rightButton, 'playSelectStage');
+
+        let selectButton = new ButtonViewObject(50,410,100,50,0,new TopLeftDrawingStrategy(), null, 'Select', () => {
+            
+            let refs = RenderEngine.getInstance().getReferencesForStage('playSelectStage');
+            refs.forEach(element => {
+                RenderEngine.getInstance().unregister(element as IViewObject);
+            });
+            this.messages.forEach(element =>{
+                this.gameView.remove(element);
+            });
+            this.messages = [];
+            
+            this.routeDrawStage();
+        });
+        let hcent = new RightLockPositioningDecorator(selectButton, 25);
+        this.gameView.addView(hcent);
+        this.clickManager.addClickable(hcent);
+        RenderEngine.getInstance().addReferenceToStage(hcent, 'playSelectStage');
+
+        let text = new StickerTextViewObject(10,20, 280, 50, 0, new TopLeftDrawingStrategy(), null, null, "Tap Arrows to");
+        text.backgroundColor = '#2ecc71';
+        text.font = "bold 26px Arial"
+        let text2 = new StickerTextViewObject(10,60, 280, 50, 0, new TopLeftDrawingStrategy(), null, null, "Change Plays");
+        text2.backgroundColor = '#2ecc71';
+        text2.font = "bold 26px Arial";
+        this.messages.push(new HorizontalCenterPositioningDecorator(text));
+        this.gameView.addView(this.messages[0]);
+        this.messages.push(new HorizontalCenterPositioningDecorator(text2));
+        this.gameView.addView(this.messages[1]);
+
+    }
+
+
+    private changeBlockerLayout(play: number){
+        //create blockers with aroutes
+       for(let i = 0; i < this.blockers.length; ++i){
+           this.blockers[i].x = this.blockerPositions[play][i].x;
+           this.blockers[i].y = this.blockerPositions[play][i].y;
+           
+       }
+
+       this.blockerVOs.forEach(blockerVO => {
+           blockerVO.update();
+       });
+  
     }
 
     private routeDrawStage(){
@@ -196,6 +292,13 @@ export class MatchTemplater {
         this.gameView.addView(hcent);
         this.clickManager.addClickable(hcent);
         RenderEngine.getInstance().addReferenceToStage(hcent, 'routeStage');
+    }
+    
+    private setPlay(number){
+        
+        if (number < 0) this.playSelection = this.blockerPositions.length -1;
+        else if(number >= this.blockerPositions.length) this.playSelection = 0;
+        else this.playSelection = number;
     }
 
 }

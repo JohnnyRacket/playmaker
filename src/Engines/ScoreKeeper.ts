@@ -1,3 +1,4 @@
+import { MatchTemplater } from './MatchTemplater';
 import { IObservable } from '../Observables/Observable.interface';
 import { ComposableViewObject } from "../ViewObjects/ComposableViewObject";
 import { IObserver } from "../Observables/Observer.interface";
@@ -15,6 +16,8 @@ export class ScoreKeeper{
         private scored: boolean = false;
 
         private observers: IObserver[] = [];
+
+        public matchTemplater: MatchTemplater; //TODO remove this coupling
     
         private constructor() {
             if(ScoreKeeper._instance){
@@ -35,6 +38,7 @@ export class ScoreKeeper{
                 this._score++;
                 this.scored = true;
                 this.updateObservers();
+                this.matchTemplater.resetGame();
             }
         }
 
@@ -42,6 +46,7 @@ export class ScoreKeeper{
             this._score = 0;
             this.scored = false;
             this.updateObservers();
+            this.matchTemplater.resetGame();
         }
 
         public unlockScoring(){

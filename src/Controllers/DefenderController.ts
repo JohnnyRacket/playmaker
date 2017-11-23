@@ -1,3 +1,4 @@
+import { ScoreKeeper } from '../Engines/ScoreKeeper';
 import { GameEngine } from '../Engines/GameEngine';
 import { MapObject } from '../GameObjects/MapObject';
 import { GameMap } from '../Engines/GameMap';
@@ -40,6 +41,7 @@ export class DefenderController extends RouteController {
         }
         if(object.type == 'runner'){
             GameEngine.getInstance().stop();
+            setTimeout(function(){ScoreKeeper.getInstance().resetScore();},2000);
         }
     }
 
