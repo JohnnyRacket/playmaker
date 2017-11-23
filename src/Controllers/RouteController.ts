@@ -1,3 +1,4 @@
+import { MapObject } from '../GameObjects/MapObject';
 import { GameEngine } from '../Engines/GameEngine';
 import { CollisionManager } from '../Engines/CollisionManager';
 import { ControllableGameObject } from '../GameObjects/ControllableGameObeject';
@@ -59,6 +60,10 @@ export class RouteController extends Controller{
         }else{
             //console.log('my route is complete');
         }
+    }
+
+    protected calculateDistance(object: MapObject): number{
+        return Math.sqrt(Math.pow(this.subject.x - object.object.x, 2) + Math.pow(this.subject.y - object.object.y, 2));
     }
     protected routeComplete(): boolean{
         if(!this.route) return true;

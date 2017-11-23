@@ -35,9 +35,11 @@ export class BlockerController extends RouteController {
             this.endRoute();
             //console.log('harassing a defender!');
         }
+        if(object.type == 'blocker'){
+            this.endRoute();
+            //console.log('harassing a defender!');
+        }
     }
 
-    private calculateDistance(object: MapObject): number{
-        return Math.sqrt(Math.pow(this.subject.x - object.object.x, 2) + Math.pow(this.subject.y - object.object.y, 2));
-    }
+    
 }

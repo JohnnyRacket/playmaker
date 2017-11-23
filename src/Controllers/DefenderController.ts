@@ -14,8 +14,14 @@ export class DefenderController extends RouteController {
             let runners = GameMap.getInstance().getAllOfType('runner');
             let target = runners[0];
 
+            let distance = this.calculateDistance(target);
+            //based on distance we want to aim in front of the runner
+            let newTargetX =  distance/2 * Math.cos(target.object.angle);
+            let newTargetY =  distance/2 * Math.sin(target.object.angle);
+            
+
             //target located now go towards it
-            this.subject.angle = Math.atan2(target.object.y - this.subject.y, target.object.x - this.subject.x);
+            this.subject.angle = Math.atan2((target.object.y + newTargetY) - this.subject.y, (target.object.x + newTargetX) - this.subject.x);
 
         }
     }
@@ -27,12 +33,13 @@ export class DefenderController extends RouteController {
             this.endRoute();
             //console.log('being slowed by a blocker!');
         }
+        if(object.type == 'defender'){
+            this.endRoute();
+            //console.log('being slowed by a blocker!');
+        }
         if(object.type == 'runner'){
             GameEngine.getInstance().stop();
         }
     }
 
-    private calculateDistance(object: MapObject): number{
-        return Math.sqrt(Math.pow(this.subject.x - object.object.x, 2) + Math.pow(this.subject.y - object.object.y, 2));
-    }
 }
