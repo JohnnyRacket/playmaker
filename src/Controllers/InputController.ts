@@ -54,7 +54,7 @@ export class InputController extends Controller{
     }
     act() {
         if(this.turning){
-            if (this.speed > 1.25)
+            if (this.speed > 1)
             this.speed -= .015;
         }else {
             if(this.speed < this.subject.speed)

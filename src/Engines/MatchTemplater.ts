@@ -159,40 +159,104 @@ export class MatchTemplater {
         this.blockerPositions = [
             [new Coordinate(110, 300), new Coordinate(145, 300), new Coordinate(180, 300), new Coordinate(215, 300)],
             [new Coordinate(70, 300), new Coordinate(105, 300), new Coordinate(140, 300), new Coordinate(200, 300)],
-            [new Coordinate(120, 300), new Coordinate(185, 300), new Coordinate(220, 300), new Coordinate(255, 300)],
-            [new Coordinate(70, 300), new Coordinate(105, 300), new Coordinate(220, 300), new Coordinate(255, 300)],
+            [new Coordinate(120, 300), new Coordinate(185, 300), new Coordinate(220, 300), new Coordinate(255, 300)]
+            //[new Coordinate(70, 300), new Coordinate(105, 300), new Coordinate(220, 300), new Coordinate(255, 300)],
         ]
+        let blockerPositionIndex = Math.floor(Math.random() * this.blockerPositions.length);
+        
 
-        this.blockers.push(this.playerFactory.createBlocker(this.blockerPositions[0][0].x,this.blockerPositions[0][0].y,null, this.gameView));
-        this.blockers.push(this.playerFactory.createBlocker(this.blockerPositions[0][1].x,this.blockerPositions[0][1].y,null, this.gameView));
-        this.blockers.push(this.playerFactory.createBlocker(this.blockerPositions[0][2].x,this.blockerPositions[0][2].y,null, this.gameView));
-        this.blockers.push(this.playerFactory.createBlocker(this.blockerPositions[0][3].x,this.blockerPositions[0][3].y,null, this.gameView));
+        this.blockers.push(this.playerFactory.createBlocker(this.blockerPositions[blockerPositionIndex][0].x,this.blockerPositions[0][0].y,null, this.gameView));
+        this.blockers.push(this.playerFactory.createBlocker(this.blockerPositions[blockerPositionIndex][1].x,this.blockerPositions[0][1].y,null, this.gameView));
+        this.blockers.push(this.playerFactory.createBlocker(this.blockerPositions[blockerPositionIndex][2].x,this.blockerPositions[0][2].y,null, this.gameView));
+        this.blockers.push(this.playerFactory.createBlocker(this.blockerPositions[blockerPositionIndex][3].x,this.blockerPositions[0][3].y,null, this.gameView));
         
         //create the view objects for each blocker 
         this.blockers.forEach(blocker => {
             this.blockerVOs.push(this.playerVOFactory.CreateBlockerInArea(blocker, this.gameView));
         });
-        let leftButton = new ButtonViewObject(20,215,50,50,0,new TopLeftDrawingStrategy(), null, '<', () => {
-            this.setPlay(this.playSelection - 1);
-            this.changeBlockerLayout(this.playSelection);
-        });
+        // let leftButton = new ButtonViewObject(20,215,50,50,0,new TopLeftDrawingStrategy(), null, '<', () => {
+        //     this.setPlay(this.playSelection - 1);
+        //     this.changeBlockerLayout(this.playSelection);
+        // });
 
-        let rightButton = new ButtonViewObject(250,215,50,50,0,new TopLeftDrawingStrategy(), null, '>', () => {
-            this.setPlay(this.playSelection + 1);
-            this.changeBlockerLayout(this.playSelection);
-        });
-        this.clickManager.addClickable(leftButton);
+        // let rightButton = new ButtonViewObject(250,215,50,50,0,new TopLeftDrawingStrategy(), null, '>', () => {
+        //     this.setPlay(this.playSelection + 1);
+        //     this.changeBlockerLayout(this.playSelection);
+        // });
+        // this.clickManager.addClickable(leftButton);
 
-        this.clickManager.addClickable(rightButton);
+        // this.clickManager.addClickable(rightButton);
         
-        this.gameView.addView(leftButton);
-        this.gameView.addView(rightButton);
-        RenderEngine.getInstance().addReferenceToStage(leftButton, 'playSelectStage');
-        RenderEngine.getInstance().addReferenceToStage(rightButton, 'playSelectStage');
+        // this.gameView.addView(leftButton);
+        // this.gameView.addView(rightButton);
+        // RenderEngine.getInstance().addReferenceToStage(leftButton, 'playSelectStage');
+        // RenderEngine.getInstance().addReferenceToStage(rightButton, 'playSelectStage');
 
-        let selectButton = new ButtonViewObject(50,410,100,50,0,new TopLeftDrawingStrategy(), null, 'Select', () => {
+        // let selectButton = new ButtonViewObject(50,410,100,50,0,new TopLeftDrawingStrategy(), null, 'Select', () => {
             
-            let refs = RenderEngine.getInstance().getReferencesForStage('playSelectStage');
+        //     let refs = RenderEngine.getInstance().getReferencesForStage('playSelectStage');
+        //     refs.forEach(element => {
+        //         RenderEngine.getInstance().unregister(element as IViewObject);
+        //     });
+        //     this.messages.forEach(element =>{
+        //         this.gameView.remove(element);
+        //     });
+        //     this.messages = [];
+            
+        //     this.routeDrawStage();
+        // });
+        // let hcent = new RightLockPositioningDecorator(selectButton, 25);
+        // this.gameView.addView(hcent);
+        // this.clickManager.addClickable(hcent);
+        // RenderEngine.getInstance().addReferenceToStage(hcent, 'playSelectStage');
+
+        // let text = new StickerTextViewObject(10,20, 280, 50, 0, new TopLeftDrawingStrategy(), null, null, "Tap Arrows to");
+        // text.backgroundColor = '#2ecc71';
+        // text.font = "bold 26px Arial"
+        // let text2 = new StickerTextViewObject(10,60, 280, 50, 0, new TopLeftDrawingStrategy(), null, null, "Change Plays");
+        // text2.backgroundColor = '#2ecc71';
+        // text2.font = "bold 26px Arial";
+        // this.messages.push(new HorizontalCenterPositioningDecorator(text));
+        // this.gameView.addView(this.messages[0]);
+        // this.messages.push(new HorizontalCenterPositioningDecorator(text2));
+        // this.gameView.addView(this.messages[1]);
+
+        //create defenders with routes
+        let defenderPositions: Coordinate[][] = [
+            [new Coordinate(60, 260), new Coordinate(110, 260), new Coordinate(160, 260), new Coordinate(210, 260), new Coordinate(260, 260)],
+            [new Coordinate(100, 260), new Coordinate(130, 260), new Coordinate(160, 260), new Coordinate(190, 260), new Coordinate(220, 260)],
+            [new Coordinate(60, 160), new Coordinate(110, 260), new Coordinate(160, 260), new Coordinate(210, 260), new Coordinate(260, 160)],
+            [new Coordinate(80, 260), new Coordinate(133, 260), new Coordinate(186, 260), new Coordinate(240, 260), new Coordinate(160, 160)],
+            [new Coordinate(60, 260), new Coordinate(110, 260), new Coordinate(160, 260), new Coordinate(210, 260), new Coordinate(260, 260)],
+            [new Coordinate(80, 260), new Coordinate(160, 260), new Coordinate(240, 260), new Coordinate(120, 160), new Coordinate(200, 160)]
+        ];
+        let defenderRoutes: Coordinate[][] = [
+            [new Coordinate(40,0), new Coordinate(0,40)], //right then down
+            [new Coordinate(-40,0),new Coordinate(0,40)], // left then down
+            [new Coordinate(0,30)], //straight down
+            [new Coordinate(30,30)], //downright
+            [new Coordinate(-30,30)], //downleft
+            [new Coordinate(0,-60)], //drop into coverage
+        ];
+        let defenderPositionIndex = Math.floor(Math.random() * defenderPositions.length);
+        
+        for(let i = 0; i < 5; ++i){
+            console.log(defenderPositionIndex);
+            var route = defenderRoutes[Math.floor(Math.random()*defenderRoutes.length)];
+            var newRoute: Coordinate[] = [];
+            route.forEach(coordinate => {
+                newRoute.push( new Coordinate(coordinate.x + defenderPositions[defenderPositionIndex][i].x, coordinate.y + defenderPositions[defenderPositionIndex][i].y));
+            });
+            this.defenders.push(this.playerFactory.createDefender(defenderPositions[defenderPositionIndex][i].x,defenderPositions[defenderPositionIndex][i].y,new Route(newRoute), this.gameView));
+        }
+        this.defenders.forEach(defender => {
+            this.defenderVOs.push(this.playerVOFactory.CreateDefenderInArea(defender, this.gameView));
+        });
+
+
+        let startButton = new ButtonViewObject(50,410,100,50,0,new TopLeftDrawingStrategy(), null, 'Start', () => {
+            GameEngine.getInstance().start();
+            let refs = RenderEngine.getInstance().getReferencesForStage('routeStage');
             refs.forEach(element => {
                 RenderEngine.getInstance().unregister(element as IViewObject);
             });
@@ -200,25 +264,11 @@ export class MatchTemplater {
                 this.gameView.remove(element);
             });
             this.messages = [];
-            
-            this.routeDrawStage();
         });
-        let hcent = new RightLockPositioningDecorator(selectButton, 25);
+        let hcent = new RightLockPositioningDecorator(startButton, 25);
         this.gameView.addView(hcent);
         this.clickManager.addClickable(hcent);
-        RenderEngine.getInstance().addReferenceToStage(hcent, 'playSelectStage');
-
-        let text = new StickerTextViewObject(10,20, 280, 50, 0, new TopLeftDrawingStrategy(), null, null, "Tap Arrows to");
-        text.backgroundColor = '#2ecc71';
-        text.font = "bold 26px Arial"
-        let text2 = new StickerTextViewObject(10,60, 280, 50, 0, new TopLeftDrawingStrategy(), null, null, "Change Plays");
-        text2.backgroundColor = '#2ecc71';
-        text2.font = "bold 26px Arial";
-        this.messages.push(new HorizontalCenterPositioningDecorator(text));
-        this.gameView.addView(this.messages[0]);
-        this.messages.push(new HorizontalCenterPositioningDecorator(text2));
-        this.gameView.addView(this.messages[1]);
-
+        RenderEngine.getInstance().addReferenceToStage(hcent, 'routeStage');
     }
 
 
