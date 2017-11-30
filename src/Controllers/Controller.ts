@@ -7,7 +7,7 @@ export abstract class Controller implements IGameObject, ICollidable{
 
     protected subject: ControllableGameObject;
     protected active: boolean = true;
-    protected colliding: boolean = false;
+    public colliding: boolean = false;
 
     public constructor(subject: ControllableGameObject){
         this.subject = subject;

@@ -5,9 +5,10 @@ import { GameMap } from '../Engines/GameMap';
 import { RouteController } from './RouteController';
 import { CollidableGameObject } from "../GameObjects/CollidableGameObject";
 export class DefenderController extends RouteController {
+    private speed: number = 1;
 
     public decide(){
-        if(this.colliding == false) this.subject.speed = this.originalSpeed;
+        if(this.colliding == false) {this.subject.speed = this.originalSpeed;}
         if(!this.routeComplete()){
             this.followRoute();
         }else{
@@ -41,7 +42,7 @@ export class DefenderController extends RouteController {
         }
         if(object.type == 'runner'){
             GameEngine.getInstance().stop();
-            setTimeout(function(){ScoreKeeper.getInstance().resetScore();},2000);
+            setTimeout(function(){ScoreKeeper.getInstance().resetScore();},1000);
         }
     }
 
