@@ -60,7 +60,7 @@ export class InputController extends Controller{
             if(this.speed < this.subject.speed)
             this.speed +=((this.speed*2)/100);
         }
-        console.log(this.speed);
+        //console.log(this.speed);
         //console.log(this.subject.x + (this.subject.speed * Math.cos(this.angle)));
         // this.subject.x += this.subject.speed * Math.cos(this.angle);
         // this.subject.y += this.subject.speed * Math.sin(this.angle);

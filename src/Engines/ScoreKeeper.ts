@@ -17,7 +17,6 @@ export class ScoreKeeper{
 
         private observers: IObserver[] = [];
 
-        public matchTemplater: MatchTemplater; //TODO remove this coupling
     
         private constructor() {
             if(ScoreKeeper._instance){
@@ -38,15 +37,16 @@ export class ScoreKeeper{
                 this._score++;
                 this.scored = true;
                 this.updateObservers();
-                this.matchTemplater.resetGame();
+                MatchTemplater.getInstance().touchdown();
             }
         }
 
         public resetScore(){
+            let tmp = this.score;
             this._score = 0;
             this.scored = false;
             this.updateObservers();
-            this.matchTemplater.resetGame();
+            MatchTemplater.getInstance().tackled(tmp);
         }
 
         public unlockScoring(){

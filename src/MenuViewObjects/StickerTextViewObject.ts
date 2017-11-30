@@ -57,7 +57,7 @@ export class StickerTextViewObject extends ClickableViewObject{
         if(this.color) this.context.fillStyle = this.color;
         else this.context.fillStyle = "#ffffff";
         
-        this.context.fillText(this.text,(this.width - this.context.measureText(this.text).width)/2, (this.height + 12)/2);
+        this.context.fillText(this.text,(this.width - this.context.measureText(this.text).width)/2, (this.height + 40)/2);
     }
 
 

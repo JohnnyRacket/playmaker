@@ -42,7 +42,7 @@ export class DefenderController extends RouteController {
         }
         if(object.type == 'runner'){
             GameEngine.getInstance().stop();
-            setTimeout(function(){ScoreKeeper.getInstance().resetScore();},1000);
+            ScoreKeeper.getInstance().resetScore();
         }
     }
 

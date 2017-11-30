@@ -1,3 +1,4 @@
+import { CountDownViewObject } from '../MenuViewObjects/CountDownViewObject';
 import { CenterDrawingStrategy } from '../DrawingStrategies/CenterDrawingStrategy';
 import { ClickStrategy } from '../Clickables/ClickStrategy';
 import { PlaySelectViewObject } from '../MenuViewObjects/PlaySelectViewObject';
@@ -35,6 +36,7 @@ import { FieldFactory } from '../GameObjects/FieldFactory';
 import { ComposableViewObject } from '../ViewObjects/ComposableViewObject';
 import { RightLockPositioningDecorator } from '../ViewObjects/PositioningDecorators/RightLockPositioningDecorator';
 import { ScoreKeeper } from './ScoreKeeper';
+import { LogoViewObject } from '../MenuViewObjects/LogoViewObject';
 
 export class MatchTemplater {
 
@@ -70,12 +72,72 @@ export class MatchTemplater {
         this.clickManager = clickManager;
         this.collisionManager = collisionManager;
         MatchTemplater._instance = this;
-        ScoreKeeper.getInstance().matchTemplater = this;
     }
  
     public static getInstance(): MatchTemplater
     {
         return MatchTemplater._instance;
+    }
+
+    public touchdown(){
+        let startBanner = new StickerTextViewObject(0,100,320,80,0,new TopLeftDrawingStrategy(), null, null, 'Touchdown!');
+        startBanner.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        startBanner.font = 'bold 48px Arial';
+        this.gameView.addView(startBanner);
+        RenderEngine.getInstance().addReferenceToStage(startBanner, 'touchdownStage');
+        setTimeout(() => {
+            let refs = RenderEngine.getInstance().getReferencesForStage('touchdownStage');
+            refs.forEach(element => {
+                RenderEngine.getInstance().unregister(element as IViewObject);
+            });
+            this.playSelectStage();
+        },1500);
+    }
+
+    public tackled(score: number){
+        let startBanner = new StickerTextViewObject(0,100,320,80,0,new TopLeftDrawingStrategy(), null, null, 'Tackled!');
+        startBanner.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        startBanner.font = 'bold 48px Arial';
+        startBanner.color = '#E68364';
+        this.gameView.addView(startBanner);
+        RenderEngine.getInstance().addReferenceToStage(startBanner, 'tackledStage');
+        setTimeout(() => {
+            let refs = RenderEngine.getInstance().getReferencesForStage('tackledStage');
+            refs.forEach(element => {
+                RenderEngine.getInstance().unregister(element as IViewObject);
+            });
+            this.gameOver(score);
+        },1000);
+    }
+
+    public gameOver(score: number){
+        let backdrop = new StickerTextViewObject(0,0,320,480,0,new TopLeftDrawingStrategy(), null, null, ' ');
+        backdrop.backgroundColor = 'rgba(0, 0, 0, 0.5)';        
+        this.gameView.addView(backdrop);
+        let gameOverBanner = new LogoViewObject(0,120,320,80,0,new TopLeftDrawingStrategy(), null, null, 'Game Over.');
+        this.gameView.addView(gameOverBanner);
+        let hiScore = new LogoViewObject(0,190,320,80,0,new TopLeftDrawingStrategy(), null, null, 'Hi-Score: 10');
+        this.gameView.addView(hiScore);
+        let scoreView = new LogoViewObject(0,240,320,80,0,new TopLeftDrawingStrategy(), null, null, 'Score: ' + score);
+        this.gameView.addView(scoreView);
+        RenderEngine.getInstance().addReferenceToStage(gameOverBanner, 'gameOverStage');
+        RenderEngine.getInstance().addReferenceToStage(hiScore, 'gameOverStage');
+        RenderEngine.getInstance().addReferenceToStage(scoreView, 'gameOverStage');
+        RenderEngine.getInstance().addReferenceToStage(backdrop, 'gameOverStage');
+        
+        
+
+        let startButton = new ButtonViewObject(10,360,150,50,0,new TopLeftDrawingStrategy(), null, 'Play Again', () => {
+            let refs = RenderEngine.getInstance().getReferencesForStage('gameOverStage');
+            refs.forEach(element => {
+                RenderEngine.getInstance().unregister(element as IViewObject);
+            });
+            this.playSelectStage();
+        });
+        let hcent = new HorizontalCenterPositioningDecorator(startButton);
+        this.gameView.addView(hcent);
+        this.clickManager.addClickable(hcent);
+        RenderEngine.getInstance().addReferenceToStage(hcent, 'gameOverStage');
     }
 
     public resetGame(){
@@ -109,7 +171,6 @@ export class MatchTemplater {
         this.runner = this.playerFactory.createRunner(160,380, -90);
         this.runnerViewObject = this.playerVOFactory.CreateRunnerInArea(this.runner, this.gameView);
 
-        this.playSelectStage();
     }
     public createGame(){
         //create the player you control youreself (runner)
@@ -155,6 +216,8 @@ export class MatchTemplater {
     }
 
     private playSelectStage(){
+        this.resetGame();
+        
         let blockerIndex = 0;
         this.blockerPositions = [
             [new Coordinate(110, 300), new Coordinate(145, 300), new Coordinate(180, 300), new Coordinate(215, 300)],
@@ -254,21 +317,43 @@ export class MatchTemplater {
         });
 
 
-        let startButton = new ButtonViewObject(50,410,100,50,0,new TopLeftDrawingStrategy(), null, 'Start', () => {
-            GameEngine.getInstance().start();
-            let refs = RenderEngine.getInstance().getReferencesForStage('routeStage');
-            refs.forEach(element => {
-                RenderEngine.getInstance().unregister(element as IViewObject);
-            });
-            this.messages.forEach(element =>{
-                this.gameView.remove(element);
-            });
-            this.messages = [];
-        });
-        let hcent = new RightLockPositioningDecorator(startButton, 25);
-        this.gameView.addView(hcent);
-        this.clickManager.addClickable(hcent);
-        RenderEngine.getInstance().addReferenceToStage(hcent, 'routeStage');
+        // let startButton = new ButtonViewObject(50,410,100,50,0,new TopLeftDrawingStrategy(), null, 'Start', () => {
+        //     GameEngine.getInstance().start();
+        //     let refs = RenderEngine.getInstance().getReferencesForStage('routeStage');
+        //     refs.forEach(element => {
+        //         RenderEngine.getInstance().unregister(element as IViewObject);
+        //     });
+        //     this.messages.forEach(element =>{
+        //         this.gameView.remove(element);
+        //     });
+        //     this.messages = [];
+        // });
+        // let hcent = new RightLockPositioningDecorator(startButton, 25);
+        // this.gameView.addView(hcent);
+        // this.clickManager.addClickable(hcent);
+        // RenderEngine.getInstance().addReferenceToStage(hcent, 'routeStage');
+        this.CountdownStage();
+    }
+
+    public CountdownStage(){
+        let startBanner = new StickerTextViewObject(0,100,320,80,0,new TopLeftDrawingStrategy(), null, null, '3');
+        startBanner.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        startBanner.font = 'bold 64px Arial';
+        this.gameView.addView(startBanner);
+        RenderEngine.getInstance().addReferenceToStage(startBanner, 'routeStage');
+        let count = 3;
+        let counter = setInterval(() => {
+            --count;
+            if(count >0 ) startBanner.text = count.toString();
+            else{
+                clearInterval(counter);
+                let refs = RenderEngine.getInstance().getReferencesForStage('routeStage');
+                refs.forEach(element => {
+                    RenderEngine.getInstance().unregister(element as IViewObject);
+                });
+                GameEngine.getInstance().start();
+            }
+        },1000);
     }
 
 
