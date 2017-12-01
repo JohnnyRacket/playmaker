@@ -10,33 +10,33 @@ export class ComposableView extends ComposableViewObject {
     protected context: CanvasRenderingContext2D;
     private children: IViewObject[] = [];
 
-    get x(){
-        return this._x * RenderEngine.getInstance().scale;
-    }
-    set x(x: number){
-        this._x = x / RenderEngine.getInstance().scale;
-    }
-    get width(){
-        console.log("widht",this._width);
-        console.log("scale", RenderEngine.getInstance().scale);
-        return this._width * RenderEngine.getInstance().scale;
-    }
-    set width(width: number){
-        this._width = width / RenderEngine.getInstance().scale;
-    }
+    // get x(){
+    //     return this._x * RenderEngine.getInstance().scale;
+    // }
+    // set x(x: number){
+    //     this._x = x / RenderEngine.getInstance().scale;
+    // }
+    // get width(){
+    //     console.log("widht",this._width);
+    //     console.log("scale", RenderEngine.getInstance().scale);
+    //     return this._width * RenderEngine.getInstance().scale;
+    // }
+    // set width(width: number){
+    //     this._width = width / RenderEngine.getInstance().scale;
+    // }
 
-    get y(){
-        return this._y * RenderEngine.getInstance().scale;
-    }
-    set y(y: number){
-        this._y = y / RenderEngine.getInstance().scale;
-    }
-    get height(){
-        return this._height * RenderEngine.getInstance().scale;
-    }
-    set height(height: number){
-        this._height = height / RenderEngine.getInstance().scale;
-    }
+    // get y(){
+    //     return this._y * RenderEngine.getInstance().scale;
+    // }
+    // set y(y: number){
+    //     this._y = y / RenderEngine.getInstance().scale;
+    // }
+    // get height(){
+    //     return this._height * RenderEngine.getInstance().scale;
+    // }
+    // set height(height: number){
+    //     this._height = height / RenderEngine.getInstance().scale;
+    // }
 
     public constructor(x: number, y: number, width: number, height: number){
         super();
