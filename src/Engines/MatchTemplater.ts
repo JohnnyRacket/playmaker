@@ -176,7 +176,7 @@ export class MatchTemplater {
         //create the player you control youreself (runner)
         this.runner = this.playerFactory.createRunner(160,380, -90);
         this.runnerViewObject = this.playerVOFactory.CreateRunnerInArea(this.runner, this.gameView);
-
+        this.runner.angle = -90;
         //GameEngine.getInstance().stop();
         //add endzone to score in
         let endzone = this.fieldFactory.CreateEndZone(0,0);//new Endzone(0,0,320,120,'endzone');

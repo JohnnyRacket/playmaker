@@ -34,6 +34,7 @@ export class PlayerFactory{
         GameEngine.getInstance().register(player);
 
         GameMap.getInstance().addMapObject(player, 'runner');
+        
         return player;
     }
     

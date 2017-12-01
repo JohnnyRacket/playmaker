@@ -18,6 +18,7 @@ export class InputController extends Controller{
         super(subject);
         this.collisionManager = collisionManager;
         this.angle = this.subject.angle * Math.PI/180 || 0;
+        this.subject.angle = this.angle;
         window.addEventListener('keydown', (event) => {this.onKeyDown(event);}, false);
         window.addEventListener('keyup', (event) => {this.onKeyUp(event);}, false);
     }
@@ -43,11 +44,11 @@ export class InputController extends Controller{
     decide() {
         this.turning = false;
         if(this.right) {
-            this.angle += (4 - this.subject.speed) * 2 * Math.PI/180;
+            this.angle += (3.5 - this.subject.speed) * 2 * Math.PI/180;
             this.turning = true;
         }
         if(this.left){
-            this.angle -= (4 - this.subject.speed) * 2 * Math.PI/180;
+            this.angle -= (3.5 - this.subject.speed) * 2 * Math.PI/180;
             this.turning = true;
         } 
         this.subject.angle = this.angle;
