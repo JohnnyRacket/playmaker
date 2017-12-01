@@ -36,10 +36,17 @@ const context: CanvasRenderingContext2D = canvas.getContext("2d");
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
 
+let scale = 0;
 function resize(){
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
+    let yScale = canvas.height/480;
+    let xScale = canvas.width/320;
+    scale = (xScale <= yScale)? xScale : yScale;
+    console.log(scale);
+    context.scale(scale, scale);
 }
+resize();
 
 window.addEventListener('resize', resize);
 
@@ -54,7 +61,7 @@ renderEngine.start();
 
 //services
 let collisionManager = new CollisionManager();
-let clickManager = new ClickableManager(canvas);
+let clickManager = new ClickableManager(canvas, scale);
 
 gameEngine.addService(collisionManager);//should be added first for consistent behaviour (no issue if its not really though)
 
@@ -67,12 +74,12 @@ let playerFactory = new PlayerFactory(hitBoxFactory, controllerFactory);
 let playerViewObjectFactory = new PlayerViewObjectFactory();
 let fieldFactory = new FieldFactory(hitBoxFactory, controllerFactory);
 //create a composable view for game area to exist in
-let gameArea = new ComposableView(100,100,320,480);
+let gameArea = new ComposableView(0,0,320,480);
 let templater = new MatchTemplater(gameArea, playerFactory, playerViewObjectFactory, fieldFactory, clickManager, collisionManager);
 
-let test2 = new VerticalCenterDecorator(gameArea);
-let test = new HorizontalCenterDecorator(test2);
-renderEngine.register(test);
+//let test2 = new VerticalCenterDecorator(gameArea);
+//let test = new HorizontalCenterDecorator(test2);
+renderEngine.register(gameArea);
 //just the field VO
 let field = new FieldViewObject(0,0,320,480,0, new TopLeftDrawingStrategy());
 gameArea.addView(field);

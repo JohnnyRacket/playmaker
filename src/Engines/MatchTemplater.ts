@@ -117,8 +117,10 @@ export class MatchTemplater {
         let gameOverBanner = new LogoViewObject(0,120,320,80,0,new TopLeftDrawingStrategy(), null, null, 'Game Over.');
         this.gameView.addView(gameOverBanner);
         let hiScore = new LogoViewObject(0,190,320,80,0,new TopLeftDrawingStrategy(), null, null, 'Hi-Score: '+ hiscore);
+        hiScore.font = "bold 32px Arial";
         this.gameView.addView(hiScore);
         let scoreView = new LogoViewObject(0,240,320,80,0,new TopLeftDrawingStrategy(), null, null, 'Score: ' + score);
+        scoreView.font = "bold 32px Arial";
         this.gameView.addView(scoreView);
         RenderEngine.getInstance().addReferenceToStage(gameOverBanner, 'gameOverStage');
         RenderEngine.getInstance().addReferenceToStage(hiScore, 'gameOverStage');
@@ -127,7 +129,7 @@ export class MatchTemplater {
         
         
 
-        let startButton = new ButtonViewObject(10,360,150,50,0,new TopLeftDrawingStrategy(), null, 'Play Again', () => {
+        let startButton = new ButtonViewObject(10,340,150,50,0,new TopLeftDrawingStrategy(), null, 'Play Again', () => {
             let refs = RenderEngine.getInstance().getReferencesForStage('gameOverStage');
             refs.forEach(element => {
                 RenderEngine.getInstance().unregister(element as IViewObject);

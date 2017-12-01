@@ -6,6 +6,7 @@ export class ClickableManager implements IViewService{
 
     private clickables: Clickable[] = [];
     public clickInterceptor: ClickHandler;
+    private scale: number = 1;
 
     add(object: Object) {
         try{
@@ -22,7 +23,8 @@ export class ClickableManager implements IViewService{
     }
 
 
-    public constructor(canvas : HTMLCanvasElement){
+    public constructor(canvas : HTMLCanvasElement, scale: number){
+        this.scale = scale;
         canvas.addEventListener('click', (evt) => {
             this.clickEvents(evt);
         },false);
@@ -39,11 +41,13 @@ export class ClickableManager implements IViewService{
 
     private clickEvents(event: MouseEvent){
         //console.log(event.x, event.y)
+        let x = event.x / this.scale;
+        let y = event.y / this.scale;
         if(this.clickInterceptor) this.clickInterceptor.handle(event);
         else{
             this.clickables.forEach((obj: Clickable, index) => {
-                if(event.x >= obj.getGlobalX() && event.x <= (obj.getGlobalX() + obj.getWidth()) &&
-                    event.y >= obj.getGlobalY() && event.y <= (obj.getGlobalY() + obj.getHeight())) {
+                if(x  >= obj.getGlobalX() && x <= (obj.getGlobalX() + obj.getWidth()) &&
+                    y >= obj.getGlobalY() && y <= (obj.getGlobalY() + obj.getHeight())) {
                         console.log("click match found ", obj);
                         obj.click();
                     };
