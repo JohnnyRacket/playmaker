@@ -1,3 +1,4 @@
+import { RenderEngine } from './RenderEngine';
 import { ClickHandler } from '../Clickables/ClickHandlers/ClickHandler';
 import { IViewService } from './IViewService';
 import { Clickable } from '../Clickables/Clickable';
@@ -6,7 +7,9 @@ export class ClickableManager implements IViewService{
 
     private clickables: Clickable[] = [];
     public clickInterceptor: ClickHandler;
-    private scale: number = 1;
+    private get scale(){
+        return RenderEngine.getInstance().scale;
+    }
 
     add(object: Object) {
         try{
@@ -23,8 +26,7 @@ export class ClickableManager implements IViewService{
     }
 
 
-    public constructor(canvas : HTMLCanvasElement, scale: number){
-        this.scale = scale;
+    public constructor(canvas : HTMLCanvasElement){
         canvas.addEventListener('click', (evt) => {
             this.clickEvents(evt);
         },false);

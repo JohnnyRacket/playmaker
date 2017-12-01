@@ -11,6 +11,13 @@ export class RenderEngine{
     private context: CanvasRenderingContext2D;
     private canvas: HTMLCanvasElement;
     private referenceManager: ReferenceManager =  new ReferenceManager();
+    private _scale: number = 1;
+    public get scale(): number{
+        return this._scale;
+    }
+    public set scale(scale: number){
+        this._scale = scale;
+    }
 
     private static _instance: RenderEngine = new RenderEngine();
   

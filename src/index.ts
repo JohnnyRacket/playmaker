@@ -55,13 +55,14 @@ window.addEventListener('resize', resize);
  */ 
 const gameEngine = GameEngine.getInstance();
 const renderEngine = RenderEngine.getInstance();
+renderEngine.scale = scale;
 renderEngine.setCanvas(canvas, context);
 //gameEngine.start();
 renderEngine.start();
 
 //services
 let collisionManager = new CollisionManager();
-let clickManager = new ClickableManager(canvas, scale);
+let clickManager = new ClickableManager(canvas);
 
 gameEngine.addService(collisionManager);//should be added first for consistent behaviour (no issue if its not really though)
 
@@ -77,9 +78,9 @@ let fieldFactory = new FieldFactory(hitBoxFactory, controllerFactory);
 let gameArea = new ComposableView(0,0,320,480);
 let templater = new MatchTemplater(gameArea, playerFactory, playerViewObjectFactory, fieldFactory, clickManager, collisionManager);
 
-//let test2 = new VerticalCenterDecorator(gameArea);
-//let test = new HorizontalCenterDecorator(test2);
-renderEngine.register(gameArea);
+let test2 = new VerticalCenterDecorator(gameArea);
+let test = new HorizontalCenterDecorator(test2);
+renderEngine.register(test);
 //just the field VO
 let field = new FieldViewObject(0,0,320,480,0, new TopLeftDrawingStrategy());
 gameArea.addView(field);
