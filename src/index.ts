@@ -36,6 +36,9 @@ const context: CanvasRenderingContext2D = canvas.getContext("2d");
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
 
+const gameEngine = GameEngine.getInstance();
+const renderEngine = RenderEngine.getInstance();
+
 let scale = 0;
 function resize(){
     canvas.height = window.innerHeight;
@@ -45,6 +48,7 @@ function resize(){
     scale = (xScale <= yScale)? xScale : yScale;
     console.log(scale);
     context.scale(scale, scale);
+    renderEngine.scale = scale;
 }
 resize();
 
@@ -53,8 +57,7 @@ window.addEventListener('resize', resize);
 /*
  * Declare game engines (constant because they will not be changed, also are singletons)
  */ 
-const gameEngine = GameEngine.getInstance();
-const renderEngine = RenderEngine.getInstance();
+
 renderEngine.scale = scale;
 renderEngine.setCanvas(canvas, context);
 //gameEngine.start();
