@@ -6,7 +6,7 @@ import { IObserver } from "../Observables/Observer.interface";
 export abstract class PositionableGameObject extends ObservableGameObject{
 
     
-    protected _angle: number;
+    protected _angle: number = 0;
     get angle(): number{
         return this._angle;
     }

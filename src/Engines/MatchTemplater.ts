@@ -94,7 +94,7 @@ export class MatchTemplater {
         },1500);
     }
 
-    public tackled(score: number){
+    public tackled(score: number, hiscore: number){
         let startBanner = new StickerTextViewObject(0,100,320,80,0,new TopLeftDrawingStrategy(), null, null, 'Tackled!');
         startBanner.backgroundColor = 'rgba(0, 0, 0, 0.5)';
         startBanner.font = 'bold 48px Arial';
@@ -106,17 +106,17 @@ export class MatchTemplater {
             refs.forEach(element => {
                 RenderEngine.getInstance().unregister(element as IViewObject);
             });
-            this.gameOver(score);
+            this.gameOver(score, hiscore);
         },1000);
     }
 
-    public gameOver(score: number){
+    public gameOver(score: number, hiscore: number){
         let backdrop = new StickerTextViewObject(0,0,320,480,0,new TopLeftDrawingStrategy(), null, null, ' ');
         backdrop.backgroundColor = 'rgba(0, 0, 0, 0.5)';        
         this.gameView.addView(backdrop);
         let gameOverBanner = new LogoViewObject(0,120,320,80,0,new TopLeftDrawingStrategy(), null, null, 'Game Over.');
         this.gameView.addView(gameOverBanner);
-        let hiScore = new LogoViewObject(0,190,320,80,0,new TopLeftDrawingStrategy(), null, null, 'Hi-Score: 10');
+        let hiScore = new LogoViewObject(0,190,320,80,0,new TopLeftDrawingStrategy(), null, null, 'Hi-Score: '+ hiscore);
         this.gameView.addView(hiScore);
         let scoreView = new LogoViewObject(0,240,320,80,0,new TopLeftDrawingStrategy(), null, null, 'Score: ' + score);
         this.gameView.addView(scoreView);
@@ -171,6 +171,8 @@ export class MatchTemplater {
         this.runner = this.playerFactory.createRunner(160,380, -90);
         this.runnerViewObject = this.playerVOFactory.CreateRunnerInArea(this.runner, this.gameView);
 
+        ScoreKeeper.getInstance().finishedResetting();
+        
     }
     public createGame(){
         //create the player you control youreself (runner)

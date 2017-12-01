@@ -44,11 +44,11 @@ export class InputController extends Controller{
     decide() {
         this.turning = false;
         if(this.right) {
-            this.angle += (3.5 - this.subject.speed) * 2 * Math.PI/180;
+            this.angle += (4 - this.subject.speed) * 2 * Math.PI/180;
             this.turning = true;
         }
         if(this.left){
-            this.angle -= (3.5 - this.subject.speed) * 2 * Math.PI/180;
+            this.angle -= (4 - this.subject.speed) * 2 * Math.PI/180;
             this.turning = true;
         } 
         this.subject.angle = this.angle;
@@ -58,8 +58,8 @@ export class InputController extends Controller{
             if (this.speed > 1)
             this.speed -= .015;
         }else {
-            if(this.speed < this.subject.speed)
-            this.speed +=((this.speed*2)/100);
+            if(this.speed < this.subject.speed - ((this.speed*2)/75))
+            this.speed +=((this.speed*2)/75);
         }
         //console.log(this.speed);
         //console.log(this.subject.x + (this.subject.speed * Math.cos(this.angle)));

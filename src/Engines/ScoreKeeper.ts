@@ -13,7 +13,14 @@ export class ScoreKeeper{
             return this._score;
         }
 
+        protected _hiscore: number = 0;
+        public get hiscore(): number{
+            return this._hiscore;
+        }
+        
+
         private scored: boolean = false;
+        private resetting: boolean = false;
 
         private observers: IObserver[] = [];
 
@@ -42,11 +49,19 @@ export class ScoreKeeper{
         }
 
         public resetScore(){
-            let tmp = this.score;
-            this._score = 0;
-            this.scored = false;
-            this.updateObservers();
-            MatchTemplater.getInstance().tackled(tmp);
+            if(!this.resetting && !this.scored){
+                this.resetting = true;
+                let score = this.score;
+                if(this.score > this.hiscore) this._hiscore = this.score;
+                this._score = 0;
+                this.scored = false;
+                this.updateObservers();
+                MatchTemplater.getInstance().tackled(score, this.hiscore);
+            }
+        }
+
+        public finishedResetting(){
+            this.resetting = false;
         }
 
         public unlockScoring(){

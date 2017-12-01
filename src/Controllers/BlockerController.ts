@@ -34,9 +34,15 @@ export class BlockerController extends RouteController {
                 }
             });
 
-            //target located now go towards it
-            this.subject.angle = Math.atan2(target.object.y - this.subject.y, target.object.x - this.subject.x);
+            let distance = this.calculateDistance(target);
+            //based on distance we want to aim in front of the runner
+            //add some randomness into how good the players are at estimating maybe?
+            let newTargetX =  distance/2 * Math.cos(target.object.angle);
+            let newTargetY =  distance/2 * Math.sin(target.object.angle);
 
+            //target located now go towards it
+            this.subject.angle = Math.atan2((target.object.y + newTargetY) - this.subject.y, (target.object.x + newTargetX) - this.subject.x);
+            
         }
     }
 
