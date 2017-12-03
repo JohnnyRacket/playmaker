@@ -107,7 +107,7 @@ export class MatchTemplater {
                 RenderEngine.getInstance().unregister(element as IViewObject);
             });
             this.gameOver(score, hiscore);
-        },1000);
+        },500);
     }
 
     public gameOver(score: number, hiscore: number){
@@ -201,7 +201,7 @@ export class MatchTemplater {
         let wall3VO = new DebugViewObject(wall3.x, wall3.y, wall3.width, wall3.height,0,wall3,new TopLeftDrawingStrategy());
         this.gameView.addView(wall3VO);
 
-        let scoreVO = new ScoreViewObject(20,0,100,40,0,new TopLeftDrawingStrategy(), null, null);
+        let scoreVO = new ScoreViewObject(20,0,120,40,0,new TopLeftDrawingStrategy(), null, null);
         let bottomLockScore = new BottomLockPositioningDecorator(scoreVO, 10)
         this.gameView.addView(bottomLockScore);
 
@@ -340,15 +340,18 @@ export class MatchTemplater {
     }
 
     public CountdownStage(){
-        let startBanner = new StickerTextViewObject(0,100,320,80,0,new TopLeftDrawingStrategy(), null, null, '3');
+        let startBanner = new StickerTextViewObject(0,100,320,80,0,new TopLeftDrawingStrategy(), null, null, 'Get Ready...');
         startBanner.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-        startBanner.font = 'bold 64px Arial';
+        startBanner.font = 'bold 42px Arial';
         this.gameView.addView(startBanner);
         RenderEngine.getInstance().addReferenceToStage(startBanner, 'routeStage');
-        let count = 3;
+        let count = 4;
         let counter = setInterval(() => {
             --count;
-            if(count >0 ) startBanner.text = count.toString();
+            if(count > 1) {
+                startBanner.text = "Get Ready...";
+            }//nothing{}
+            else if(count == 1 ) startBanner.text = "Go!";
             else{
                 clearInterval(counter);
                 let refs = RenderEngine.getInstance().getReferencesForStage('routeStage');
@@ -357,7 +360,7 @@ export class MatchTemplater {
                 });
                 GameEngine.getInstance().start();
             }
-        },1000);
+        },300);
     }
 
 
