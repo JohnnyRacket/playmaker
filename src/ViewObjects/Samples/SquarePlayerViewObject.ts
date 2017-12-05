@@ -15,7 +15,7 @@ export class SquarePlayerViewObject extends ClickableViewObject{
     set subject(subject: ControllableGameObject){
         this._subject = subject;
     }
-    protected _color: string;
+    protected _color: string = 'white';
     get color(): string{
         return this._color;
     }
@@ -23,7 +23,7 @@ export class SquarePlayerViewObject extends ClickableViewObject{
         this._color = color;
         this.preRender();
     }
-    protected _outline: string;
+    protected _outline: string = 'black';
     get outline(): string{
         return this._outline;
     }

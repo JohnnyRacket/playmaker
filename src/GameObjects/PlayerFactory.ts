@@ -26,7 +26,7 @@ export class PlayerFactory{
 
 
     public createRunner(x: number, y: number, angle: number){
-        let player = new Player(x,y,16,16,'runner',2);
+        let player = new Player(x,y,16,16,'runner',2.1);
         player.angle = angle;
         player.setHitbox(this.hitBoxFactory.CreateActiveSquareHitBox(16,16,player));
         let controller = this.controllerFactory.createInputController(player);

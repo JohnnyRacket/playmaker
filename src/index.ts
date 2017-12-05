@@ -27,6 +27,8 @@ import { SquarePlayerViewObject } from './ViewObjects/Samples/SquarePlayerViewOb
 import { VerticalCenterDecorator } from "./ViewComposition/Decorators/VerticalCenterDecorator";
 import { ButtonViewObject } from "./MenuViewObjects/ButtonViewObject";
 import { PlayerViewObjectFactory } from './ViewObjects/PlayerViewObjectFactory';
+import { AbilityDots } from './ViewObjects/Samples/AbilityDots';
+import { CenterDrawingStrategy } from './DrawingStrategies/CenterDrawingStrategy';
 
 /*
  * Fetch our environment for our game and configure
@@ -97,6 +99,8 @@ var logo = new LogoViewObject(0,30,300,100,0,new TopLeftDrawingStrategy(),new Pa
 var logoCenter = new HorizontalCenterPositioningDecorator(logo);
 gameArea.addView(logoCenter);
 RenderEngine.getInstance().addReferenceToStage(logoCenter, 'menuStage');
+
+
 
 //main menu buttons
 var startButton = new ButtonViewObject(100,170,200,60,0,new TopLeftDrawingStrategy(), new FindMatchClickStrategy(), "Single Player", null);

@@ -2,6 +2,7 @@ import { CenterDrawingStrategy } from '../DrawingStrategies/CenterDrawingStrateg
 import { SquarePlayerViewObject } from './Samples/SquarePlayerViewObject';
 import { ComposableView } from '../ViewComposition/ComposableView';
 import { Player } from '../GameObjects/Samples/Player';
+import { AbilityDots } from './Samples/AbilityDots';
 export class PlayerViewObjectFactory{
 
     CreateRunnerInArea(runner: Player, area: ComposableView): SquarePlayerViewObject{
@@ -11,6 +12,13 @@ export class PlayerViewObjectFactory{
         runner.register(playerVO);
         area.addView(playerVO);
         return playerVO;
+    }
+
+    PlayAbilityDots(runner: Player, area: ComposableView){
+        let abilityDots = new AbilityDots(runner.x,runner.y + 14,14,3,0,new CenterDrawingStrategy(),runner);
+        runner.register(abilityDots);
+        area.addView(abilityDots);
+        return abilityDots;
     }
 
     CreateBlockerInArea(blocker: Player, area: ComposableView): SquarePlayerViewObject{

@@ -5,13 +5,18 @@ import { GameMap } from '../Engines/GameMap';
 import { RouteController } from './RouteController';
 import { CollidableGameObject } from "../GameObjects/CollidableGameObject";
 export class DefenderController extends RouteController {
-    private speed: number = 1;
+    private speed: number = 1.5;
     private fps: number = 5;
     private counter: number = 0;
     public juked: number = 0;
 
     public decide(){
-        if(this.colliding == false) {this.subject.speed = this.originalSpeed;}
+        if(this.colliding == false) {
+            if(this.speed < this.originalSpeed - .01){
+                this.speed += .01;
+            }
+            this.subject.speed = this.speed;
+        }
         if(this.counter % this.fps == 0){
             if(!this.routeComplete()){
                 this.followRoute();
@@ -22,7 +27,6 @@ export class DefenderController extends RouteController {
                     let target = runners[0];
 
                     let distance = this.calculateDistance(target);
-                    console.log(distance);
                     //based on distance we want to aim in front of the runner
                     //add some randomness into how good the players are at estimating maybe?
                     let newTargetX =  distance/2.5 * Math.cos(target.object.angle);
@@ -40,7 +44,8 @@ export class DefenderController extends RouteController {
     public collide(object: CollidableGameObject){
         if(object.type == 'blocker'){
             this.colliding = true;
-            this.subject.speed = this.originalSpeed/3;
+            this.subject.speed = this.originalSpeed/2.5;
+            this.speed = 1.5;
             this.endRoute();
             //console.log('being slowed by a blocker!');
         }

@@ -1,3 +1,4 @@
+import { AbilityDots } from '../ViewObjects/Samples/AbilityDots';
 import { CountDownViewObject } from '../MenuViewObjects/CountDownViewObject';
 import { CenterDrawingStrategy } from '../DrawingStrategies/CenterDrawingStrategy';
 import { ClickStrategy } from '../Clickables/ClickStrategy';
@@ -48,6 +49,7 @@ export class MatchTemplater {
     private clickManager: ClickableManager;
     private collisionManager: CollisionManager;
     private messages: ComposableViewObject[] = [];
+    private abilityDots: AbilityDots;
 
     private blockers: Player[] = [];
     private blockerVOs: SquarePlayerViewObject[] = [];
@@ -91,7 +93,7 @@ export class MatchTemplater {
                 RenderEngine.getInstance().unregister(element as IViewObject);
             });
             this.playSelectStage();
-        },1500);
+        },500);
     }
 
     public tackled(score: number, hiscore: number){
@@ -145,10 +147,7 @@ export class MatchTemplater {
     public resetGame(){
         GameEngine.getInstance().stop();
         ScoreKeeper.getInstance().unlockScoring();
-        this.runner.x = 160;
-        this.runner.y = 380;
-        this.runner.angle = -90;
-        this.runnerViewObject.update();
+        
 
         this.blockers.forEach(blocker => {
             GameEngine.getInstance().unregister(blocker);
@@ -163,8 +162,8 @@ export class MatchTemplater {
             RenderEngine.getInstance().unregister(defender);
         });
         this.blockers = []; this.defenders = []; this.blockerVOs = []; this.defenderVOs = [];
-        GameEngine.getInstance().unregister(this.runner);
-        RenderEngine.getInstance().unregister(this.runnerViewObject);
+        if (this.runner) GameEngine.getInstance().unregister(this.runner);
+        if (this.runnerViewObject) RenderEngine.getInstance().unregister(this.runnerViewObject);
         this.runner = null;
         this.runnerViewObject = null;
         this.collisionManager.dumpActiveHitboxes();
@@ -172,15 +171,15 @@ export class MatchTemplater {
 
         this.runner = this.playerFactory.createRunner(160,380, -90);
         this.runnerViewObject = this.playerVOFactory.CreateRunnerInArea(this.runner, this.gameView);
-
         ScoreKeeper.getInstance().finishedResetting();
         
     }
     public createGame(){
         //create the player you control youreself (runner)
-        this.runner = this.playerFactory.createRunner(160,380, -90);
-        this.runnerViewObject = this.playerVOFactory.CreateRunnerInArea(this.runner, this.gameView);
-        this.runner.angle = -90;
+
+        //
+        
+        
         //GameEngine.getInstance().stop();
         //add endzone to score in
         let endzone = this.fieldFactory.CreateEndZone(0,0);//new Endzone(0,0,320,120,'endzone');
@@ -336,6 +335,8 @@ export class MatchTemplater {
         // this.gameView.addView(hcent);
         // this.clickManager.addClickable(hcent);
         // RenderEngine.getInstance().addReferenceToStage(hcent, 'routeStage');
+        this.abilityDots = this.playerVOFactory.PlayAbilityDots(this.runner, this.gameView);
+        
         this.CountdownStage();
     }
 

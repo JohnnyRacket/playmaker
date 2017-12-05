@@ -18,7 +18,7 @@ export class InputController extends Controller{
     private releasedRight: number = 0;
     private jumpLeft: number = 0;
     private jumpRight: number = 0;
-    private jumped: number = 0;
+    public jumped: number = 0;
     
 
 
@@ -65,7 +65,6 @@ export class InputController extends Controller{
             this.turning = true;
         }
         if(this.left){
-            console.log(this.releasedLeft);
             if(this.releasedLeft > 0 && this.jumped <=0){
                 this.jumpLeft = 6;
                 this.jumped = 60;
@@ -117,8 +116,8 @@ export class InputController extends Controller{
             }
         }else{
             if(this.turning){
-                if (this.speed > 1.5)
-                this.speed -= .01;
+                if (this.speed > 1.3)
+                this.speed -= .015;
             }else {
                 if(this.speed < this.subject.speed - ((this.speed*2)/75))
                 this.speed +=((this.speed*2)/75);
