@@ -35,16 +35,18 @@ import { CenterDrawingStrategy } from './DrawingStrategies/CenterDrawingStrategy
  */
 const canvas : HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("myCanvas");
 const context: CanvasRenderingContext2D = canvas.getContext("2d");
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
+const wrapper = <HTMLDivElement> document.getElementById("canvasWrapper");
+
+canvas.height = wrapper.clientHeight;
+canvas.width = wrapper.clientWidth;
 
 const gameEngine = GameEngine.getInstance();
 const renderEngine = RenderEngine.getInstance();
 
 let scale = 0;
 function resize(){
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
+    canvas.height = wrapper.clientHeight;
+    canvas.width = wrapper.clientWidth;
     let yScale = canvas.height/480;
     let xScale = canvas.width/320;
     scale = (xScale <= yScale)? xScale : yScale;

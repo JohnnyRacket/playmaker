@@ -42,9 +42,9 @@ export class ClickableManager implements IViewService{
 
 
     private clickEvents(event: MouseEvent){
-        //console.log(event.x, event.y)
-        let x = event.x / this.scale;
-        let y = event.y / this.scale;
+        console.log(event.offsetX, event.offsetY)
+        let x = event.offsetX / this.scale;
+        let y = event.offsetY / this.scale;
         if(this.clickInterceptor) this.clickInterceptor.handle(event);
         else{
             this.clickables.forEach((obj: Clickable, index) => {
