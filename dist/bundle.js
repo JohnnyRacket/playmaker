@@ -60,16 +60,16 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 84);
+/******/ 	return __webpack_require__(__webpack_require__.s = 107);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var identity = __webpack_require__(30),
-    overRest = __webpack_require__(59),
-    setToString = __webpack_require__(61);
+var identity = __webpack_require__(36),
+    overRest = __webpack_require__(73),
+    setToString = __webpack_require__(75);
 
 /**
  * The base implementation of `_.rest` which doesn't validate or coerce arguments.
@@ -90,11 +90,11 @@ module.exports = baseRest;
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseMatches = __webpack_require__(125),
-    baseMatchesProperty = __webpack_require__(155),
-    identity = __webpack_require__(30),
+var baseMatches = __webpack_require__(152),
+    baseMatchesProperty = __webpack_require__(182),
+    identity = __webpack_require__(36),
     isArray = __webpack_require__(6),
-    property = __webpack_require__(164);
+    property = __webpack_require__(191);
 
 /**
  * The base implementation of `_.iteratee`.
@@ -127,7 +127,7 @@ module.exports = baseIteratee;
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toFinite = __webpack_require__(90);
+var toFinite = __webpack_require__(117);
 
 /**
  * Converts `value` to an integer.
@@ -169,8 +169,8 @@ module.exports = toInteger;
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isArrayLike = __webpack_require__(36),
-    isObjectLike = __webpack_require__(16);
+var isArrayLike = __webpack_require__(44),
+    isObjectLike = __webpack_require__(20);
 
 /**
  * This method is like `_.isArrayLike` except that it also checks if `value`
@@ -208,8 +208,8 @@ module.exports = isArrayLikeObject;
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(38),
-    isFlattenable = __webpack_require__(94);
+var arrayPush = __webpack_require__(46),
+    isFlattenable = __webpack_require__(121);
 
 /**
  * The base implementation of `_.flatten` with support for restricting flattening.
@@ -374,7 +374,7 @@ module.exports = last;
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var freeGlobal = __webpack_require__(55);
+var freeGlobal = __webpack_require__(69);
 
 /** Detect free variable `self`. */
 var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -387,6 +387,111 @@ module.exports = root;
 
 /***/ }),
 /* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ReferenceManager_1 = __webpack_require__(99);
+var array = __webpack_require__(27);
+var RenderEngine = (function () {
+    function RenderEngine() {
+        this.observers = [];
+        this.services = [];
+        this.isRunning = false;
+        this.referenceManager = new ReferenceManager_1.ReferenceManager();
+        this._scale = 1;
+        if (RenderEngine._instance) {
+            throw new Error("Error: Instantiation failed: Use GameEngine.getInstance() instead of new.");
+        }
+        RenderEngine._instance = this;
+    }
+    Object.defineProperty(RenderEngine.prototype, "scale", {
+        get: function () {
+            return this._scale;
+        },
+        set: function (scale) {
+            this._scale = scale;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    RenderEngine.getInstance = function () {
+        return RenderEngine._instance;
+    };
+    RenderEngine.prototype.setCanvas = function (canvas, context) {
+        this.context = context;
+        this.canvas = canvas;
+    };
+    /*
+    * starts the render loop
+    */
+    RenderEngine.prototype.start = function () {
+        var _this = this;
+        this.isRunning = true;
+        requestAnimationFrame(function () { _this.run(); });
+    };
+    /*
+    * stops the render loop
+    */
+    RenderEngine.prototype.stop = function () {
+        this.isRunning = false;
+    };
+    /*
+    * controls the timing at which the tick is called,
+    * for visuals we will rely on the screenrefreshrate from the browser
+    */
+    RenderEngine.prototype.run = function () {
+        var _this = this;
+        //do the timing and call tick a lot
+        if (this.isRunning) {
+            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.tick();
+            requestAnimationFrame(function () { _this.run(); });
+        }
+    };
+    /*
+    * updates all of the view objects
+    */
+    RenderEngine.prototype.tick = function () {
+        var _this = this;
+        this.observers.forEach(function (obj, index) { return obj.render(_this.context, _this.canvas.width, _this.canvas.height); });
+    };
+    /*
+    * register a view object to be updated by the game engine
+    */
+    RenderEngine.prototype.register = function (obj) {
+        this.observers.push(obj);
+    };
+    /*
+    * unregister a view object to be updated by the game engine
+    */
+    RenderEngine.prototype.unregister = function (obj) {
+        array.pull(this.observers, obj);
+        this.observers.forEach(function (observer) {
+            observer.remove(obj);
+        });
+        this.services.forEach(function (service) {
+            service.remove(obj);
+        });
+    };
+    RenderEngine.prototype.addService = function (obj) {
+        this.services.push(obj);
+    };
+    RenderEngine.prototype.addReferenceToStage = function (object, stage) {
+        this.referenceManager.addReferenceToStage(object, stage);
+    };
+    RenderEngine.prototype.getReferencesForStage = function (stage) {
+        return this.referenceManager.getReferencesForStage(stage);
+    };
+    RenderEngine._instance = new RenderEngine();
+    return RenderEngine;
+}());
+exports.RenderEngine = RenderEngine;
+
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports) {
 
 /**
@@ -429,7 +534,7 @@ module.exports = eq;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 /** Used as references for various `Number` constants. */
@@ -457,11 +562,11 @@ module.exports = isIndex;
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(18),
-    isObjectLike = __webpack_require__(16);
+var baseGetTag = __webpack_require__(22),
+    isObjectLike = __webpack_require__(20);
 
 /** `Object#toString` result references. */
 var symbolTag = '[object Symbol]';
@@ -492,11 +597,11 @@ module.exports = isSymbol;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsNative = __webpack_require__(100),
-    getValue = __webpack_require__(103);
+var baseIsNative = __webpack_require__(127),
+    getValue = __webpack_require__(130);
 
 /**
  * Gets the native function at `key` of `object`.
@@ -515,15 +620,15 @@ module.exports = getNative;
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var SetCache = __webpack_require__(22),
-    arrayIncludes = __webpack_require__(42),
-    arrayIncludesWith = __webpack_require__(44),
-    cacheHas = __webpack_require__(29),
-    createSet = __webpack_require__(218),
-    setToArray = __webpack_require__(45);
+var SetCache = __webpack_require__(28),
+    arrayIncludes = __webpack_require__(50),
+    arrayIncludesWith = __webpack_require__(52),
+    cacheHas = __webpack_require__(35),
+    createSet = __webpack_require__(245),
+    setToArray = __webpack_require__(53);
 
 /** Used as the size to enable large array optimizations. */
 var LARGE_ARRAY_SIZE = 200;
@@ -593,7 +698,218 @@ module.exports = baseUniq;
 
 
 /***/ }),
-/* 15 */
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var DoubleBufferedViewObject_1 = __webpack_require__(26);
+var ClickableViewObject = (function (_super) {
+    __extends(ClickableViewObject, _super);
+    function ClickableViewObject(x, y, width, height, angle, drawingStrategy, clickStrategy, callback) {
+        var _this = _super.call(this, x, y, width, height, angle, drawingStrategy) || this;
+        _this.clickStrategy = clickStrategy;
+        _this.callback = callback;
+        return _this;
+    }
+    Object.defineProperty(ClickableViewObject.prototype, "clickStrategy", {
+        get: function () {
+            return this._clickStrategy;
+        },
+        set: function (strategy) {
+            this._clickStrategy = strategy;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClickableViewObject.prototype, "callback", {
+        get: function () {
+            return this._callback;
+        },
+        set: function (callback) {
+            this._callback = callback;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ClickableViewObject.prototype.click = function () {
+        if (this.clickStrategy)
+            this.clickStrategy.execute(this);
+        if (this.callback)
+            this.callback();
+    };
+    ClickableViewObject.prototype.getGlobalX = function () {
+        return this.globalX();
+    };
+    ClickableViewObject.prototype.getGlobalY = function () {
+        return this.globalY();
+    };
+    ClickableViewObject.prototype.getWidth = function () {
+        return this.width;
+    };
+    ClickableViewObject.prototype.getHeight = function () {
+        return this.height;
+    };
+    ClickableViewObject.prototype.accept = function (visitor) {
+        //do nothing
+    };
+    return ClickableViewObject;
+}(DoubleBufferedViewObject_1.DoubleBufferedViewObject));
+exports.ClickableViewObject = ClickableViewObject;
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ReferenceManager_1 = __webpack_require__(99);
+var array = __webpack_require__(27);
+/*
+* This class is a Singleton
+*/
+var GameEngine = (function () {
+    function GameEngine() {
+        this.isRunning = false;
+        this.observers = [];
+        this.tickLength = 33;
+        this.referenceManager = new ReferenceManager_1.ReferenceManager();
+        this.services = [];
+        if (GameEngine._instance) {
+            throw new Error("Error: Instantiation failed: Use GameEngine.getInstance() instead of new.");
+        }
+        GameEngine._instance = this;
+        //this.register(this.collisionManager);
+        //add collision manager to the ticks, add functions for adding and removing stuff
+    }
+    GameEngine.getInstance = function () {
+        return GameEngine._instance;
+    };
+    /*
+    * Starts the game loop
+    */
+    GameEngine.prototype.start = function () {
+        //start loop the calls tick on a set interval
+        this.isRunning = true;
+        this.run();
+    };
+    /*
+    * stops the game loop
+    */
+    GameEngine.prototype.stop = function () {
+        //stop looping
+        this.isRunning = false;
+        clearInterval(this.interval);
+    };
+    /*
+    * runs the game loop and sets the timing
+    */
+    GameEngine.prototype.run = function () {
+        var _this = this;
+        this.interval = setInterval(function () { _this.tick(); }, this.tickLength);
+    };
+    /*
+     * Tick represents the passing of time in the game
+     * and is used to progress the game through it's sequence
+     */
+    GameEngine.prototype.tick = function () {
+        this.observers.forEach(function (obj, index) { return obj.tick(); });
+        this.services.forEach(function (obj, index) { return obj.tick(); });
+        //this.controllerManager.controllers.forEach((obj: IGameObject, index) => obj.tick());
+        //GameMap.getInstance().printPositions();
+    };
+    /*
+     * Register adds game objects to the list of observers
+     * to be updated throught the game as time passes
+     */
+    GameEngine.prototype.register = function (obj) {
+        this.observers.push(obj);
+    };
+    /*
+     * Unregister removes game objects from being updated as time
+     * progresses in the game
+     */
+    GameEngine.prototype.unregister = function (obj) {
+        obj.dispose();
+        array.pull(this.observers, obj);
+        this.services.forEach(function (service) {
+            service.remove(obj);
+        });
+    };
+    GameEngine.prototype.addService = function (obj) {
+        this.services.push(obj);
+    };
+    GameEngine.prototype.addReferenceToStage = function (object, stage) {
+        this.referenceManager.addReferenceToStage(object, stage);
+    };
+    GameEngine.prototype.getReferencesForStage = function (stage) {
+        return this.referenceManager.getReferencesForStage(stage);
+    };
+    GameEngine._instance = new GameEngine();
+    return GameEngine;
+}());
+exports.GameEngine = GameEngine;
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var MapObject_1 = __webpack_require__(109);
+var GameMap = (function () {
+    function GameMap() {
+        //private objects: [string, Coordinate];
+        this.objects = [];
+        if (GameMap._instance) {
+            throw new Error("Error: Instantiation failed: Use GameEngine.getInstance() instead of new.");
+        }
+        GameMap._instance = this;
+    }
+    GameMap.getInstance = function () {
+        return GameMap._instance;
+    };
+    GameMap.prototype.printPositions = function () {
+        console.log("logging all map elements..");
+        this.objects.forEach(function (element) {
+            console.log(element.type, element.object.x, element.object.y);
+        });
+    };
+    GameMap.prototype.addMapObject = function (object, type) {
+        this.objects.push(new MapObject_1.MapObject(object, type));
+    };
+    GameMap.prototype.getAllOfType = function (type) {
+        return this.objects.filter(function (object) {
+            if (object.type == type)
+                return object;
+        });
+    };
+    GameMap.prototype.clearGameMap = function () {
+        this.objects = [];
+    };
+    GameMap._instance = new GameMap();
+    return GameMap;
+}());
+exports.GameMap = GameMap;
+
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports) {
 
 /**
@@ -630,7 +946,7 @@ module.exports = isObject;
 
 
 /***/ }),
-/* 16 */
+/* 20 */
 /***/ (function(module, exports) {
 
 /**
@@ -665,10 +981,10 @@ module.exports = isObjectLike;
 
 
 /***/ }),
-/* 17 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSymbol = __webpack_require__(12);
+var isSymbol = __webpack_require__(13);
 
 /** Used as references for various `Number` constants. */
 var INFINITY = 1 / 0;
@@ -692,12 +1008,12 @@ module.exports = toKey;
 
 
 /***/ }),
-/* 18 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Symbol = __webpack_require__(19),
-    getRawTag = __webpack_require__(88),
-    objectToString = __webpack_require__(89);
+var Symbol = __webpack_require__(23),
+    getRawTag = __webpack_require__(115),
+    objectToString = __webpack_require__(116);
 
 /** `Object#toString` result references. */
 var nullTag = '[object Null]',
@@ -726,7 +1042,7 @@ module.exports = baseGetTag;
 
 
 /***/ }),
-/* 19 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var root = __webpack_require__(9);
@@ -738,15 +1054,15 @@ module.exports = Symbol;
 
 
 /***/ }),
-/* 20 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var SetCache = __webpack_require__(22),
-    arrayIncludes = __webpack_require__(42),
-    arrayIncludesWith = __webpack_require__(44),
+var SetCache = __webpack_require__(28),
+    arrayIncludes = __webpack_require__(50),
+    arrayIncludesWith = __webpack_require__(52),
     arrayMap = __webpack_require__(7),
-    baseUnary = __webpack_require__(28),
-    cacheHas = __webpack_require__(29);
+    baseUnary = __webpack_require__(34),
+    cacheHas = __webpack_require__(35);
 
 /** Used as the size to enable large array optimizations. */
 var LARGE_ARRAY_SIZE = 200;
@@ -811,7 +1127,7 @@ module.exports = baseDifference;
 
 
 /***/ }),
-/* 21 */
+/* 25 */
 /***/ (function(module, exports) {
 
 /**
@@ -842,12 +1158,173 @@ module.exports = arrayFilter;
 
 
 /***/ }),
-/* 22 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var MapCache = __webpack_require__(40),
-    setCacheAdd = __webpack_require__(118),
-    setCacheHas = __webpack_require__(119);
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ComposableViewObject_1 = __webpack_require__(98);
+var DoubleBufferedViewObject = (function (_super) {
+    __extends(DoubleBufferedViewObject, _super);
+    function DoubleBufferedViewObject(x, y, width, height, angle, strategy) {
+        var _this = _super.call(this) || this;
+        _this.x = x;
+        _this.y = y;
+        _this.width = width;
+        _this.height = height;
+        _this.angle = angle;
+        _this.drawingStrategy = strategy;
+        _this.canvas = document.createElement('canvas');
+        _this.canvas.width = width;
+        _this.canvas.height = height;
+        _this.context = _this.canvas.getContext('2d');
+        _this.preRender();
+        return _this;
+    }
+    Object.defineProperty(DoubleBufferedViewObject.prototype, "angle", {
+        get: function () {
+            return this._angle;
+        },
+        set: function (angle) {
+            this._angle = angle;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DoubleBufferedViewObject.prototype, "drawingStrategy", {
+        get: function () {
+            return this._drawingStrategy;
+        },
+        set: function (strategy) {
+            this._drawingStrategy = strategy;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    DoubleBufferedViewObject.prototype.render = function (context, width, height) {
+        context.save();
+        context.translate(this.x, this.y);
+        context.rotate(this.angle);
+        context.translate(-this.x, -this.y);
+        this.drawingStrategy.draw(context, this.canvas, this.x, this.y, this.width, this.height);
+        context.restore();
+        this.postRender();
+    };
+    DoubleBufferedViewObject.prototype.postRender = function () {
+        //do nothing
+    };
+    DoubleBufferedViewObject.prototype.globalX = function () {
+        if (this.parent) {
+            return this.x + this.parent.globalX() + this.drawingStrategy.calculateGlobalPositionXEffect(this.width);
+        }
+        else {
+            return this.x + this.drawingStrategy.calculateGlobalPositionXEffect(this.width);
+        }
+    };
+    DoubleBufferedViewObject.prototype.globalY = function () {
+        if (this.parent) {
+            return this.y + this.parent.globalY() + this.drawingStrategy.calculateGlobalPositionYEffect(this.height);
+        }
+        else {
+            return this.y + this.drawingStrategy.calculateGlobalPositionYEffect(this.height);
+        }
+    };
+    return DoubleBufferedViewObject;
+}(ComposableViewObject_1.ComposableViewObject));
+exports.DoubleBufferedViewObject = DoubleBufferedViewObject;
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = {
+  'chunk': __webpack_require__(113),
+  'compact': __webpack_require__(119),
+  'concat': __webpack_require__(120),
+  'difference': __webpack_require__(123),
+  'differenceBy': __webpack_require__(151),
+  'differenceWith': __webpack_require__(193),
+  'drop': __webpack_require__(194),
+  'dropRight': __webpack_require__(195),
+  'dropRightWhile': __webpack_require__(196),
+  'dropWhile': __webpack_require__(197),
+  'fill': __webpack_require__(198),
+  'findIndex': __webpack_require__(202),
+  'findLastIndex': __webpack_require__(203),
+  'first': __webpack_require__(204),
+  'flatten': __webpack_require__(91),
+  'flattenDeep': __webpack_require__(205),
+  'flattenDepth': __webpack_require__(206),
+  'fromPairs': __webpack_require__(207),
+  'head': __webpack_require__(90),
+  'indexOf': __webpack_require__(208),
+  'initial': __webpack_require__(209),
+  'intersection': __webpack_require__(210),
+  'intersectionBy': __webpack_require__(211),
+  'intersectionWith': __webpack_require__(212),
+  'join': __webpack_require__(213),
+  'last': __webpack_require__(8),
+  'lastIndexOf': __webpack_require__(214),
+  'nth': __webpack_require__(216),
+  'pull': __webpack_require__(218),
+  'pullAll': __webpack_require__(92),
+  'pullAllBy': __webpack_require__(220),
+  'pullAllWith': __webpack_require__(221),
+  'pullAt': __webpack_require__(222),
+  'remove': __webpack_require__(228),
+  'reverse': __webpack_require__(229),
+  'slice': __webpack_require__(230),
+  'sortedIndex': __webpack_require__(231),
+  'sortedIndexBy': __webpack_require__(232),
+  'sortedIndexOf': __webpack_require__(233),
+  'sortedLastIndex': __webpack_require__(234),
+  'sortedLastIndexBy': __webpack_require__(235),
+  'sortedLastIndexOf': __webpack_require__(236),
+  'sortedUniq': __webpack_require__(237),
+  'sortedUniqBy': __webpack_require__(238),
+  'tail': __webpack_require__(239),
+  'take': __webpack_require__(240),
+  'takeRight': __webpack_require__(241),
+  'takeRightWhile': __webpack_require__(242),
+  'takeWhile': __webpack_require__(243),
+  'union': __webpack_require__(244),
+  'unionBy': __webpack_require__(247),
+  'unionWith': __webpack_require__(248),
+  'uniq': __webpack_require__(249),
+  'uniqBy': __webpack_require__(250),
+  'uniqWith': __webpack_require__(251),
+  'unzip': __webpack_require__(60),
+  'unzipWith': __webpack_require__(95),
+  'without': __webpack_require__(252),
+  'xor': __webpack_require__(253),
+  'xorBy': __webpack_require__(254),
+  'xorWith': __webpack_require__(255),
+  'zip': __webpack_require__(256),
+  'zipObject': __webpack_require__(257),
+  'zipObjectDeep': __webpack_require__(259),
+  'zipWith': __webpack_require__(261)
+};
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var MapCache = __webpack_require__(48),
+    setCacheAdd = __webpack_require__(145),
+    setCacheHas = __webpack_require__(146);
 
 /**
  *
@@ -875,10 +1352,10 @@ module.exports = SetCache;
 
 
 /***/ }),
-/* 23 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(13);
+var getNative = __webpack_require__(14);
 
 /* Built-in method references that are verified to be native. */
 var nativeCreate = getNative(Object, 'create');
@@ -887,14 +1364,14 @@ module.exports = nativeCreate;
 
 
 /***/ }),
-/* 24 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var listCacheClear = __webpack_require__(108),
-    listCacheDelete = __webpack_require__(109),
-    listCacheGet = __webpack_require__(110),
-    listCacheHas = __webpack_require__(111),
-    listCacheSet = __webpack_require__(112);
+var listCacheClear = __webpack_require__(135),
+    listCacheDelete = __webpack_require__(136),
+    listCacheGet = __webpack_require__(137),
+    listCacheHas = __webpack_require__(138),
+    listCacheSet = __webpack_require__(139);
 
 /**
  * Creates an list cache object.
@@ -925,10 +1402,10 @@ module.exports = ListCache;
 
 
 /***/ }),
-/* 25 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var eq = __webpack_require__(10);
+var eq = __webpack_require__(11);
 
 /**
  * Gets the index at which the `key` is found in `array` of key-value pairs.
@@ -952,10 +1429,10 @@ module.exports = assocIndexOf;
 
 
 /***/ }),
-/* 26 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isKeyable = __webpack_require__(114);
+var isKeyable = __webpack_require__(141);
 
 /**
  * Gets the data for `map`.
@@ -976,7 +1453,7 @@ module.exports = getMapData;
 
 
 /***/ }),
-/* 27 */
+/* 33 */
 /***/ (function(module, exports) {
 
 /**
@@ -1006,7 +1483,7 @@ module.exports = baseFindIndex;
 
 
 /***/ }),
-/* 28 */
+/* 34 */
 /***/ (function(module, exports) {
 
 /**
@@ -1026,7 +1503,7 @@ module.exports = baseUnary;
 
 
 /***/ }),
-/* 29 */
+/* 35 */
 /***/ (function(module, exports) {
 
 /**
@@ -1045,7 +1522,7 @@ module.exports = cacheHas;
 
 
 /***/ }),
-/* 30 */
+/* 36 */
 /***/ (function(module, exports) {
 
 /**
@@ -1072,13 +1549,13 @@ module.exports = identity;
 
 
 /***/ }),
-/* 31 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArray = __webpack_require__(6),
-    isKey = __webpack_require__(47),
-    stringToPath = __webpack_require__(156),
-    toString = __webpack_require__(159);
+    isKey = __webpack_require__(55),
+    stringToPath = __webpack_require__(183),
+    toString = __webpack_require__(186);
 
 /**
  * Casts `value` to a path array if it's not one.
@@ -1099,7 +1576,7 @@ module.exports = castPath;
 
 
 /***/ }),
-/* 32 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseSlice = __webpack_require__(5);
@@ -1131,12 +1608,12 @@ module.exports = baseWhile;
 
 
 /***/ }),
-/* 33 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSortedIndexBy = __webpack_require__(51),
-    identity = __webpack_require__(30),
-    isSymbol = __webpack_require__(12);
+var baseSortedIndexBy = __webpack_require__(59),
+    identity = __webpack_require__(36),
+    isSymbol = __webpack_require__(13);
 
 /** Used as references for the maximum length and index of an array. */
 var MAX_ARRAY_LENGTH = 4294967295,
@@ -1179,86 +1656,155 @@ module.exports = baseSortedIndex;
 
 
 /***/ }),
-/* 34 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {
-  'chunk': __webpack_require__(86),
-  'compact': __webpack_require__(92),
-  'concat': __webpack_require__(93),
-  'difference': __webpack_require__(96),
-  'differenceBy': __webpack_require__(124),
-  'differenceWith': __webpack_require__(166),
-  'drop': __webpack_require__(167),
-  'dropRight': __webpack_require__(168),
-  'dropRightWhile': __webpack_require__(169),
-  'dropWhile': __webpack_require__(170),
-  'fill': __webpack_require__(171),
-  'findIndex': __webpack_require__(175),
-  'findLastIndex': __webpack_require__(176),
-  'first': __webpack_require__(177),
-  'flatten': __webpack_require__(77),
-  'flattenDeep': __webpack_require__(178),
-  'flattenDepth': __webpack_require__(179),
-  'fromPairs': __webpack_require__(180),
-  'head': __webpack_require__(76),
-  'indexOf': __webpack_require__(181),
-  'initial': __webpack_require__(182),
-  'intersection': __webpack_require__(183),
-  'intersectionBy': __webpack_require__(184),
-  'intersectionWith': __webpack_require__(185),
-  'join': __webpack_require__(186),
-  'last': __webpack_require__(8),
-  'lastIndexOf': __webpack_require__(187),
-  'nth': __webpack_require__(189),
-  'pull': __webpack_require__(191),
-  'pullAll': __webpack_require__(78),
-  'pullAllBy': __webpack_require__(193),
-  'pullAllWith': __webpack_require__(194),
-  'pullAt': __webpack_require__(195),
-  'remove': __webpack_require__(201),
-  'reverse': __webpack_require__(202),
-  'slice': __webpack_require__(203),
-  'sortedIndex': __webpack_require__(204),
-  'sortedIndexBy': __webpack_require__(205),
-  'sortedIndexOf': __webpack_require__(206),
-  'sortedLastIndex': __webpack_require__(207),
-  'sortedLastIndexBy': __webpack_require__(208),
-  'sortedLastIndexOf': __webpack_require__(209),
-  'sortedUniq': __webpack_require__(210),
-  'sortedUniqBy': __webpack_require__(211),
-  'tail': __webpack_require__(212),
-  'take': __webpack_require__(213),
-  'takeRight': __webpack_require__(214),
-  'takeRightWhile': __webpack_require__(215),
-  'takeWhile': __webpack_require__(216),
-  'union': __webpack_require__(217),
-  'unionBy': __webpack_require__(220),
-  'unionWith': __webpack_require__(221),
-  'uniq': __webpack_require__(222),
-  'uniqBy': __webpack_require__(223),
-  'uniqWith': __webpack_require__(224),
-  'unzip': __webpack_require__(52),
-  'unzipWith': __webpack_require__(81),
-  'without': __webpack_require__(225),
-  'xor': __webpack_require__(226),
-  'xorBy': __webpack_require__(227),
-  'xorWith': __webpack_require__(228),
-  'zip': __webpack_require__(229),
-  'zipObject': __webpack_require__(230),
-  'zipObjectDeep': __webpack_require__(232),
-  'zipWith': __webpack_require__(234)
-};
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var MatchTemplater_1 = __webpack_require__(62);
+var array = __webpack_require__(27);
+var ScoreKeeper = (function () {
+    function ScoreKeeper() {
+        this._score = 0;
+        this._hiscore = 0;
+        this.scored = false;
+        this.resetting = false;
+        this.observers = [];
+        if (ScoreKeeper._instance) {
+            throw new Error("Error: Instantiation failed: Use ScoreKeeper.getInstance() instead of new.");
+        }
+        ScoreKeeper._instance = this;
+        //this.register(this.collisionManager);
+        //add collision manager to the ticks, add functions for adding and removing stuff
+    }
+    Object.defineProperty(ScoreKeeper.prototype, "score", {
+        get: function () {
+            return this._score;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ScoreKeeper.prototype, "hiscore", {
+        get: function () {
+            return this._hiscore;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ScoreKeeper.getInstance = function () {
+        return ScoreKeeper._instance;
+    };
+    ScoreKeeper.prototype.incrementScore = function () {
+        if (!this.scored) {
+            this._score++;
+            this.scored = true;
+            this.updateObservers();
+            MatchTemplater_1.MatchTemplater.getInstance().touchdown();
+        }
+    };
+    ScoreKeeper.prototype.resetScore = function () {
+        if (!this.resetting && !this.scored) {
+            this.resetting = true;
+            var score = this.score;
+            if (this.score > this.hiscore)
+                this._hiscore = this.score;
+            this._score = 0;
+            this.scored = false;
+            this.updateObservers();
+            MatchTemplater_1.MatchTemplater.getInstance().tackled(score, this.hiscore);
+        }
+    };
+    ScoreKeeper.prototype.finishedResetting = function () {
+        this.resetting = false;
+    };
+    ScoreKeeper.prototype.unlockScoring = function () {
+        this.scored = false;
+    };
+    ScoreKeeper.prototype.lockScoring = function () {
+        this.scored = true;
+    };
+    ScoreKeeper.prototype.updateObservers = function () {
+        this.observers.forEach(function (observer) {
+            observer.update();
+        });
+    };
+    ScoreKeeper.prototype.register = function (observer) {
+        this.observers.push(observer);
+    };
+    ScoreKeeper.prototype.unregister = function (observer) {
+        array.pull(this.observers, observer);
+    };
+    ScoreKeeper._instance = new ScoreKeeper();
+    return ScoreKeeper;
+}());
+exports.ScoreKeeper = ScoreKeeper;
 
 
 /***/ }),
-/* 35 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var eq = __webpack_require__(10),
-    isArrayLike = __webpack_require__(36),
-    isIndex = __webpack_require__(11),
-    isObject = __webpack_require__(15);
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Coordinate = (function () {
+    function Coordinate(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    return Coordinate;
+}());
+exports.Coordinate = Coordinate;
+
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var PositionableGameObject_1 = __webpack_require__(111);
+var CollidableGameObject = (function (_super) {
+    __extends(CollidableGameObject, _super);
+    function CollidableGameObject(x, y, width, height, type) {
+        var _this = _super.call(this, x, y, width, height) || this;
+        _this.type = type;
+        return _this;
+    }
+    CollidableGameObject.prototype.setHitbox = function (hitbox) {
+        this.hitbox = hitbox;
+    };
+    CollidableGameObject.prototype.getHitbox = function () {
+        return this.hitbox;
+    };
+    CollidableGameObject.prototype.removeHitbox = function () {
+        this.hitbox = null;
+    };
+    return CollidableGameObject;
+}(PositionableGameObject_1.PositionableGameObject));
+exports.CollidableGameObject = CollidableGameObject;
+
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var eq = __webpack_require__(11),
+    isArrayLike = __webpack_require__(44),
+    isIndex = __webpack_require__(12),
+    isObject = __webpack_require__(19);
 
 /**
  * Checks if the given arguments are from an iteratee call.
@@ -1288,11 +1834,11 @@ module.exports = isIterateeCall;
 
 
 /***/ }),
-/* 36 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isFunction = __webpack_require__(54),
-    isLength = __webpack_require__(37);
+var isFunction = __webpack_require__(68),
+    isLength = __webpack_require__(45);
 
 /**
  * Checks if `value` is array-like. A value is considered array-like if it's
@@ -1327,7 +1873,7 @@ module.exports = isArrayLike;
 
 
 /***/ }),
-/* 37 */
+/* 45 */
 /***/ (function(module, exports) {
 
 /** Used as references for various `Number` constants. */
@@ -1368,7 +1914,7 @@ module.exports = isLength;
 
 
 /***/ }),
-/* 38 */
+/* 46 */
 /***/ (function(module, exports) {
 
 /**
@@ -1394,11 +1940,11 @@ module.exports = arrayPush;
 
 
 /***/ }),
-/* 39 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsArguments = __webpack_require__(95),
-    isObjectLike = __webpack_require__(16);
+var baseIsArguments = __webpack_require__(122),
+    isObjectLike = __webpack_require__(20);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -1436,14 +1982,14 @@ module.exports = isArguments;
 
 
 /***/ }),
-/* 40 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var mapCacheClear = __webpack_require__(97),
-    mapCacheDelete = __webpack_require__(113),
-    mapCacheGet = __webpack_require__(115),
-    mapCacheHas = __webpack_require__(116),
-    mapCacheSet = __webpack_require__(117);
+var mapCacheClear = __webpack_require__(124),
+    mapCacheDelete = __webpack_require__(140),
+    mapCacheGet = __webpack_require__(142),
+    mapCacheHas = __webpack_require__(143),
+    mapCacheSet = __webpack_require__(144);
 
 /**
  * Creates a map cache object to store key-value pairs.
@@ -1474,10 +2020,10 @@ module.exports = MapCache;
 
 
 /***/ }),
-/* 41 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(13),
+var getNative = __webpack_require__(14),
     root = __webpack_require__(9);
 
 /* Built-in method references that are verified to be native. */
@@ -1487,10 +2033,10 @@ module.exports = Map;
 
 
 /***/ }),
-/* 42 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIndexOf = __webpack_require__(43);
+var baseIndexOf = __webpack_require__(51);
 
 /**
  * A specialized version of `_.includes` for arrays without support for
@@ -1510,12 +2056,12 @@ module.exports = arrayIncludes;
 
 
 /***/ }),
-/* 43 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseFindIndex = __webpack_require__(27),
-    baseIsNaN = __webpack_require__(58),
-    strictIndexOf = __webpack_require__(120);
+var baseFindIndex = __webpack_require__(33),
+    baseIsNaN = __webpack_require__(72),
+    strictIndexOf = __webpack_require__(147);
 
 /**
  * The base implementation of `_.indexOf` without `fromIndex` bounds checks.
@@ -1536,7 +2082,7 @@ module.exports = baseIndexOf;
 
 
 /***/ }),
-/* 44 */
+/* 52 */
 /***/ (function(module, exports) {
 
 /**
@@ -1564,7 +2110,7 @@ module.exports = arrayIncludesWith;
 
 
 /***/ }),
-/* 45 */
+/* 53 */
 /***/ (function(module, exports) {
 
 /**
@@ -1588,11 +2134,11 @@ module.exports = setToArray;
 
 
 /***/ }),
-/* 46 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var castPath = __webpack_require__(31),
-    toKey = __webpack_require__(17);
+var castPath = __webpack_require__(37),
+    toKey = __webpack_require__(21);
 
 /**
  * The base implementation of `_.get` without support for default values.
@@ -1618,11 +2164,11 @@ module.exports = baseGet;
 
 
 /***/ }),
-/* 47 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArray = __webpack_require__(6),
-    isSymbol = __webpack_require__(12);
+    isSymbol = __webpack_require__(13);
 
 /** Used to match property names within property paths. */
 var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
@@ -1653,15 +2199,15 @@ module.exports = isKey;
 
 
 /***/ }),
-/* 48 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var SetCache = __webpack_require__(22),
-    arrayIncludes = __webpack_require__(42),
-    arrayIncludesWith = __webpack_require__(44),
+var SetCache = __webpack_require__(28),
+    arrayIncludes = __webpack_require__(50),
+    arrayIncludesWith = __webpack_require__(52),
     arrayMap = __webpack_require__(7),
-    baseUnary = __webpack_require__(28),
-    cacheHas = __webpack_require__(29);
+    baseUnary = __webpack_require__(34),
+    cacheHas = __webpack_require__(35);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeMin = Math.min;
@@ -1733,7 +2279,7 @@ module.exports = baseIntersection;
 
 
 /***/ }),
-/* 49 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArrayLikeObject = __webpack_require__(3);
@@ -1753,14 +2299,14 @@ module.exports = castArrayLikeObject;
 
 
 /***/ }),
-/* 50 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayMap = __webpack_require__(7),
-    baseIndexOf = __webpack_require__(43),
-    baseIndexOfWith = __webpack_require__(192),
-    baseUnary = __webpack_require__(28),
-    copyArray = __webpack_require__(56);
+    baseIndexOf = __webpack_require__(51),
+    baseIndexOfWith = __webpack_require__(219),
+    baseUnary = __webpack_require__(34),
+    copyArray = __webpack_require__(70);
 
 /** Used for built-in method references. */
 var arrayProto = Array.prototype;
@@ -1810,10 +2356,10 @@ module.exports = basePullAll;
 
 
 /***/ }),
-/* 51 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSymbol = __webpack_require__(12);
+var isSymbol = __webpack_require__(13);
 
 /** Used as references for the maximum length and index of an array. */
 var MAX_ARRAY_LENGTH = 4294967295,
@@ -1880,13 +2426,13 @@ module.exports = baseSortedIndexBy;
 
 
 /***/ }),
-/* 52 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayFilter = __webpack_require__(21),
+var arrayFilter = __webpack_require__(25),
     arrayMap = __webpack_require__(7),
-    baseProperty = __webpack_require__(75),
-    baseTimes = __webpack_require__(67),
+    baseProperty = __webpack_require__(89),
+    baseTimes = __webpack_require__(81),
     isArrayLikeObject = __webpack_require__(3);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
@@ -1931,12 +2477,12 @@ module.exports = unzip;
 
 
 /***/ }),
-/* 53 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseDifference = __webpack_require__(20),
+var baseDifference = __webpack_require__(24),
     baseFlatten = __webpack_require__(4),
-    baseUniq = __webpack_require__(14);
+    baseUniq = __webpack_require__(15);
 
 /**
  * The base implementation of methods like `_.xor`, without support for
@@ -1973,11 +2519,708 @@ module.exports = baseXor;
 
 
 /***/ }),
-/* 54 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(18),
-    isObject = __webpack_require__(15);
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var BottomLockPositioningDecorator_1 = __webpack_require__(262);
+var ScoreViewObject_1 = __webpack_require__(264);
+var StickerTextViewObject_1 = __webpack_require__(100);
+var DebugViewObject_1 = __webpack_require__(265);
+var RenderEngine_1 = __webpack_require__(10);
+var HorizontalCenterPositioningDecorator_1 = __webpack_require__(64);
+var TopLeftDrawingStrategy_1 = __webpack_require__(65);
+var ButtonViewObject_1 = __webpack_require__(101);
+var GameMap_1 = __webpack_require__(18);
+var Route_1 = __webpack_require__(102);
+var Coordinate_1 = __webpack_require__(41);
+var GameEngine_1 = __webpack_require__(17);
+var RouteDrawingStageVisitor_1 = __webpack_require__(266);
+var RightLockPositioningDecorator_1 = __webpack_require__(271);
+var ScoreKeeper_1 = __webpack_require__(40);
+var LogoViewObject_1 = __webpack_require__(103);
+var MatchTemplater = (function () {
+    function MatchTemplater(gameView, playerFactory, playerVOFactory, fieldFactory, clickManager, collisionManager) {
+        this.messages = [];
+        this.blockers = [];
+        this.blockerVOs = [];
+        this.defenders = [];
+        this.defenderVOs = [];
+        this.playSelection = 0;
+        this.blockerPositions = [];
+        if (MatchTemplater._instance) {
+            throw new Error("Error: Instantiation failed: Use MatchTemplater.getInstance() instead of new.");
+        }
+        this.gameView = gameView;
+        this.playerFactory = playerFactory;
+        this.playerVOFactory = playerVOFactory;
+        this.fieldFactory = fieldFactory;
+        this.clickManager = clickManager;
+        this.collisionManager = collisionManager;
+        MatchTemplater._instance = this;
+    }
+    MatchTemplater.getInstance = function () {
+        return MatchTemplater._instance;
+    };
+    MatchTemplater.prototype.touchdown = function () {
+        var _this = this;
+        var startBanner = new StickerTextViewObject_1.StickerTextViewObject(0, 100, 320, 80, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), null, null, 'Touchdown!');
+        startBanner.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        startBanner.font = 'bold 48px Arial';
+        this.gameView.addView(startBanner);
+        RenderEngine_1.RenderEngine.getInstance().addReferenceToStage(startBanner, 'touchdownStage');
+        setTimeout(function () {
+            var refs = RenderEngine_1.RenderEngine.getInstance().getReferencesForStage('touchdownStage');
+            refs.forEach(function (element) {
+                RenderEngine_1.RenderEngine.getInstance().unregister(element);
+            });
+            _this.playSelectStage();
+        }, 500);
+    };
+    MatchTemplater.prototype.tackled = function (score, hiscore) {
+        var _this = this;
+        var startBanner = new StickerTextViewObject_1.StickerTextViewObject(0, 100, 320, 80, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), null, null, 'Tackled!');
+        startBanner.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        startBanner.font = 'bold 48px Arial';
+        startBanner.color = '#E68364';
+        this.gameView.addView(startBanner);
+        RenderEngine_1.RenderEngine.getInstance().addReferenceToStage(startBanner, 'tackledStage');
+        setTimeout(function () {
+            var refs = RenderEngine_1.RenderEngine.getInstance().getReferencesForStage('tackledStage');
+            refs.forEach(function (element) {
+                RenderEngine_1.RenderEngine.getInstance().unregister(element);
+            });
+            _this.gameOver(score, hiscore);
+        }, 500);
+    };
+    MatchTemplater.prototype.gameOver = function (score, hiscore) {
+        var _this = this;
+        var backdrop = new StickerTextViewObject_1.StickerTextViewObject(0, 0, 320, 480, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), null, null, ' ');
+        backdrop.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        this.gameView.addView(backdrop);
+        var gameOverBanner = new LogoViewObject_1.LogoViewObject(0, 120, 320, 80, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), null, null, 'Game Over.');
+        this.gameView.addView(gameOverBanner);
+        var hiScore = new LogoViewObject_1.LogoViewObject(0, 190, 320, 80, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), null, null, 'Hi-Score: ' + hiscore);
+        hiScore.font = "bold 32px Arial";
+        this.gameView.addView(hiScore);
+        var scoreView = new LogoViewObject_1.LogoViewObject(0, 240, 320, 80, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), null, null, 'Score: ' + score);
+        scoreView.font = "bold 32px Arial";
+        this.gameView.addView(scoreView);
+        RenderEngine_1.RenderEngine.getInstance().addReferenceToStage(gameOverBanner, 'gameOverStage');
+        RenderEngine_1.RenderEngine.getInstance().addReferenceToStage(hiScore, 'gameOverStage');
+        RenderEngine_1.RenderEngine.getInstance().addReferenceToStage(scoreView, 'gameOverStage');
+        RenderEngine_1.RenderEngine.getInstance().addReferenceToStage(backdrop, 'gameOverStage');
+        var startButton = new ButtonViewObject_1.ButtonViewObject(10, 340, 150, 50, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), null, 'Play Again', function () {
+            var refs = RenderEngine_1.RenderEngine.getInstance().getReferencesForStage('gameOverStage');
+            refs.forEach(function (element) {
+                RenderEngine_1.RenderEngine.getInstance().unregister(element);
+            });
+            _this.playSelectStage();
+        });
+        var hcent = new HorizontalCenterPositioningDecorator_1.HorizontalCenterPositioningDecorator(startButton);
+        this.gameView.addView(hcent);
+        this.clickManager.addClickable(hcent);
+        RenderEngine_1.RenderEngine.getInstance().addReferenceToStage(hcent, 'gameOverStage');
+    };
+    MatchTemplater.prototype.resetGame = function () {
+        GameEngine_1.GameEngine.getInstance().stop();
+        ScoreKeeper_1.ScoreKeeper.getInstance().unlockScoring();
+        this.blockers.forEach(function (blocker) {
+            GameEngine_1.GameEngine.getInstance().unregister(blocker);
+        });
+        this.defenders.forEach(function (defender) {
+            GameEngine_1.GameEngine.getInstance().unregister(defender);
+        });
+        this.blockerVOs.forEach(function (blocker) {
+            RenderEngine_1.RenderEngine.getInstance().unregister(blocker);
+        });
+        this.defenderVOs.forEach(function (defender) {
+            RenderEngine_1.RenderEngine.getInstance().unregister(defender);
+        });
+        this.blockers = [];
+        this.defenders = [];
+        this.blockerVOs = [];
+        this.defenderVOs = [];
+        if (this.runner)
+            GameEngine_1.GameEngine.getInstance().unregister(this.runner);
+        if (this.runnerViewObject)
+            RenderEngine_1.RenderEngine.getInstance().unregister(this.runnerViewObject);
+        this.runner = null;
+        this.runnerViewObject = null;
+        this.collisionManager.dumpActiveHitboxes();
+        GameMap_1.GameMap.getInstance().clearGameMap();
+        this.runner = this.playerFactory.createRunner(160, 380, -90);
+        this.runnerViewObject = this.playerVOFactory.CreateRunnerInArea(this.runner, this.gameView);
+        ScoreKeeper_1.ScoreKeeper.getInstance().finishedResetting();
+    };
+    MatchTemplater.prototype.createGame = function () {
+        //create the player you control youreself (runner)
+        //
+        //GameEngine.getInstance().stop();
+        //add endzone to score in
+        var endzone = this.fieldFactory.CreateEndZone(0, 0); //new Endzone(0,0,320,120,'endzone');
+        //GameEngine.getInstance().register(endzone);
+        //let endzoneVO = new DebugViewObject(endzone.x, endzone.y,endzone.width, endzone.height, 0, endzone, new TopLeftDrawingStrategy())
+        //this.gameView.addView(endzoneVO);
+        //create walls
+        var wall1 = this.fieldFactory.CreateWall(-10, 0, 10, 480);
+        var wall1VO = new DebugViewObject_1.DebugViewObject(wall1.x, wall1.y, wall1.width, wall1.height, 0, wall1, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy());
+        this.gameView.addView(wall1VO);
+        var wall2 = this.fieldFactory.CreateWall(320, 0, 10, 480);
+        var wall2VO = new DebugViewObject_1.DebugViewObject(wall2.x, wall2.y, wall2.width, wall2.height, 0, wall2, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy());
+        this.gameView.addView(wall2VO);
+        var wall3 = this.fieldFactory.CreateWall(0, 480, 320, 10);
+        var wall3VO = new DebugViewObject_1.DebugViewObject(wall3.x, wall3.y, wall3.width, wall3.height, 0, wall3, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy());
+        this.gameView.addView(wall3VO);
+        var scoreVO = new ScoreViewObject_1.ScoreViewObject(20, 0, 120, 40, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), null, null);
+        var bottomLockScore = new BottomLockPositioningDecorator_1.BottomLockPositioningDecorator(scoreVO, 10);
+        this.gameView.addView(bottomLockScore);
+        this.playSelectStage();
+        // setTimeout(function(){
+        //     let objects = GameEngine.getInstance().getReferencesForStage("gameplayStage");
+        //     objects.forEach(object => {
+        //         GameEngine.getInstance().unregister(object as IGameObject);
+        //         //need to chekc that the hitboxes arent being ghosts lmao
+        //     });
+        // }, 10000);
+    };
+    MatchTemplater.prototype.playSelectStage = function () {
+        var _this = this;
+        this.resetGame();
+        var blockerIndex = 0;
+        this.blockerPositions = [
+            [new Coordinate_1.Coordinate(110, 300), new Coordinate_1.Coordinate(145, 300), new Coordinate_1.Coordinate(180, 300), new Coordinate_1.Coordinate(215, 300)],
+            [new Coordinate_1.Coordinate(70, 300), new Coordinate_1.Coordinate(105, 300), new Coordinate_1.Coordinate(140, 300), new Coordinate_1.Coordinate(200, 300)],
+            [new Coordinate_1.Coordinate(120, 300), new Coordinate_1.Coordinate(185, 300), new Coordinate_1.Coordinate(220, 300), new Coordinate_1.Coordinate(255, 300)]
+            //[new Coordinate(70, 300), new Coordinate(105, 300), new Coordinate(220, 300), new Coordinate(255, 300)],
+        ];
+        var blockerPositionIndex = Math.floor(Math.random() * this.blockerPositions.length);
+        this.blockers.push(this.playerFactory.createBlocker(this.blockerPositions[blockerPositionIndex][0].x, this.blockerPositions[0][0].y, null, this.gameView));
+        this.blockers.push(this.playerFactory.createBlocker(this.blockerPositions[blockerPositionIndex][1].x, this.blockerPositions[0][1].y, null, this.gameView));
+        this.blockers.push(this.playerFactory.createBlocker(this.blockerPositions[blockerPositionIndex][2].x, this.blockerPositions[0][2].y, null, this.gameView));
+        this.blockers.push(this.playerFactory.createBlocker(this.blockerPositions[blockerPositionIndex][3].x, this.blockerPositions[0][3].y, null, this.gameView));
+        //create the view objects for each blocker 
+        this.blockers.forEach(function (blocker) {
+            _this.blockerVOs.push(_this.playerVOFactory.CreateBlockerInArea(blocker, _this.gameView));
+        });
+        // let leftButton = new ButtonViewObject(20,215,50,50,0,new TopLeftDrawingStrategy(), null, '<', () => {
+        //     this.setPlay(this.playSelection - 1);
+        //     this.changeBlockerLayout(this.playSelection);
+        // });
+        // let rightButton = new ButtonViewObject(250,215,50,50,0,new TopLeftDrawingStrategy(), null, '>', () => {
+        //     this.setPlay(this.playSelection + 1);
+        //     this.changeBlockerLayout(this.playSelection);
+        // });
+        // this.clickManager.addClickable(leftButton);
+        // this.clickManager.addClickable(rightButton);
+        // this.gameView.addView(leftButton);
+        // this.gameView.addView(rightButton);
+        // RenderEngine.getInstance().addReferenceToStage(leftButton, 'playSelectStage');
+        // RenderEngine.getInstance().addReferenceToStage(rightButton, 'playSelectStage');
+        // let selectButton = new ButtonViewObject(50,410,100,50,0,new TopLeftDrawingStrategy(), null, 'Select', () => {
+        //     let refs = RenderEngine.getInstance().getReferencesForStage('playSelectStage');
+        //     refs.forEach(element => {
+        //         RenderEngine.getInstance().unregister(element as IViewObject);
+        //     });
+        //     this.messages.forEach(element =>{
+        //         this.gameView.remove(element);
+        //     });
+        //     this.messages = [];
+        //     this.routeDrawStage();
+        // });
+        // let hcent = new RightLockPositioningDecorator(selectButton, 25);
+        // this.gameView.addView(hcent);
+        // this.clickManager.addClickable(hcent);
+        // RenderEngine.getInstance().addReferenceToStage(hcent, 'playSelectStage');
+        // let text = new StickerTextViewObject(10,20, 280, 50, 0, new TopLeftDrawingStrategy(), null, null, "Tap Arrows to");
+        // text.backgroundColor = '#2ecc71';
+        // text.font = "bold 26px Arial"
+        // let text2 = new StickerTextViewObject(10,60, 280, 50, 0, new TopLeftDrawingStrategy(), null, null, "Change Plays");
+        // text2.backgroundColor = '#2ecc71';
+        // text2.font = "bold 26px Arial";
+        // this.messages.push(new HorizontalCenterPositioningDecorator(text));
+        // this.gameView.addView(this.messages[0]);
+        // this.messages.push(new HorizontalCenterPositioningDecorator(text2));
+        // this.gameView.addView(this.messages[1]);
+        //create defenders with routes
+        var defenderPositions = [
+            [new Coordinate_1.Coordinate(60, 260), new Coordinate_1.Coordinate(110, 260), new Coordinate_1.Coordinate(160, 260), new Coordinate_1.Coordinate(210, 260), new Coordinate_1.Coordinate(260, 260)],
+            [new Coordinate_1.Coordinate(100, 260), new Coordinate_1.Coordinate(130, 260), new Coordinate_1.Coordinate(160, 260), new Coordinate_1.Coordinate(190, 260), new Coordinate_1.Coordinate(220, 260)],
+            [new Coordinate_1.Coordinate(60, 160), new Coordinate_1.Coordinate(110, 260), new Coordinate_1.Coordinate(160, 260), new Coordinate_1.Coordinate(210, 260), new Coordinate_1.Coordinate(260, 160)],
+            [new Coordinate_1.Coordinate(80, 260), new Coordinate_1.Coordinate(133, 260), new Coordinate_1.Coordinate(186, 260), new Coordinate_1.Coordinate(240, 260), new Coordinate_1.Coordinate(160, 160)],
+            [new Coordinate_1.Coordinate(60, 260), new Coordinate_1.Coordinate(110, 260), new Coordinate_1.Coordinate(160, 260), new Coordinate_1.Coordinate(210, 260), new Coordinate_1.Coordinate(260, 260)],
+            [new Coordinate_1.Coordinate(80, 260), new Coordinate_1.Coordinate(160, 260), new Coordinate_1.Coordinate(240, 260), new Coordinate_1.Coordinate(120, 160), new Coordinate_1.Coordinate(200, 160)]
+        ];
+        var defenderRoutes = [
+            [new Coordinate_1.Coordinate(40, 0), new Coordinate_1.Coordinate(0, 40)],
+            [new Coordinate_1.Coordinate(-40, 0), new Coordinate_1.Coordinate(0, 40)],
+            [new Coordinate_1.Coordinate(0, 30)],
+            [new Coordinate_1.Coordinate(30, 30)],
+            [new Coordinate_1.Coordinate(-30, 30)],
+            [new Coordinate_1.Coordinate(0, -60)],
+        ];
+        var defenderPositionIndex = Math.floor(Math.random() * defenderPositions.length);
+        var _loop_1 = function (i) {
+            console.log(defenderPositionIndex);
+            route = defenderRoutes[Math.floor(Math.random() * defenderRoutes.length)];
+            newRoute = [];
+            route.forEach(function (coordinate) {
+                newRoute.push(new Coordinate_1.Coordinate(coordinate.x + defenderPositions[defenderPositionIndex][i].x, coordinate.y + defenderPositions[defenderPositionIndex][i].y));
+            });
+            this_1.defenders.push(this_1.playerFactory.createDefender(defenderPositions[defenderPositionIndex][i].x, defenderPositions[defenderPositionIndex][i].y, new Route_1.Route(newRoute), this_1.gameView));
+        };
+        var this_1 = this, route, newRoute;
+        for (var i = 0; i < 5; ++i) {
+            _loop_1(i);
+        }
+        this.defenders.forEach(function (defender) {
+            _this.defenderVOs.push(_this.playerVOFactory.CreateDefenderInArea(defender, _this.gameView));
+        });
+        // let startButton = new ButtonViewObject(50,410,100,50,0,new TopLeftDrawingStrategy(), null, 'Start', () => {
+        //     GameEngine.getInstance().start();
+        //     let refs = RenderEngine.getInstance().getReferencesForStage('routeStage');
+        //     refs.forEach(element => {
+        //         RenderEngine.getInstance().unregister(element as IViewObject);
+        //     });
+        //     this.messages.forEach(element =>{
+        //         this.gameView.remove(element);
+        //     });
+        //     this.messages = [];
+        // });
+        // let hcent = new RightLockPositioningDecorator(startButton, 25);
+        // this.gameView.addView(hcent);
+        // this.clickManager.addClickable(hcent);
+        // RenderEngine.getInstance().addReferenceToStage(hcent, 'routeStage');
+        this.abilityDots = this.playerVOFactory.PlayAbilityDots(this.runner, this.gameView);
+        this.CountdownStage();
+    };
+    MatchTemplater.prototype.CountdownStage = function () {
+        var startBanner = new StickerTextViewObject_1.StickerTextViewObject(0, 100, 320, 80, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), null, null, 'Get Ready...');
+        startBanner.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        startBanner.font = 'bold 42px Arial';
+        this.gameView.addView(startBanner);
+        RenderEngine_1.RenderEngine.getInstance().addReferenceToStage(startBanner, 'routeStage');
+        var count = 4;
+        var counter = setInterval(function () {
+            --count;
+            if (count > 1) {
+                startBanner.text = "Get Ready...";
+            } //nothing{}
+            else if (count == 1)
+                startBanner.text = "Go!";
+            else {
+                clearInterval(counter);
+                var refs = RenderEngine_1.RenderEngine.getInstance().getReferencesForStage('routeStage');
+                refs.forEach(function (element) {
+                    RenderEngine_1.RenderEngine.getInstance().unregister(element);
+                });
+                GameEngine_1.GameEngine.getInstance().start();
+            }
+        }, 300);
+    };
+    MatchTemplater.prototype.changeBlockerLayout = function (play) {
+        //create blockers with aroutes
+        for (var i = 0; i < this.blockers.length; ++i) {
+            this.blockers[i].x = this.blockerPositions[play][i].x;
+            this.blockers[i].y = this.blockerPositions[play][i].y;
+        }
+        this.blockerVOs.forEach(function (blockerVO) {
+            blockerVO.update();
+        });
+    };
+    MatchTemplater.prototype.routeDrawStage = function () {
+        var _this = this;
+        //create defenders with routes
+        var defenderPositions = [
+            [new Coordinate_1.Coordinate(60, 260), new Coordinate_1.Coordinate(110, 260), new Coordinate_1.Coordinate(160, 260), new Coordinate_1.Coordinate(210, 260), new Coordinate_1.Coordinate(260, 260)],
+            [new Coordinate_1.Coordinate(100, 260), new Coordinate_1.Coordinate(130, 260), new Coordinate_1.Coordinate(160, 260), new Coordinate_1.Coordinate(190, 260), new Coordinate_1.Coordinate(220, 260)],
+            [new Coordinate_1.Coordinate(60, 160), new Coordinate_1.Coordinate(110, 260), new Coordinate_1.Coordinate(160, 260), new Coordinate_1.Coordinate(210, 260), new Coordinate_1.Coordinate(260, 160)],
+            [new Coordinate_1.Coordinate(80, 260), new Coordinate_1.Coordinate(133, 260), new Coordinate_1.Coordinate(186, 260), new Coordinate_1.Coordinate(240, 260), new Coordinate_1.Coordinate(160, 160)],
+            [new Coordinate_1.Coordinate(60, 260), new Coordinate_1.Coordinate(110, 260), new Coordinate_1.Coordinate(160, 260), new Coordinate_1.Coordinate(210, 260), new Coordinate_1.Coordinate(260, 260)],
+            [new Coordinate_1.Coordinate(80, 260), new Coordinate_1.Coordinate(160, 260), new Coordinate_1.Coordinate(240, 260), new Coordinate_1.Coordinate(120, 160), new Coordinate_1.Coordinate(200, 160)]
+        ];
+        var defenderRoutes = [
+            [new Coordinate_1.Coordinate(40, 0), new Coordinate_1.Coordinate(0, 40)],
+            [new Coordinate_1.Coordinate(-40, 0), new Coordinate_1.Coordinate(0, 40)],
+            [new Coordinate_1.Coordinate(0, 30)],
+            [new Coordinate_1.Coordinate(30, 30)],
+            [new Coordinate_1.Coordinate(-30, 30)],
+            [new Coordinate_1.Coordinate(0, -60)],
+        ];
+        var defenderPositionIndex = Math.floor(Math.random() * defenderPositions.length);
+        var _loop_2 = function (i) {
+            console.log(defenderPositionIndex);
+            route = defenderRoutes[Math.floor(Math.random() * defenderRoutes.length)];
+            newRoute = [];
+            route.forEach(function (coordinate) {
+                newRoute.push(new Coordinate_1.Coordinate(coordinate.x + defenderPositions[defenderPositionIndex][i].x, coordinate.y + defenderPositions[defenderPositionIndex][i].y));
+            });
+            this_2.defenders.push(this_2.playerFactory.createDefender(defenderPositions[defenderPositionIndex][i].x, defenderPositions[defenderPositionIndex][i].y, new Route_1.Route(newRoute), this_2.gameView));
+        };
+        var this_2 = this, route, newRoute;
+        for (var i = 0; i < 5; ++i) {
+            _loop_2(i);
+        }
+        this.defenders.forEach(function (defender) {
+            _this.defenderVOs.push(_this.playerVOFactory.CreateDefenderInArea(defender, _this.gameView));
+        });
+        //create route drawing stuff
+        var text = new StickerTextViewObject_1.StickerTextViewObject(10, 20, 280, 50, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), null, null, "Tap Your Defenders");
+        text.backgroundColor = '#2ecc71';
+        text.font = "bold 26px Arial";
+        var text2 = new StickerTextViewObject_1.StickerTextViewObject(10, 60, 280, 50, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), null, null, "To Draw Their Routes");
+        text2.backgroundColor = '#2ecc71';
+        text2.font = "bold 26px Arial";
+        this.messages.push(new HorizontalCenterPositioningDecorator_1.HorizontalCenterPositioningDecorator(text));
+        this.gameView.addView(this.messages[0]);
+        this.messages.push(new HorizontalCenterPositioningDecorator_1.HorizontalCenterPositioningDecorator(text2));
+        this.gameView.addView(this.messages[1]);
+        //this will moack stage 2 being hit where routes need to be drawn
+        var visitor = new RouteDrawingStageVisitor_1.RouteDrawingStageVisitor(this.clickManager, this.gameView);
+        this.blockerVOs.forEach(function (blockerVO) {
+            blockerVO.accept(visitor);
+        });
+        //add start button
+        var startButton = new ButtonViewObject_1.ButtonViewObject(50, 410, 100, 50, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), null, 'Start', function () {
+            GameEngine_1.GameEngine.getInstance().start();
+            var refs = RenderEngine_1.RenderEngine.getInstance().getReferencesForStage('routeStage');
+            refs.forEach(function (element) {
+                RenderEngine_1.RenderEngine.getInstance().unregister(element);
+            });
+            _this.messages.forEach(function (element) {
+                _this.gameView.remove(element);
+            });
+            _this.messages = [];
+        });
+        var hcent = new RightLockPositioningDecorator_1.RightLockPositioningDecorator(startButton, 25);
+        this.gameView.addView(hcent);
+        this.clickManager.addClickable(hcent);
+        RenderEngine_1.RenderEngine.getInstance().addReferenceToStage(hcent, 'routeStage');
+    };
+    MatchTemplater.prototype.setPlay = function (number) {
+        if (number < 0)
+            this.playSelection = this.blockerPositions.length - 1;
+        else if (number >= this.blockerPositions.length)
+            this.playSelection = 0;
+        else
+            this.playSelection = number;
+    };
+    return MatchTemplater;
+}());
+exports.MatchTemplater = MatchTemplater;
+
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ClickableViewObject_1 = __webpack_require__(16);
+var PositioningDecorator = (function (_super) {
+    __extends(PositioningDecorator, _super);
+    function PositioningDecorator(view) {
+        var _this = _super.call(this, view.x, view.y, view.width, view.y, view.angle, view.drawingStrategy, view.clickStrategy, view.callback) || this;
+        _this.view = view;
+        _this.x = view.x;
+        _this.y = view.y;
+        _this.width = view.width;
+        _this.height = view.height;
+        return _this;
+        //trying to figure out the best way to create a decorator, this is the best solution I have found so far
+    }
+    Object.defineProperty(PositioningDecorator.prototype, "x", {
+        get: function () {
+            return this.view.x;
+        },
+        set: function (x) {
+            if (this.view != null)
+                this.view.x = x;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PositioningDecorator.prototype, "y", {
+        get: function () {
+            return this.view.y;
+        },
+        set: function (y) {
+            if (this.view != null)
+                this.view.y = y;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PositioningDecorator.prototype, "width", {
+        get: function () {
+            return this.view.width;
+        },
+        set: function (width) {
+            if (this.view != null)
+                this.view.width = width;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PositioningDecorator.prototype, "height", {
+        get: function () {
+            return this.view.height;
+        },
+        set: function (height) {
+            if (this.view != null)
+                this.view.height = height;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    PositioningDecorator.prototype.click = function () {
+        this.view.click(); //.execute(this); //.click();
+    };
+    PositioningDecorator.prototype.accept = function (visitor) {
+        this.view.accept(visitor);
+    };
+    return PositioningDecorator;
+}(ClickableViewObject_1.ClickableViewObject));
+exports.PositioningDecorator = PositioningDecorator;
+
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var PositioningDecorator_1 = __webpack_require__(63);
+var HorizontalCenterPositioningDecorator = (function (_super) {
+    __extends(HorizontalCenterPositioningDecorator, _super);
+    function HorizontalCenterPositioningDecorator() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.offsetX = 0;
+        return _this;
+    }
+    HorizontalCenterPositioningDecorator.prototype.hover = function () {
+        //do nothing
+    };
+    HorizontalCenterPositioningDecorator.prototype.preRender = function () {
+        //do nothing
+    };
+    HorizontalCenterPositioningDecorator.prototype.render = function (context, width, height) {
+        this.offsetX = width / 2 - this.width / 2;
+        this.view.x = this.offsetX;
+        this.view.render(context, width, height);
+    };
+    HorizontalCenterPositioningDecorator.prototype.update = function () {
+        throw new Error("Method not implemented.");
+    };
+    HorizontalCenterPositioningDecorator.prototype.getGlobalX = function () {
+        return this.offsetX + this.parent.x;
+    };
+    HorizontalCenterPositioningDecorator.prototype.accept = function (visitor) {
+        this.view.accept(visitor);
+    };
+    return HorizontalCenterPositioningDecorator;
+}(PositioningDecorator_1.PositioningDecorator));
+exports.HorizontalCenterPositioningDecorator = HorizontalCenterPositioningDecorator;
+
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var TopLeftDrawingStrategy = (function () {
+    function TopLeftDrawingStrategy() {
+    }
+    TopLeftDrawingStrategy.prototype.calculateGlobalPositionXEffect = function (width) {
+        return 0;
+    };
+    TopLeftDrawingStrategy.prototype.calculateGlobalPositionYEffect = function (height) {
+        return 0;
+    };
+    TopLeftDrawingStrategy.prototype.draw = function (context, canvas, x, y, width, height) {
+        context.drawImage(canvas, x, y);
+    };
+    return TopLeftDrawingStrategy;
+}());
+exports.TopLeftDrawingStrategy = TopLeftDrawingStrategy;
+
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Controller_1 = __webpack_require__(106);
+var Coordinate_1 = __webpack_require__(41);
+var RouteController = (function (_super) {
+    __extends(RouteController, _super);
+    //more to come, need ot think through collisions first
+    function RouteController(subject, route, collisionManager) {
+        var _this = _super.call(this, subject) || this;
+        _this.started = true;
+        _this.routeIndex = 0;
+        _this.originalSpeed = 0;
+        _this.route = route;
+        _this.originalSpeed = subject.speed;
+        _this.collisionManager = collisionManager;
+        return _this;
+    }
+    Object.defineProperty(RouteController.prototype, "route", {
+        get: function () {
+            return this._route;
+        },
+        set: function (route) {
+            this._route = route;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    RouteController.prototype.decide = function () {
+        this.followRoute();
+    };
+    RouteController.prototype.act = function () {
+        //add pre-emptive collision checking to avoid overlap;
+        if (!this.collisionManager.collisionCheckAtPosition(this.subject, this.subject.x + this.subject.speed * Math.cos(this.subject.angle), this.subject.y)) {
+            this.subject.x += this.subject.speed * Math.cos(this.subject.angle);
+        }
+        if (!this.collisionManager.collisionCheckAtPosition(this.subject, this.subject.x, this.subject.y + this.subject.speed * Math.sin(this.subject.angle))) {
+            this.subject.y += this.subject.speed * Math.sin(this.subject.angle);
+        }
+    };
+    RouteController.prototype.withinRange = function (number, rangeCenter, delta) {
+        return number > (rangeCenter - delta) && number < (rangeCenter + delta);
+    };
+    RouteController.prototype.followRoute = function () {
+        if (!this.routeComplete()) {
+            var location_1 = new Coordinate_1.Coordinate(this.subject.x, this.subject.y);
+            var destination = this.route.getPoint(this.routeIndex);
+            if (this.withinRange(Math.round(location_1.x), Math.round(destination.x), this.subject.speed) && this.withinRange(Math.round(location_1.y), Math.round(destination.y), this.subject.speed)) {
+                this.routeIndex++;
+            }
+            else {
+                this.subject.angle = Math.atan2(destination.y - location_1.y, destination.x - location_1.x);
+            }
+        }
+        else {
+            //console.log('my route is complete');
+        }
+    };
+    RouteController.prototype.calculateDistance = function (object) {
+        return Math.sqrt(Math.pow(this.subject.x - object.object.x, 2) + Math.pow(this.subject.y - object.object.y, 2));
+    };
+    RouteController.prototype.routeComplete = function () {
+        if (!this.route)
+            return true;
+        return this.routeIndex >= this.route.numPoints;
+    };
+    RouteController.prototype.endRoute = function () {
+        if (this.route)
+            this.routeIndex += this.route.numPoints;
+    };
+    return RouteController;
+}(Controller_1.Controller));
+exports.RouteController = RouteController;
+
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Dimensionable = (function () {
+    function Dimensionable() {
+    }
+    Object.defineProperty(Dimensionable.prototype, "x", {
+        get: function () {
+            return this._x;
+        },
+        set: function (x) {
+            this._x = x;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Dimensionable.prototype, "y", {
+        get: function () {
+            return this._y;
+        },
+        set: function (y) {
+            this._y = y;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Dimensionable.prototype, "width", {
+        get: function () {
+            return this._width;
+        },
+        set: function (width) {
+            this._width = width;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Dimensionable.prototype, "height", {
+        get: function () {
+            return this._height;
+        },
+        set: function (height) {
+            this._height = height;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Dimensionable;
+}());
+exports.Dimensionable = Dimensionable;
+
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseGetTag = __webpack_require__(22),
+    isObject = __webpack_require__(19);
 
 /** `Object#toString` result references. */
 var asyncTag = '[object AsyncFunction]',
@@ -2016,7 +3259,7 @@ module.exports = isFunction;
 
 
 /***/ }),
-/* 55 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
@@ -2024,10 +3267,10 @@ var freeGlobal = typeof global == 'object' && global && global.Object === Object
 
 module.exports = freeGlobal;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(87)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(114)))
 
 /***/ }),
-/* 56 */
+/* 70 */
 /***/ (function(module, exports) {
 
 /**
@@ -2053,7 +3296,7 @@ module.exports = copyArray;
 
 
 /***/ }),
-/* 57 */
+/* 71 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -2085,7 +3328,7 @@ module.exports = toSource;
 
 
 /***/ }),
-/* 58 */
+/* 72 */
 /***/ (function(module, exports) {
 
 /**
@@ -2103,10 +3346,10 @@ module.exports = baseIsNaN;
 
 
 /***/ }),
-/* 59 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var apply = __webpack_require__(60);
+var apply = __webpack_require__(74);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeMax = Math.max;
@@ -2145,7 +3388,7 @@ module.exports = overRest;
 
 
 /***/ }),
-/* 60 */
+/* 74 */
 /***/ (function(module, exports) {
 
 /**
@@ -2172,11 +3415,11 @@ module.exports = apply;
 
 
 /***/ }),
-/* 61 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSetToString = __webpack_require__(121),
-    shortOut = __webpack_require__(123);
+var baseSetToString = __webpack_require__(148),
+    shortOut = __webpack_require__(150);
 
 /**
  * Sets the `toString` method of `func` to return `string`.
@@ -2192,10 +3435,10 @@ module.exports = setToString;
 
 
 /***/ }),
-/* 62 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(13);
+var getNative = __webpack_require__(14);
 
 var defineProperty = (function() {
   try {
@@ -2209,15 +3452,15 @@ module.exports = defineProperty;
 
 
 /***/ }),
-/* 63 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ListCache = __webpack_require__(24),
-    stackClear = __webpack_require__(127),
-    stackDelete = __webpack_require__(128),
-    stackGet = __webpack_require__(129),
-    stackHas = __webpack_require__(130),
-    stackSet = __webpack_require__(131);
+var ListCache = __webpack_require__(30),
+    stackClear = __webpack_require__(154),
+    stackDelete = __webpack_require__(155),
+    stackGet = __webpack_require__(156),
+    stackHas = __webpack_require__(157),
+    stackSet = __webpack_require__(158);
 
 /**
  * Creates a stack cache object to store key-value pairs.
@@ -2242,11 +3485,11 @@ module.exports = Stack;
 
 
 /***/ }),
-/* 64 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsEqualDeep = __webpack_require__(132),
-    isObjectLike = __webpack_require__(16);
+var baseIsEqualDeep = __webpack_require__(159),
+    isObjectLike = __webpack_require__(20);
 
 /**
  * The base implementation of `_.isEqual` which supports partial comparisons
@@ -2276,12 +3519,12 @@ module.exports = baseIsEqual;
 
 
 /***/ }),
-/* 65 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var SetCache = __webpack_require__(22),
-    arraySome = __webpack_require__(133),
-    cacheHas = __webpack_require__(29);
+var SetCache = __webpack_require__(28),
+    arraySome = __webpack_require__(160),
+    cacheHas = __webpack_require__(35);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -2365,12 +3608,12 @@ module.exports = equalArrays;
 
 
 /***/ }),
-/* 66 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayLikeKeys = __webpack_require__(142),
-    baseKeys = __webpack_require__(146),
-    isArrayLike = __webpack_require__(36);
+var arrayLikeKeys = __webpack_require__(169),
+    baseKeys = __webpack_require__(173),
+    isArrayLike = __webpack_require__(44);
 
 /**
  * Creates an array of the own enumerable property names of `object`.
@@ -2408,7 +3651,7 @@ module.exports = keys;
 
 
 /***/ }),
-/* 67 */
+/* 81 */
 /***/ (function(module, exports) {
 
 /**
@@ -2434,11 +3677,11 @@ module.exports = baseTimes;
 
 
 /***/ }),
-/* 68 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(9),
-    stubFalse = __webpack_require__(143);
+    stubFalse = __webpack_require__(170);
 
 /** Detect free variable `exports`. */
 var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -2476,10 +3719,10 @@ var isBuffer = nativeIsBuffer || stubFalse;
 
 module.exports = isBuffer;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(69)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(83)(module)))
 
 /***/ }),
-/* 69 */
+/* 83 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -2507,12 +3750,12 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 70 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsTypedArray = __webpack_require__(144),
-    baseUnary = __webpack_require__(28),
-    nodeUtil = __webpack_require__(145);
+var baseIsTypedArray = __webpack_require__(171),
+    baseUnary = __webpack_require__(34),
+    nodeUtil = __webpack_require__(172);
 
 /* Node.js helper references. */
 var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
@@ -2540,10 +3783,10 @@ module.exports = isTypedArray;
 
 
 /***/ }),
-/* 71 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(13),
+var getNative = __webpack_require__(14),
     root = __webpack_require__(9);
 
 /* Built-in method references that are verified to be native. */
@@ -2553,10 +3796,10 @@ module.exports = Set;
 
 
 /***/ }),
-/* 72 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(15);
+var isObject = __webpack_require__(19);
 
 /**
  * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
@@ -2574,7 +3817,7 @@ module.exports = isStrictComparable;
 
 
 /***/ }),
-/* 73 */
+/* 87 */
 /***/ (function(module, exports) {
 
 /**
@@ -2600,10 +3843,10 @@ module.exports = matchesStrictComparable;
 
 
 /***/ }),
-/* 74 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGet = __webpack_require__(46);
+var baseGet = __webpack_require__(54);
 
 /**
  * Gets the value at `path` of `object`. If the resolved value is
@@ -2639,7 +3882,7 @@ module.exports = get;
 
 
 /***/ }),
-/* 75 */
+/* 89 */
 /***/ (function(module, exports) {
 
 /**
@@ -2659,7 +3902,7 @@ module.exports = baseProperty;
 
 
 /***/ }),
-/* 76 */
+/* 90 */
 /***/ (function(module, exports) {
 
 /**
@@ -2688,7 +3931,7 @@ module.exports = head;
 
 
 /***/ }),
-/* 77 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseFlatten = __webpack_require__(4);
@@ -2716,10 +3959,10 @@ module.exports = flatten;
 
 
 /***/ }),
-/* 78 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var basePullAll = __webpack_require__(50);
+var basePullAll = __webpack_require__(58);
 
 /**
  * This method is like `_.pull` except that it accepts an array of values to remove.
@@ -2751,11 +3994,11 @@ module.exports = pullAll;
 
 
 /***/ }),
-/* 79 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseUnset = __webpack_require__(197),
-    isIndex = __webpack_require__(11);
+var baseUnset = __webpack_require__(224),
+    isIndex = __webpack_require__(12);
 
 /** Used for built-in method references. */
 var arrayProto = Array.prototype;
@@ -2794,10 +4037,10 @@ module.exports = basePullAt;
 
 
 /***/ }),
-/* 80 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var eq = __webpack_require__(10);
+var eq = __webpack_require__(11);
 
 /**
  * The base implementation of `_.sortedUniq` and `_.sortedUniqBy` without
@@ -2830,12 +4073,12 @@ module.exports = baseSortedUniq;
 
 
 /***/ }),
-/* 81 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var apply = __webpack_require__(60),
+var apply = __webpack_require__(74),
     arrayMap = __webpack_require__(7),
-    unzip = __webpack_require__(52);
+    unzip = __webpack_require__(60);
 
 /**
  * This method is like `_.unzip` except that it accepts `iteratee` to specify
@@ -2875,11 +4118,11 @@ module.exports = unzipWith;
 
 
 /***/ }),
-/* 82 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseAssignValue = __webpack_require__(231),
-    eq = __webpack_require__(10);
+var baseAssignValue = __webpack_require__(258),
+    eq = __webpack_require__(11);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -2909,7 +4152,7 @@ module.exports = assignValue;
 
 
 /***/ }),
-/* 83 */
+/* 97 */
 /***/ (function(module, exports) {
 
 /**
@@ -2938,98 +4181,903 @@ module.exports = baseZipObject;
 
 
 /***/ }),
-/* 84 */
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var RenderEngine_1 = __webpack_require__(10);
+var Dimensionable_1 = __webpack_require__(67);
+var ComposableViewObject = (function (_super) {
+    __extends(ComposableViewObject, _super);
+    function ComposableViewObject() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(ComposableViewObject.prototype, "parent", {
+        get: function () {
+            return this._parent;
+        },
+        set: function (parent) {
+            this._parent = parent;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ComposableViewObject.prototype.globalX = function () {
+        if (this.parent) {
+            return this.x + this.parent.globalX();
+        }
+        else {
+            return this.x;
+        }
+    };
+    ComposableViewObject.prototype.globalY = function () {
+        if (this.parent) {
+            return this.y + this.parent.globalY();
+        }
+        else {
+            return this.y;
+        }
+    };
+    ComposableViewObject.prototype.observableDisposed = function () {
+        RenderEngine_1.RenderEngine.getInstance().unregister(this);
+    };
+    ComposableViewObject.prototype.remove = function (object) {
+        //do nothing
+    };
+    return ComposableViewObject;
+}(Dimensionable_1.Dimensionable));
+exports.ComposableViewObject = ComposableViewObject;
+
+
+/***/ }),
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var GameEngine_1 = __webpack_require__(85);
-var RenderEngine_1 = __webpack_require__(235);
-var TestGameObject_1 = __webpack_require__(236);
-var TestViewObject_1 = __webpack_require__(237);
+var StagedReference_1 = __webpack_require__(263);
+var ReferenceManager = (function () {
+    function ReferenceManager() {
+        this.stagedReferences = [];
+    }
+    ReferenceManager.prototype.getReferencesForStage = function (stage) {
+        var stageReferences = this.stagedReferences.filter(function (object) {
+            if (object.stage == stage)
+                return object;
+        });
+        //remove the refs
+        var newStagedRefs = this.stagedReferences.filter(function (object) {
+            if (object.stage != stage)
+                return object;
+        });
+        this.stagedReferences = newStagedRefs;
+        return stageReferences.map(function (object) {
+            return object.object;
+        });
+    };
+    ReferenceManager.prototype.addReferenceToStage = function (object, stage) {
+        var reference = new StagedReference_1.StagedReference(object, stage); //might need to rework this to pass in a SR to start to properly link
+        this.stagedReferences.push(reference);
+    };
+    return ReferenceManager;
+}());
+exports.ReferenceManager = ReferenceManager;
+
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ClickableViewObject_1 = __webpack_require__(16);
+var StickerTextViewObject = (function (_super) {
+    __extends(StickerTextViewObject, _super);
+    function StickerTextViewObject(x, y, width, height, angle, drawingStratgegy, clickStrategy, callback, text) {
+        var _this = _super.call(this, x, y, width, height, angle, drawingStratgegy, clickStrategy, callback) || this;
+        _this.text = text;
+        _this.preRender();
+        return _this;
+    }
+    Object.defineProperty(StickerTextViewObject.prototype, "text", {
+        get: function () {
+            return this._text;
+        },
+        set: function (text) {
+            this._text = text;
+            this.preRender();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StickerTextViewObject.prototype, "font", {
+        get: function () {
+            return this._font;
+        },
+        set: function (font) {
+            this._font = font;
+            this.preRender();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StickerTextViewObject.prototype, "color", {
+        get: function () {
+            return this._color;
+        },
+        set: function (color) {
+            this._color = color;
+            this.preRender();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StickerTextViewObject.prototype, "backgroundColor", {
+        get: function () {
+            return this._backgroundColor;
+        },
+        set: function (backgroundColor) {
+            this._backgroundColor = backgroundColor;
+            this.preRender();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    StickerTextViewObject.prototype.hover = function () {
+        throw new Error("Method not implemented.");
+    };
+    StickerTextViewObject.prototype.preRender = function () {
+        this.context.beginPath();
+        this.context.clearRect(0, 0, this.width, this.height);
+        if (this.backgroundColor)
+            this.context.fillStyle = this.backgroundColor;
+        else
+            this.backgroundColor = 'black';
+        this.context.fillRect(0, 0, this.width, this.height);
+        if (this.font)
+            this.context.font = this.font;
+        else
+            this.context.font = "bold 32px Arial";
+        if (this.color)
+            this.context.fillStyle = this.color;
+        else
+            this.context.fillStyle = "#ffffff";
+        this.context.fillText(this.text, (this.width - this.context.measureText(this.text).width) / 2, (this.height + 40) / 2);
+    };
+    StickerTextViewObject.prototype.update = function () {
+        throw new Error("Method not implemented.");
+    };
+    return StickerTextViewObject;
+}(ClickableViewObject_1.ClickableViewObject));
+exports.StickerTextViewObject = StickerTextViewObject;
+
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ClickableViewObject_1 = __webpack_require__(16);
+var ButtonViewObject = (function (_super) {
+    __extends(ButtonViewObject, _super);
+    function ButtonViewObject(x, y, width, height, angle, drawingStrategy, clickStrategy, text, callback) {
+        var _this = _super.call(this, x, y, width, height, angle, drawingStrategy, clickStrategy, callback) || this;
+        _this.isHovered = false;
+        _this.text = text;
+        _this.preRender();
+        return _this;
+    }
+    Object.defineProperty(ButtonViewObject.prototype, "text", {
+        get: function () {
+            return this._text;
+        },
+        set: function (text) {
+            this._text = text;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ButtonViewObject.prototype.preRender = function () {
+        this.context.beginPath();
+        this.context.clearRect(0, 0, this.width, this.height);
+        this.context.fillStyle = "#3498db";
+        this.context.rect(0, 0, this.width, this.height);
+        this.context.fill();
+        //bottom side
+        if (!this.isHovered) {
+            this.context.beginPath();
+            this.context.fillStyle = "#2980b9";
+            this.context.rect(0, this.height / 10 * 9, this.width, this.height / 10);
+            this.context.fill();
+        }
+        //text
+        this.context.strokeStyle = "#c8f7c5";
+        this.context.lineWidth = 10;
+        this.context.rect(0, 0, this.width, this.height);
+        //this.context.stroke();
+        this.context.font = "24px Arial";
+        this.context.fillStyle = "#ffffff";
+        this.context.fillText(this.text, (this.width - this.context.measureText(this.text).width) / 2, (this.height + 12) / 2);
+    };
+    ButtonViewObject.prototype.update = function () {
+        throw new Error("Method not implemented.");
+    };
+    ButtonViewObject.prototype.hover = function () {
+        //get rid of bottom thing
+        this.isHovered = true;
+        this.preRender();
+    };
+    ButtonViewObject.prototype.postRender = function () {
+        this.isHovered = false;
+        this.preRender();
+    };
+    return ButtonViewObject;
+}(ClickableViewObject_1.ClickableViewObject));
+exports.ButtonViewObject = ButtonViewObject;
+
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Route = (function () {
+    //want to add a length value as well
+    function Route(path) {
+        this.points = path;
+        this.numPoints = this.points.length;
+    }
+    Route.prototype.getPoint = function (index) {
+        return this.points[index];
+    };
+    return Route;
+}());
+exports.Route = Route;
+
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ClickableViewObject_1 = __webpack_require__(16);
+var LogoViewObject = (function (_super) {
+    __extends(LogoViewObject, _super);
+    function LogoViewObject(x, y, width, height, angle, drawingStratgegy, clickStrategy, callback, text) {
+        var _this = _super.call(this, x, y, width, height, angle, drawingStratgegy, clickStrategy, callback) || this;
+        _this.text = text;
+        _this.preRender();
+        return _this;
+    }
+    Object.defineProperty(LogoViewObject.prototype, "text", {
+        get: function () {
+            return this._text;
+        },
+        set: function (text) {
+            this._text = text;
+            this.preRender();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(LogoViewObject.prototype, "font", {
+        get: function () {
+            return this._font;
+        },
+        set: function (font) {
+            this._font = font;
+            this.preRender();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(LogoViewObject.prototype, "color", {
+        get: function () {
+            return this._color;
+        },
+        set: function (color) {
+            this._color = color;
+            this.preRender();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    LogoViewObject.prototype.hover = function () {
+        throw new Error("Method not implemented.");
+    };
+    LogoViewObject.prototype.preRender = function () {
+        this.context.beginPath();
+        this.context.clearRect(0, 0, this.width, this.height);
+        if (this.font)
+            this.context.font = this.font;
+        else
+            this.context.font = "bold 50px Arial";
+        if (this.color)
+            this.context.fillStyle = this.color;
+        else
+            this.context.fillStyle = "#ffffff";
+        this.context.fillText(this.text, (this.width - this.context.measureText(this.text).width) / 2, (this.height + 12) / 2);
+    };
+    LogoViewObject.prototype.update = function () {
+        throw new Error("Method not implemented.");
+    };
+    return LogoViewObject;
+}(ClickableViewObject_1.ClickableViewObject));
+exports.LogoViewObject = LogoViewObject;
+
+
+/***/ }),
+/* 104 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ComposableView_1 = __webpack_require__(105);
+var ComposableViewDecorator = (function (_super) {
+    __extends(ComposableViewDecorator, _super);
+    function ComposableViewDecorator(view) {
+        var _this = _super.call(this, view.x, view.y, view.width, view.height) || this;
+        _this.view = view;
+        _this.x = view.x;
+        _this.y = view.y;
+        _this.width = view.width;
+        _this.height = view.height;
+        return _this;
+        //trying to figure out the best way to create a decorator, this is the best solution I have found so far
+    }
+    Object.defineProperty(ComposableViewDecorator.prototype, "x", {
+        get: function () {
+            return this.view.x;
+        },
+        set: function (x) {
+            if (this.view != null)
+                this.view.x = x;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ComposableViewDecorator.prototype, "y", {
+        get: function () {
+            return this.view.y;
+        },
+        set: function (y) {
+            if (this.view != null)
+                this.view.y = y;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ComposableViewDecorator.prototype, "width", {
+        get: function () {
+            return this.view.width;
+        },
+        set: function (width) {
+            if (this.view != null)
+                this.view.width = width;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ComposableViewDecorator.prototype, "height", {
+        get: function () {
+            return this.view.height;
+        },
+        set: function (height) {
+            if (this.view != null)
+                this.view.height = height;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ComposableViewDecorator.prototype.remove = function (object) {
+        this.view.remove(object);
+    };
+    ComposableViewDecorator.prototype.accept = function (visitor) {
+        this.view.accept(visitor);
+    };
+    return ComposableViewDecorator;
+}(ComposableView_1.ComposableView));
+exports.ComposableViewDecorator = ComposableViewDecorator;
+
+
+/***/ }),
+/* 105 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ComposableViewObject_1 = __webpack_require__(98);
+var ComposableView = (function (_super) {
+    __extends(ComposableView, _super);
+    // get x(){
+    //     return this._x * RenderEngine.getInstance().scale;
+    // }
+    // set x(x: number){
+    //     this._x = x / RenderEngine.getInstance().scale;
+    // }
+    // get width(){
+    //     console.log("widht",this._width);
+    //     console.log("scale", RenderEngine.getInstance().scale);
+    //     return this._width * RenderEngine.getInstance().scale;
+    // }
+    // set width(width: number){
+    //     this._width = width / RenderEngine.getInstance().scale;
+    // }
+    // get y(){
+    //     return this._y * RenderEngine.getInstance().scale;
+    // }
+    // set y(y: number){
+    //     this._y = y / RenderEngine.getInstance().scale;
+    // }
+    // get height(){
+    //     return this._height * RenderEngine.getInstance().scale;
+    // }
+    // set height(height: number){
+    //     this._height = height / RenderEngine.getInstance().scale;
+    // }
+    function ComposableView(x, y, width, height) {
+        var _this = _super.call(this) || this;
+        _this.children = [];
+        _this._x = x;
+        _this._y = y;
+        _this._width = width;
+        _this._height = height;
+        _this.canvas = document.createElement('canvas');
+        _this.canvas.width = width;
+        _this.canvas.height = height;
+        _this.context = _this.canvas.getContext('2d');
+        return _this;
+    }
+    ComposableView.prototype.render = function (context, width, height) {
+        var _this = this;
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.children.forEach(function (obj, index) { return obj.render(_this.context, _this.canvas.width, _this.canvas.height); });
+        context.drawImage(this.canvas, this.x, this.y);
+    };
+    ComposableView.prototype.update = function () {
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+    };
+    ComposableView.prototype.addView = function (viewObject) {
+        viewObject.parent = this;
+        this.children.push(viewObject);
+    };
+    ComposableView.prototype.remove = function (object) {
+        this.children = this.children.filter(function (element) {
+            if (element != object)
+                return element;
+        });
+        this.children.forEach(function (child) {
+            child.remove(object);
+        });
+    };
+    ComposableView.prototype.accept = function (visitor) {
+        this.children.forEach(function (child) {
+            child.accept(visitor);
+        });
+    };
+    return ComposableView;
+}(ComposableViewObject_1.ComposableViewObject));
+exports.ComposableView = ComposableView;
+
+
+/***/ }),
+/* 106 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Controller = (function () {
+    function Controller(subject) {
+        this.active = true;
+        this.colliding = false;
+        this.subject = subject;
+    }
+    Controller.prototype.tick = function () {
+        if (this.active)
+            this.run();
+    };
+    Controller.prototype.run = function () {
+        this.decide();
+        this.act();
+        this.colliding = false;
+    };
+    Controller.prototype.collide = function (object) {
+        this.colliding = true;
+    };
+    Controller.prototype.deactivate = function () {
+        this.active = false;
+    };
+    Controller.prototype.activate = function () {
+        this.active = true;
+    };
+    Controller.prototype.dispose = function () {
+        //do nothing
+    };
+    return Controller;
+}());
+exports.Controller = Controller;
+
+
+/***/ }),
+/* 107 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var FieldFactory_1 = __webpack_require__(108);
+var FindMatchClickStrategy_1 = __webpack_require__(273);
+var MatchTemplater_1 = __webpack_require__(62);
+var HorizontalCenterPositioningDecorator_1 = __webpack_require__(64);
+var LogoViewObject_1 = __webpack_require__(103);
+var ClickableManager_1 = __webpack_require__(274);
+var PauseViewObject_1 = __webpack_require__(275);
+var PauseGameClickStrategy_1 = __webpack_require__(276);
+var HorizontalCenterDecorator_1 = __webpack_require__(277);
+var TopLeftDrawingStrategy_1 = __webpack_require__(65);
+var ComposableView_1 = __webpack_require__(105);
+var HitBoxFactory_1 = __webpack_require__(278);
+var ControllerFactory_1 = __webpack_require__(280);
+var CollisionManager_1 = __webpack_require__(285);
+var GameEngine_1 = __webpack_require__(17);
+var RenderEngine_1 = __webpack_require__(10);
+var PlayerFactory_1 = __webpack_require__(286);
+var FieldViewObject_1 = __webpack_require__(289);
+var VerticalCenterDecorator_1 = __webpack_require__(290);
+var ButtonViewObject_1 = __webpack_require__(101);
+var PlayerViewObjectFactory_1 = __webpack_require__(291);
+/*
+ * Fetch our environment for our game and configure
+ */
 var canvas = document.getElementById("myCanvas");
 var context = canvas.getContext("2d");
-var gameEngine = new GameEngine_1.GameEngine();
-var renderEngine = new RenderEngine_1.RenderEngine(context, canvas);
-console.log('hello world');
-var testObject = new TestGameObject_1.TestGameObject(0, 0);
-gameEngine.register(testObject);
-gameEngine.start();
-var testViewObject = new TestViewObject_1.TestViewObject(testObject);
-testObject.register(testViewObject);
-renderEngine.register(testViewObject);
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+var gameEngine = GameEngine_1.GameEngine.getInstance();
+var renderEngine = RenderEngine_1.RenderEngine.getInstance();
+var scale = 0;
+function resize() {
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+    var yScale = canvas.height / 480;
+    var xScale = canvas.width / 320;
+    scale = (xScale <= yScale) ? xScale : yScale;
+    console.log(scale);
+    context.scale(scale, scale);
+    renderEngine.scale = scale;
+}
+resize();
+window.addEventListener('resize', resize);
+/*
+ * Declare game engines (constant because they will not be changed, also are singletons)
+ */
+renderEngine.scale = scale;
+renderEngine.setCanvas(canvas, context);
+//gameEngine.start();
 renderEngine.start();
-//# sourceMappingURL=index.js.map
+//services
+var collisionManager = new CollisionManager_1.CollisionManager();
+var clickManager = new ClickableManager_1.ClickableManager(canvas);
+gameEngine.addService(collisionManager); //should be added first for consistent behaviour (no issue if its not really though)
+renderEngine.addService(clickManager);
+//factories
+var hitBoxFactory = new HitBoxFactory_1.HitBoxFactory(collisionManager);
+var controllerFactory = new ControllerFactory_1.ControllerFactory(collisionManager);
+var playerFactory = new PlayerFactory_1.PlayerFactory(hitBoxFactory, controllerFactory);
+var playerViewObjectFactory = new PlayerViewObjectFactory_1.PlayerViewObjectFactory();
+var fieldFactory = new FieldFactory_1.FieldFactory(hitBoxFactory, controllerFactory);
+//create a composable view for game area to exist in
+var gameArea = new ComposableView_1.ComposableView(0, 0, 320, 480);
+var templater = new MatchTemplater_1.MatchTemplater(gameArea, playerFactory, playerViewObjectFactory, fieldFactory, clickManager, collisionManager);
+var test2 = new VerticalCenterDecorator_1.VerticalCenterDecorator(gameArea);
+var test = new HorizontalCenterDecorator_1.HorizontalCenterDecorator(test2);
+renderEngine.register(test);
+//just the field VO
+var field = new FieldViewObject_1.FieldViewObject(0, 0, 320, 480, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy());
+gameArea.addView(field);
+//pause button test
+var pauseButton = new PauseViewObject_1.PauseViewObject(0, 0, 64, 64, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), new PauseGameClickStrategy_1.PauseGameClickStrategy(), null);
+clickManager.addClickable(pauseButton);
+//gameArea.addView(pauseButton);
+//logo
+var logo = new LogoViewObject_1.LogoViewObject(0, 30, 300, 100, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), new PauseGameClickStrategy_1.PauseGameClickStrategy(), null, 'WILDCAT!');
+var logoCenter = new HorizontalCenterPositioningDecorator_1.HorizontalCenterPositioningDecorator(logo);
+gameArea.addView(logoCenter);
+RenderEngine_1.RenderEngine.getInstance().addReferenceToStage(logoCenter, 'menuStage');
+//main menu buttons
+var startButton = new ButtonViewObject_1.ButtonViewObject(100, 170, 200, 60, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), new FindMatchClickStrategy_1.FindMatchClickStrategy(), "Single Player", null);
+var startButtonCenter = new HorizontalCenterPositioningDecorator_1.HorizontalCenterPositioningDecorator(startButton);
+clickManager.addClickable(startButtonCenter);
+gameArea.addView(startButtonCenter);
+RenderEngine_1.RenderEngine.getInstance().addReferenceToStage(startButtonCenter, 'menuStage');
+var defenseButton = new ButtonViewObject_1.ButtonViewObject(100, 250, 200, 60, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), new PauseGameClickStrategy_1.PauseGameClickStrategy(), "Instructions", null);
+var defenseButtonCenter = new HorizontalCenterPositioningDecorator_1.HorizontalCenterPositioningDecorator(defenseButton);
+clickManager.addClickable(defenseButtonCenter);
+gameArea.addView(defenseButtonCenter);
+RenderEngine_1.RenderEngine.getInstance().addReferenceToStage(defenseButtonCenter, 'menuStage');
+// var testRouteRender = new RouteViewObject(0,0,gameArea.width, gameArea.height,0,new TopLeftDrawingStrategy());
+// testRouteRender.updateRoute([new Coordinate(160,250), new Coordinate(160,150), new Coordinate(170,100)]);
+// gameArea.addView(testRouteRender);
+//create the player you control youreself (runner)
+//PlayerFactory.createRunnerInArea(160,400, -90, gameArea);
+// //create blockers with aroutes
+// PlayerFactory.createBlockerInArea(110,300,new Route([new Coordinate(60,280)]), gameArea);
+// PlayerFactory.createBlockerInArea(145,300,new Route([new Coordinate(110,280)]), gameArea);
+// PlayerFactory.createBlockerInArea(180,300,new Route([new Coordinate(150,280)]), gameArea);
+// PlayerFactory.createBlockerInArea(230,300,new Route([new Coordinate(260,280)]), gameArea);
+// //create defenders with routes
+// PlayerFactory.createDefenderInArea(60,250,new Route([new Coordinate(80,270)]), gameArea);
+// PlayerFactory.createDefenderInArea(110,250,new Route([new Coordinate(130, 270)]), gameArea);
+// PlayerFactory.createDefenderInArea(160,250,new Route([new Coordinate(160,150), new Coordinate(170,100)]), gameArea);
+// PlayerFactory.createDefenderInArea(260,250,new Route([new Coordinate(240,270)]), gameArea);
+// PlayerFactory.createDefenderInArea(210,250,new Route([new Coordinate(190,270)]), gameArea);
+
 
 /***/ }),
-/* 85 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var array = __webpack_require__(34);
-var GameEngine = (function () {
-    function GameEngine() {
-        this.observers = [];
-        this.isRunning = false;
+var GameMap_1 = __webpack_require__(18);
+var Endzone_1 = __webpack_require__(110);
+var Wall_1 = __webpack_require__(272);
+var FieldFactory = (function () {
+    function FieldFactory(hitboxFactory, controllerFactory) {
+        this.hitBoxFactory = hitboxFactory;
+        this.controllerFactory = controllerFactory;
     }
-    /*
-    * Starts the game loop
-    */
-    GameEngine.prototype.start = function () {
-        //start loop tha calls tick on a set interval
-        this.isRunning = true;
-        this.run();
+    FieldFactory.prototype.CreateEndZone = function (x, y) {
+        var endzone = new Endzone_1.Endzone(x, y, 320, 120, 'endzone');
+        endzone.setHitbox(this.hitBoxFactory.CreatePassiveSquareHitBox(320, 120, endzone));
+        //GameEngine.getInstance().register(player);
+        GameMap_1.GameMap.getInstance().addMapObject(endzone, 'endzone');
+        return endzone;
     };
-    /*
-    * stops the game loop
-    */
-    GameEngine.prototype.stop = function () {
-        //stop looping
-        this.isRunning = false;
-        clearInterval(this.interval);
+    FieldFactory.prototype.CreateWall = function (x, y, width, height) {
+        var wall = new Wall_1.Wall(x, y, width, height, 'wall');
+        wall.setHitbox(this.hitBoxFactory.CreatePassiveSquareHitBox(width, height, wall));
+        GameMap_1.GameMap.getInstance().addMapObject(wall, 'wall');
+        return wall;
     };
-    /*
-    * runs the game loop and sets the timing
-    */
-    GameEngine.prototype.run = function () {
-        var _this = this;
-        setInterval(function () { _this.tick(); }, 33);
-    };
-    /*
-     * Tick represents the passing of time in the game
-     * and is used to progress the game through it's sequence
-     */
-    GameEngine.prototype.tick = function () {
-        this.observers.forEach(function (obj, index) { return obj.tick(); });
-    };
-    /*
-     * Register adds game objects to the list of observers
-     * to be updated throught the game as time passes
-     */
-    GameEngine.prototype.register = function (obj) {
-        this.observers.push(obj);
-    };
-    /*
-     * Unregister removes game objects from being updated as time
-     * progresses in the game
-     */
-    GameEngine.prototype.unregister = function (obj) {
-        array.pull(this.observers, obj);
-    };
-    return GameEngine;
+    return FieldFactory;
 }());
-exports.GameEngine = GameEngine;
-//# sourceMappingURL=GameEngine.js.map
+exports.FieldFactory = FieldFactory;
+
 
 /***/ }),
-/* 86 */
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var MapObject = (function () {
+    function MapObject(object, type) {
+        this.object = object;
+        this.type = type;
+    }
+    return MapObject;
+}());
+exports.MapObject = MapObject;
+
+
+/***/ }),
+/* 110 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var CollidableGameObject_1 = __webpack_require__(42);
+var ScoreKeeper_1 = __webpack_require__(40);
+var Endzone = (function (_super) {
+    __extends(Endzone, _super);
+    function Endzone() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Endzone.prototype.collide = function (object) {
+        if (object.type == 'runner') {
+            ScoreKeeper_1.ScoreKeeper.getInstance().incrementScore();
+        }
+    };
+    Endzone.prototype.tick = function () {
+        throw new Error("Method not implemented.");
+    };
+    return Endzone;
+}(CollidableGameObject_1.CollidableGameObject));
+exports.Endzone = Endzone;
+
+
+/***/ }),
+/* 111 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ObservableGameObject_1 = __webpack_require__(112);
+var PositionableGameObject = (function (_super) {
+    __extends(PositionableGameObject, _super);
+    function PositionableGameObject(x, y, width, height) {
+        var _this = _super.call(this) || this;
+        _this._angle = 0;
+        _this.x = x;
+        _this.y = y;
+        _this.width = width;
+        _this.height = height;
+        return _this;
+    }
+    Object.defineProperty(PositionableGameObject.prototype, "angle", {
+        get: function () {
+            return this._angle;
+        },
+        set: function (angle) {
+            this._angle = angle;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    PositionableGameObject.prototype.setSize = function (width, height) {
+        this.width = width;
+        this.height = height;
+    };
+    PositionableGameObject.prototype.setPosition = function (x, y) {
+        this.x = x;
+        this.y = y;
+    };
+    return PositionableGameObject;
+}(ObservableGameObject_1.ObservableGameObject));
+exports.PositionableGameObject = PositionableGameObject;
+
+
+/***/ }),
+/* 112 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Dimensionable_1 = __webpack_require__(67);
+var array = __webpack_require__(27);
+var ObservableGameObject = (function (_super) {
+    __extends(ObservableGameObject, _super);
+    function ObservableGameObject() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.observers = [];
+        return _this;
+    }
+    ObservableGameObject.prototype.dispose = function () {
+        this.updateObserversOfDispose();
+    };
+    ObservableGameObject.prototype.register = function (obj) {
+        this.observers.push(obj);
+    };
+    ObservableGameObject.prototype.unregister = function (obj) {
+        array.pull(this.observers, obj);
+    };
+    ObservableGameObject.prototype.updateObservers = function () {
+        this.observers.forEach(function (obj, index) { return obj.update(); });
+    };
+    ObservableGameObject.prototype.updateObserversOfDispose = function () {
+        this.observers.forEach(function (obj, index) { return obj.observableDisposed(); });
+    };
+    return ObservableGameObject;
+}(Dimensionable_1.Dimensionable));
+exports.ObservableGameObject = ObservableGameObject;
+
+
+/***/ }),
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseSlice = __webpack_require__(5),
-    isIterateeCall = __webpack_require__(35),
+    isIterateeCall = __webpack_require__(43),
     toInteger = __webpack_require__(2);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
@@ -3081,7 +5129,7 @@ module.exports = chunk;
 
 
 /***/ }),
-/* 87 */
+/* 114 */
 /***/ (function(module, exports) {
 
 var g;
@@ -3108,10 +5156,10 @@ module.exports = g;
 
 
 /***/ }),
-/* 88 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Symbol = __webpack_require__(19);
+var Symbol = __webpack_require__(23);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -3160,7 +5208,7 @@ module.exports = getRawTag;
 
 
 /***/ }),
-/* 89 */
+/* 116 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -3188,10 +5236,10 @@ module.exports = objectToString;
 
 
 /***/ }),
-/* 90 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toNumber = __webpack_require__(91);
+var toNumber = __webpack_require__(118);
 
 /** Used as references for various `Number` constants. */
 var INFINITY = 1 / 0,
@@ -3236,11 +5284,11 @@ module.exports = toFinite;
 
 
 /***/ }),
-/* 91 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(15),
-    isSymbol = __webpack_require__(12);
+var isObject = __webpack_require__(19),
+    isSymbol = __webpack_require__(13);
 
 /** Used as references for various `Number` constants. */
 var NAN = 0 / 0;
@@ -3308,7 +5356,7 @@ module.exports = toNumber;
 
 
 /***/ }),
-/* 92 */
+/* 119 */
 /***/ (function(module, exports) {
 
 /**
@@ -3345,12 +5393,12 @@ module.exports = compact;
 
 
 /***/ }),
-/* 93 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(38),
+var arrayPush = __webpack_require__(46),
     baseFlatten = __webpack_require__(4),
-    copyArray = __webpack_require__(56),
+    copyArray = __webpack_require__(70),
     isArray = __webpack_require__(6);
 
 /**
@@ -3394,11 +5442,11 @@ module.exports = concat;
 
 
 /***/ }),
-/* 94 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Symbol = __webpack_require__(19),
-    isArguments = __webpack_require__(39),
+var Symbol = __webpack_require__(23),
+    isArguments = __webpack_require__(47),
     isArray = __webpack_require__(6);
 
 /** Built-in value references. */
@@ -3420,11 +5468,11 @@ module.exports = isFlattenable;
 
 
 /***/ }),
-/* 95 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(18),
-    isObjectLike = __webpack_require__(16);
+var baseGetTag = __webpack_require__(22),
+    isObjectLike = __webpack_require__(20);
 
 /** `Object#toString` result references. */
 var argsTag = '[object Arguments]';
@@ -3444,10 +5492,10 @@ module.exports = baseIsArguments;
 
 
 /***/ }),
-/* 96 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseDifference = __webpack_require__(20),
+var baseDifference = __webpack_require__(24),
     baseFlatten = __webpack_require__(4),
     baseRest = __webpack_require__(0),
     isArrayLikeObject = __webpack_require__(3);
@@ -3483,12 +5531,12 @@ module.exports = difference;
 
 
 /***/ }),
-/* 97 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Hash = __webpack_require__(98),
-    ListCache = __webpack_require__(24),
-    Map = __webpack_require__(41);
+var Hash = __webpack_require__(125),
+    ListCache = __webpack_require__(30),
+    Map = __webpack_require__(49);
 
 /**
  * Removes all key-value entries from the map.
@@ -3510,14 +5558,14 @@ module.exports = mapCacheClear;
 
 
 /***/ }),
-/* 98 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var hashClear = __webpack_require__(99),
-    hashDelete = __webpack_require__(104),
-    hashGet = __webpack_require__(105),
-    hashHas = __webpack_require__(106),
-    hashSet = __webpack_require__(107);
+var hashClear = __webpack_require__(126),
+    hashDelete = __webpack_require__(131),
+    hashGet = __webpack_require__(132),
+    hashHas = __webpack_require__(133),
+    hashSet = __webpack_require__(134);
 
 /**
  * Creates a hash object.
@@ -3548,10 +5596,10 @@ module.exports = Hash;
 
 
 /***/ }),
-/* 99 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var nativeCreate = __webpack_require__(23);
+var nativeCreate = __webpack_require__(29);
 
 /**
  * Removes all key-value entries from the hash.
@@ -3569,13 +5617,13 @@ module.exports = hashClear;
 
 
 /***/ }),
-/* 100 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isFunction = __webpack_require__(54),
-    isMasked = __webpack_require__(101),
-    isObject = __webpack_require__(15),
-    toSource = __webpack_require__(57);
+var isFunction = __webpack_require__(68),
+    isMasked = __webpack_require__(128),
+    isObject = __webpack_require__(19),
+    toSource = __webpack_require__(71);
 
 /**
  * Used to match `RegExp`
@@ -3622,10 +5670,10 @@ module.exports = baseIsNative;
 
 
 /***/ }),
-/* 101 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var coreJsData = __webpack_require__(102);
+var coreJsData = __webpack_require__(129);
 
 /** Used to detect methods masquerading as native. */
 var maskSrcKey = (function() {
@@ -3648,7 +5696,7 @@ module.exports = isMasked;
 
 
 /***/ }),
-/* 102 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var root = __webpack_require__(9);
@@ -3660,7 +5708,7 @@ module.exports = coreJsData;
 
 
 /***/ }),
-/* 103 */
+/* 130 */
 /***/ (function(module, exports) {
 
 /**
@@ -3679,7 +5727,7 @@ module.exports = getValue;
 
 
 /***/ }),
-/* 104 */
+/* 131 */
 /***/ (function(module, exports) {
 
 /**
@@ -3702,10 +5750,10 @@ module.exports = hashDelete;
 
 
 /***/ }),
-/* 105 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var nativeCreate = __webpack_require__(23);
+var nativeCreate = __webpack_require__(29);
 
 /** Used to stand-in for `undefined` hash values. */
 var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -3738,10 +5786,10 @@ module.exports = hashGet;
 
 
 /***/ }),
-/* 106 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var nativeCreate = __webpack_require__(23);
+var nativeCreate = __webpack_require__(29);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -3767,10 +5815,10 @@ module.exports = hashHas;
 
 
 /***/ }),
-/* 107 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var nativeCreate = __webpack_require__(23);
+var nativeCreate = __webpack_require__(29);
 
 /** Used to stand-in for `undefined` hash values. */
 var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -3796,7 +5844,7 @@ module.exports = hashSet;
 
 
 /***/ }),
-/* 108 */
+/* 135 */
 /***/ (function(module, exports) {
 
 /**
@@ -3815,10 +5863,10 @@ module.exports = listCacheClear;
 
 
 /***/ }),
-/* 109 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var assocIndexOf = __webpack_require__(25);
+var assocIndexOf = __webpack_require__(31);
 
 /** Used for built-in method references. */
 var arrayProto = Array.prototype;
@@ -3856,10 +5904,10 @@ module.exports = listCacheDelete;
 
 
 /***/ }),
-/* 110 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var assocIndexOf = __webpack_require__(25);
+var assocIndexOf = __webpack_require__(31);
 
 /**
  * Gets the list cache value for `key`.
@@ -3881,10 +5929,10 @@ module.exports = listCacheGet;
 
 
 /***/ }),
-/* 111 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var assocIndexOf = __webpack_require__(25);
+var assocIndexOf = __webpack_require__(31);
 
 /**
  * Checks if a list cache value for `key` exists.
@@ -3903,10 +5951,10 @@ module.exports = listCacheHas;
 
 
 /***/ }),
-/* 112 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var assocIndexOf = __webpack_require__(25);
+var assocIndexOf = __webpack_require__(31);
 
 /**
  * Sets the list cache `key` to `value`.
@@ -3935,10 +5983,10 @@ module.exports = listCacheSet;
 
 
 /***/ }),
-/* 113 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getMapData = __webpack_require__(26);
+var getMapData = __webpack_require__(32);
 
 /**
  * Removes `key` and its value from the map.
@@ -3959,7 +6007,7 @@ module.exports = mapCacheDelete;
 
 
 /***/ }),
-/* 114 */
+/* 141 */
 /***/ (function(module, exports) {
 
 /**
@@ -3980,10 +6028,10 @@ module.exports = isKeyable;
 
 
 /***/ }),
-/* 115 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getMapData = __webpack_require__(26);
+var getMapData = __webpack_require__(32);
 
 /**
  * Gets the map value for `key`.
@@ -4002,10 +6050,10 @@ module.exports = mapCacheGet;
 
 
 /***/ }),
-/* 116 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getMapData = __webpack_require__(26);
+var getMapData = __webpack_require__(32);
 
 /**
  * Checks if a map value for `key` exists.
@@ -4024,10 +6072,10 @@ module.exports = mapCacheHas;
 
 
 /***/ }),
-/* 117 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getMapData = __webpack_require__(26);
+var getMapData = __webpack_require__(32);
 
 /**
  * Sets the map `key` to `value`.
@@ -4052,7 +6100,7 @@ module.exports = mapCacheSet;
 
 
 /***/ }),
-/* 118 */
+/* 145 */
 /***/ (function(module, exports) {
 
 /** Used to stand-in for `undefined` hash values. */
@@ -4077,7 +6125,7 @@ module.exports = setCacheAdd;
 
 
 /***/ }),
-/* 119 */
+/* 146 */
 /***/ (function(module, exports) {
 
 /**
@@ -4097,7 +6145,7 @@ module.exports = setCacheHas;
 
 
 /***/ }),
-/* 120 */
+/* 147 */
 /***/ (function(module, exports) {
 
 /**
@@ -4126,12 +6174,12 @@ module.exports = strictIndexOf;
 
 
 /***/ }),
-/* 121 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var constant = __webpack_require__(122),
-    defineProperty = __webpack_require__(62),
-    identity = __webpack_require__(30);
+var constant = __webpack_require__(149),
+    defineProperty = __webpack_require__(76),
+    identity = __webpack_require__(36);
 
 /**
  * The base implementation of `setToString` without support for hot loop shorting.
@@ -4154,7 +6202,7 @@ module.exports = baseSetToString;
 
 
 /***/ }),
-/* 122 */
+/* 149 */
 /***/ (function(module, exports) {
 
 /**
@@ -4186,7 +6234,7 @@ module.exports = constant;
 
 
 /***/ }),
-/* 123 */
+/* 150 */
 /***/ (function(module, exports) {
 
 /** Used to detect hot functions by number of calls within a span of milliseconds. */
@@ -4229,10 +6277,10 @@ module.exports = shortOut;
 
 
 /***/ }),
-/* 124 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseDifference = __webpack_require__(20),
+var baseDifference = __webpack_require__(24),
     baseFlatten = __webpack_require__(4),
     baseIteratee = __webpack_require__(1),
     baseRest = __webpack_require__(0),
@@ -4279,12 +6327,12 @@ module.exports = differenceBy;
 
 
 /***/ }),
-/* 125 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsMatch = __webpack_require__(126),
-    getMatchData = __webpack_require__(154),
-    matchesStrictComparable = __webpack_require__(73);
+var baseIsMatch = __webpack_require__(153),
+    getMatchData = __webpack_require__(181),
+    matchesStrictComparable = __webpack_require__(87);
 
 /**
  * The base implementation of `_.matches` which doesn't clone `source`.
@@ -4307,11 +6355,11 @@ module.exports = baseMatches;
 
 
 /***/ }),
-/* 126 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Stack = __webpack_require__(63),
-    baseIsEqual = __webpack_require__(64);
+var Stack = __webpack_require__(77),
+    baseIsEqual = __webpack_require__(78);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -4375,10 +6423,10 @@ module.exports = baseIsMatch;
 
 
 /***/ }),
-/* 127 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ListCache = __webpack_require__(24);
+var ListCache = __webpack_require__(30);
 
 /**
  * Removes all key-value entries from the stack.
@@ -4396,7 +6444,7 @@ module.exports = stackClear;
 
 
 /***/ }),
-/* 128 */
+/* 155 */
 /***/ (function(module, exports) {
 
 /**
@@ -4420,7 +6468,7 @@ module.exports = stackDelete;
 
 
 /***/ }),
-/* 129 */
+/* 156 */
 /***/ (function(module, exports) {
 
 /**
@@ -4440,7 +6488,7 @@ module.exports = stackGet;
 
 
 /***/ }),
-/* 130 */
+/* 157 */
 /***/ (function(module, exports) {
 
 /**
@@ -4460,12 +6508,12 @@ module.exports = stackHas;
 
 
 /***/ }),
-/* 131 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ListCache = __webpack_require__(24),
-    Map = __webpack_require__(41),
-    MapCache = __webpack_require__(40);
+var ListCache = __webpack_require__(30),
+    Map = __webpack_require__(49),
+    MapCache = __webpack_require__(48);
 
 /** Used as the size to enable large array optimizations. */
 var LARGE_ARRAY_SIZE = 200;
@@ -4500,17 +6548,17 @@ module.exports = stackSet;
 
 
 /***/ }),
-/* 132 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Stack = __webpack_require__(63),
-    equalArrays = __webpack_require__(65),
-    equalByTag = __webpack_require__(134),
-    equalObjects = __webpack_require__(137),
-    getTag = __webpack_require__(150),
+var Stack = __webpack_require__(77),
+    equalArrays = __webpack_require__(79),
+    equalByTag = __webpack_require__(161),
+    equalObjects = __webpack_require__(164),
+    getTag = __webpack_require__(177),
     isArray = __webpack_require__(6),
-    isBuffer = __webpack_require__(68),
-    isTypedArray = __webpack_require__(70);
+    isBuffer = __webpack_require__(82),
+    isTypedArray = __webpack_require__(84);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1;
@@ -4589,7 +6637,7 @@ module.exports = baseIsEqualDeep;
 
 
 /***/ }),
-/* 133 */
+/* 160 */
 /***/ (function(module, exports) {
 
 /**
@@ -4618,15 +6666,15 @@ module.exports = arraySome;
 
 
 /***/ }),
-/* 134 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Symbol = __webpack_require__(19),
-    Uint8Array = __webpack_require__(135),
-    eq = __webpack_require__(10),
-    equalArrays = __webpack_require__(65),
-    mapToArray = __webpack_require__(136),
-    setToArray = __webpack_require__(45);
+var Symbol = __webpack_require__(23),
+    Uint8Array = __webpack_require__(162),
+    eq = __webpack_require__(11),
+    equalArrays = __webpack_require__(79),
+    mapToArray = __webpack_require__(163),
+    setToArray = __webpack_require__(53);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -4736,7 +6784,7 @@ module.exports = equalByTag;
 
 
 /***/ }),
-/* 135 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var root = __webpack_require__(9);
@@ -4748,7 +6796,7 @@ module.exports = Uint8Array;
 
 
 /***/ }),
-/* 136 */
+/* 163 */
 /***/ (function(module, exports) {
 
 /**
@@ -4772,10 +6820,10 @@ module.exports = mapToArray;
 
 
 /***/ }),
-/* 137 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getAllKeys = __webpack_require__(138);
+var getAllKeys = __webpack_require__(165);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1;
@@ -4867,12 +6915,12 @@ module.exports = equalObjects;
 
 
 /***/ }),
-/* 138 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetAllKeys = __webpack_require__(139),
-    getSymbols = __webpack_require__(140),
-    keys = __webpack_require__(66);
+var baseGetAllKeys = __webpack_require__(166),
+    getSymbols = __webpack_require__(167),
+    keys = __webpack_require__(80);
 
 /**
  * Creates an array of own enumerable property names and symbols of `object`.
@@ -4889,10 +6937,10 @@ module.exports = getAllKeys;
 
 
 /***/ }),
-/* 139 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(38),
+var arrayPush = __webpack_require__(46),
     isArray = __webpack_require__(6);
 
 /**
@@ -4915,11 +6963,11 @@ module.exports = baseGetAllKeys;
 
 
 /***/ }),
-/* 140 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayFilter = __webpack_require__(21),
-    stubArray = __webpack_require__(141);
+var arrayFilter = __webpack_require__(25),
+    stubArray = __webpack_require__(168);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -4951,7 +6999,7 @@ module.exports = getSymbols;
 
 
 /***/ }),
-/* 141 */
+/* 168 */
 /***/ (function(module, exports) {
 
 /**
@@ -4980,15 +7028,15 @@ module.exports = stubArray;
 
 
 /***/ }),
-/* 142 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseTimes = __webpack_require__(67),
-    isArguments = __webpack_require__(39),
+var baseTimes = __webpack_require__(81),
+    isArguments = __webpack_require__(47),
     isArray = __webpack_require__(6),
-    isBuffer = __webpack_require__(68),
-    isIndex = __webpack_require__(11),
-    isTypedArray = __webpack_require__(70);
+    isBuffer = __webpack_require__(82),
+    isIndex = __webpack_require__(12),
+    isTypedArray = __webpack_require__(84);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -5035,7 +7083,7 @@ module.exports = arrayLikeKeys;
 
 
 /***/ }),
-/* 143 */
+/* 170 */
 /***/ (function(module, exports) {
 
 /**
@@ -5059,12 +7107,12 @@ module.exports = stubFalse;
 
 
 /***/ }),
-/* 144 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(18),
-    isLength = __webpack_require__(37),
-    isObjectLike = __webpack_require__(16);
+var baseGetTag = __webpack_require__(22),
+    isLength = __webpack_require__(45),
+    isObjectLike = __webpack_require__(20);
 
 /** `Object#toString` result references. */
 var argsTag = '[object Arguments]',
@@ -5125,10 +7173,10 @@ module.exports = baseIsTypedArray;
 
 
 /***/ }),
-/* 145 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(55);
+/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(69);
 
 /** Detect free variable `exports`. */
 var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -5151,14 +7199,14 @@ var nodeUtil = (function() {
 
 module.exports = nodeUtil;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(69)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(83)(module)))
 
 /***/ }),
-/* 146 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isPrototype = __webpack_require__(147),
-    nativeKeys = __webpack_require__(148);
+var isPrototype = __webpack_require__(174),
+    nativeKeys = __webpack_require__(175);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -5190,7 +7238,7 @@ module.exports = baseKeys;
 
 
 /***/ }),
-/* 147 */
+/* 174 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -5214,10 +7262,10 @@ module.exports = isPrototype;
 
 
 /***/ }),
-/* 148 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var overArg = __webpack_require__(149);
+var overArg = __webpack_require__(176);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeKeys = overArg(Object.keys, Object);
@@ -5226,7 +7274,7 @@ module.exports = nativeKeys;
 
 
 /***/ }),
-/* 149 */
+/* 176 */
 /***/ (function(module, exports) {
 
 /**
@@ -5247,16 +7295,16 @@ module.exports = overArg;
 
 
 /***/ }),
-/* 150 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var DataView = __webpack_require__(151),
-    Map = __webpack_require__(41),
-    Promise = __webpack_require__(152),
-    Set = __webpack_require__(71),
-    WeakMap = __webpack_require__(153),
-    baseGetTag = __webpack_require__(18),
-    toSource = __webpack_require__(57);
+var DataView = __webpack_require__(178),
+    Map = __webpack_require__(49),
+    Promise = __webpack_require__(179),
+    Set = __webpack_require__(85),
+    WeakMap = __webpack_require__(180),
+    baseGetTag = __webpack_require__(22),
+    toSource = __webpack_require__(71);
 
 /** `Object#toString` result references. */
 var mapTag = '[object Map]',
@@ -5311,10 +7359,10 @@ module.exports = getTag;
 
 
 /***/ }),
-/* 151 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(13),
+var getNative = __webpack_require__(14),
     root = __webpack_require__(9);
 
 /* Built-in method references that are verified to be native. */
@@ -5324,10 +7372,10 @@ module.exports = DataView;
 
 
 /***/ }),
-/* 152 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(13),
+var getNative = __webpack_require__(14),
     root = __webpack_require__(9);
 
 /* Built-in method references that are verified to be native. */
@@ -5337,10 +7385,10 @@ module.exports = Promise;
 
 
 /***/ }),
-/* 153 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(13),
+var getNative = __webpack_require__(14),
     root = __webpack_require__(9);
 
 /* Built-in method references that are verified to be native. */
@@ -5350,11 +7398,11 @@ module.exports = WeakMap;
 
 
 /***/ }),
-/* 154 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isStrictComparable = __webpack_require__(72),
-    keys = __webpack_require__(66);
+var isStrictComparable = __webpack_require__(86),
+    keys = __webpack_require__(80);
 
 /**
  * Gets the property names, values, and compare flags of `object`.
@@ -5380,16 +7428,16 @@ module.exports = getMatchData;
 
 
 /***/ }),
-/* 155 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIsEqual = __webpack_require__(64),
-    get = __webpack_require__(74),
-    hasIn = __webpack_require__(161),
-    isKey = __webpack_require__(47),
-    isStrictComparable = __webpack_require__(72),
-    matchesStrictComparable = __webpack_require__(73),
-    toKey = __webpack_require__(17);
+var baseIsEqual = __webpack_require__(78),
+    get = __webpack_require__(88),
+    hasIn = __webpack_require__(188),
+    isKey = __webpack_require__(55),
+    isStrictComparable = __webpack_require__(86),
+    matchesStrictComparable = __webpack_require__(87),
+    toKey = __webpack_require__(21);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -5419,10 +7467,10 @@ module.exports = baseMatchesProperty;
 
 
 /***/ }),
-/* 156 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var memoizeCapped = __webpack_require__(157);
+var memoizeCapped = __webpack_require__(184);
 
 /** Used to match property names within property paths. */
 var reLeadingDot = /^\./,
@@ -5453,10 +7501,10 @@ module.exports = stringToPath;
 
 
 /***/ }),
-/* 157 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var memoize = __webpack_require__(158);
+var memoize = __webpack_require__(185);
 
 /** Used as the maximum memoize cache size. */
 var MAX_MEMOIZE_SIZE = 500;
@@ -5485,10 +7533,10 @@ module.exports = memoizeCapped;
 
 
 /***/ }),
-/* 158 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var MapCache = __webpack_require__(40);
+var MapCache = __webpack_require__(48);
 
 /** Error message constants. */
 var FUNC_ERROR_TEXT = 'Expected a function';
@@ -5564,10 +7612,10 @@ module.exports = memoize;
 
 
 /***/ }),
-/* 159 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseToString = __webpack_require__(160);
+var baseToString = __webpack_require__(187);
 
 /**
  * Converts `value` to a string. An empty string is returned for `null`
@@ -5598,13 +7646,13 @@ module.exports = toString;
 
 
 /***/ }),
-/* 160 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Symbol = __webpack_require__(19),
+var Symbol = __webpack_require__(23),
     arrayMap = __webpack_require__(7),
     isArray = __webpack_require__(6),
-    isSymbol = __webpack_require__(12);
+    isSymbol = __webpack_require__(13);
 
 /** Used as references for various `Number` constants. */
 var INFINITY = 1 / 0;
@@ -5641,11 +7689,11 @@ module.exports = baseToString;
 
 
 /***/ }),
-/* 161 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseHasIn = __webpack_require__(162),
-    hasPath = __webpack_require__(163);
+var baseHasIn = __webpack_require__(189),
+    hasPath = __webpack_require__(190);
 
 /**
  * Checks if `path` is a direct or inherited property of `object`.
@@ -5681,7 +7729,7 @@ module.exports = hasIn;
 
 
 /***/ }),
-/* 162 */
+/* 189 */
 /***/ (function(module, exports) {
 
 /**
@@ -5700,15 +7748,15 @@ module.exports = baseHasIn;
 
 
 /***/ }),
-/* 163 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var castPath = __webpack_require__(31),
-    isArguments = __webpack_require__(39),
+var castPath = __webpack_require__(37),
+    isArguments = __webpack_require__(47),
     isArray = __webpack_require__(6),
-    isIndex = __webpack_require__(11),
-    isLength = __webpack_require__(37),
-    toKey = __webpack_require__(17);
+    isIndex = __webpack_require__(12),
+    isLength = __webpack_require__(45),
+    toKey = __webpack_require__(21);
 
 /**
  * Checks if `path` exists on `object`.
@@ -5745,13 +7793,13 @@ module.exports = hasPath;
 
 
 /***/ }),
-/* 164 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseProperty = __webpack_require__(75),
-    basePropertyDeep = __webpack_require__(165),
-    isKey = __webpack_require__(47),
-    toKey = __webpack_require__(17);
+var baseProperty = __webpack_require__(89),
+    basePropertyDeep = __webpack_require__(192),
+    isKey = __webpack_require__(55),
+    toKey = __webpack_require__(21);
 
 /**
  * Creates a function that returns the value at `path` of a given object.
@@ -5783,10 +7831,10 @@ module.exports = property;
 
 
 /***/ }),
-/* 165 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGet = __webpack_require__(46);
+var baseGet = __webpack_require__(54);
 
 /**
  * A specialized version of `baseProperty` which supports deep paths.
@@ -5805,10 +7853,10 @@ module.exports = basePropertyDeep;
 
 
 /***/ }),
-/* 166 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseDifference = __webpack_require__(20),
+var baseDifference = __webpack_require__(24),
     baseFlatten = __webpack_require__(4),
     baseRest = __webpack_require__(0),
     isArrayLikeObject = __webpack_require__(3),
@@ -5851,7 +7899,7 @@ module.exports = differenceWith;
 
 
 /***/ }),
-/* 167 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseSlice = __webpack_require__(5),
@@ -5895,7 +7943,7 @@ module.exports = drop;
 
 
 /***/ }),
-/* 168 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseSlice = __webpack_require__(5),
@@ -5940,11 +7988,11 @@ module.exports = dropRight;
 
 
 /***/ }),
-/* 169 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIteratee = __webpack_require__(1),
-    baseWhile = __webpack_require__(32);
+    baseWhile = __webpack_require__(38);
 
 /**
  * Creates a slice of `array` excluding elements dropped from the end.
@@ -5991,11 +8039,11 @@ module.exports = dropRightWhile;
 
 
 /***/ }),
-/* 170 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIteratee = __webpack_require__(1),
-    baseWhile = __webpack_require__(32);
+    baseWhile = __webpack_require__(38);
 
 /**
  * Creates a slice of `array` excluding elements dropped from the beginning.
@@ -6042,11 +8090,11 @@ module.exports = dropWhile;
 
 
 /***/ }),
-/* 171 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseFill = __webpack_require__(172),
-    isIterateeCall = __webpack_require__(35);
+var baseFill = __webpack_require__(199),
+    isIterateeCall = __webpack_require__(43);
 
 /**
  * Fills elements of `array` with `value` from `start` up to, but not
@@ -6093,11 +8141,11 @@ module.exports = fill;
 
 
 /***/ }),
-/* 172 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var toInteger = __webpack_require__(2),
-    toLength = __webpack_require__(173);
+    toLength = __webpack_require__(200);
 
 /**
  * The base implementation of `_.fill` without an iteratee call guard.
@@ -6131,10 +8179,10 @@ module.exports = baseFill;
 
 
 /***/ }),
-/* 173 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseClamp = __webpack_require__(174),
+var baseClamp = __webpack_require__(201),
     toInteger = __webpack_require__(2);
 
 /** Used as references for the maximum length and index of an array. */
@@ -6175,7 +8223,7 @@ module.exports = toLength;
 
 
 /***/ }),
-/* 174 */
+/* 201 */
 /***/ (function(module, exports) {
 
 /**
@@ -6203,10 +8251,10 @@ module.exports = baseClamp;
 
 
 /***/ }),
-/* 175 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseFindIndex = __webpack_require__(27),
+var baseFindIndex = __webpack_require__(33),
     baseIteratee = __webpack_require__(1),
     toInteger = __webpack_require__(2);
 
@@ -6264,10 +8312,10 @@ module.exports = findIndex;
 
 
 /***/ }),
-/* 176 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseFindIndex = __webpack_require__(27),
+var baseFindIndex = __webpack_require__(33),
     baseIteratee = __webpack_require__(1),
     toInteger = __webpack_require__(2);
 
@@ -6329,14 +8377,14 @@ module.exports = findLastIndex;
 
 
 /***/ }),
-/* 177 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(76);
+module.exports = __webpack_require__(90);
 
 
 /***/ }),
-/* 178 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseFlatten = __webpack_require__(4);
@@ -6367,7 +8415,7 @@ module.exports = flattenDeep;
 
 
 /***/ }),
-/* 179 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseFlatten = __webpack_require__(4),
@@ -6406,7 +8454,7 @@ module.exports = flattenDepth;
 
 
 /***/ }),
-/* 180 */
+/* 207 */
 /***/ (function(module, exports) {
 
 /**
@@ -6440,10 +8488,10 @@ module.exports = fromPairs;
 
 
 /***/ }),
-/* 181 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIndexOf = __webpack_require__(43),
+var baseIndexOf = __webpack_require__(51),
     toInteger = __webpack_require__(2);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
@@ -6488,7 +8536,7 @@ module.exports = indexOf;
 
 
 /***/ }),
-/* 182 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseSlice = __webpack_require__(5);
@@ -6516,13 +8564,13 @@ module.exports = initial;
 
 
 /***/ }),
-/* 183 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayMap = __webpack_require__(7),
-    baseIntersection = __webpack_require__(48),
+    baseIntersection = __webpack_require__(56),
     baseRest = __webpack_require__(0),
-    castArrayLikeObject = __webpack_require__(49);
+    castArrayLikeObject = __webpack_require__(57);
 
 /**
  * Creates an array of unique values that are included in all given arrays
@@ -6552,14 +8600,14 @@ module.exports = intersection;
 
 
 /***/ }),
-/* 184 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayMap = __webpack_require__(7),
-    baseIntersection = __webpack_require__(48),
+    baseIntersection = __webpack_require__(56),
     baseIteratee = __webpack_require__(1),
     baseRest = __webpack_require__(0),
-    castArrayLikeObject = __webpack_require__(49),
+    castArrayLikeObject = __webpack_require__(57),
     last = __webpack_require__(8);
 
 /**
@@ -6603,13 +8651,13 @@ module.exports = intersectionBy;
 
 
 /***/ }),
-/* 185 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayMap = __webpack_require__(7),
-    baseIntersection = __webpack_require__(48),
+    baseIntersection = __webpack_require__(56),
     baseRest = __webpack_require__(0),
-    castArrayLikeObject = __webpack_require__(49),
+    castArrayLikeObject = __webpack_require__(57),
     last = __webpack_require__(8);
 
 /**
@@ -6650,7 +8698,7 @@ module.exports = intersectionWith;
 
 
 /***/ }),
-/* 186 */
+/* 213 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -6682,12 +8730,12 @@ module.exports = join;
 
 
 /***/ }),
-/* 187 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseFindIndex = __webpack_require__(27),
-    baseIsNaN = __webpack_require__(58),
-    strictLastIndexOf = __webpack_require__(188),
+var baseFindIndex = __webpack_require__(33),
+    baseIsNaN = __webpack_require__(72),
+    strictLastIndexOf = __webpack_require__(215),
     toInteger = __webpack_require__(2);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
@@ -6734,7 +8782,7 @@ module.exports = lastIndexOf;
 
 
 /***/ }),
-/* 188 */
+/* 215 */
 /***/ (function(module, exports) {
 
 /**
@@ -6761,10 +8809,10 @@ module.exports = strictLastIndexOf;
 
 
 /***/ }),
-/* 189 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseNth = __webpack_require__(190),
+var baseNth = __webpack_require__(217),
     toInteger = __webpack_require__(2);
 
 /**
@@ -6796,10 +8844,10 @@ module.exports = nth;
 
 
 /***/ }),
-/* 190 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isIndex = __webpack_require__(11);
+var isIndex = __webpack_require__(12);
 
 /**
  * The base implementation of `_.nth` which doesn't coerce arguments.
@@ -6822,11 +8870,11 @@ module.exports = baseNth;
 
 
 /***/ }),
-/* 191 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseRest = __webpack_require__(0),
-    pullAll = __webpack_require__(78);
+    pullAll = __webpack_require__(92);
 
 /**
  * Removes all given values from `array` using
@@ -6857,7 +8905,7 @@ module.exports = pull;
 
 
 /***/ }),
-/* 192 */
+/* 219 */
 /***/ (function(module, exports) {
 
 /**
@@ -6886,11 +8934,11 @@ module.exports = baseIndexOfWith;
 
 
 /***/ }),
-/* 193 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIteratee = __webpack_require__(1),
-    basePullAll = __webpack_require__(50);
+    basePullAll = __webpack_require__(58);
 
 /**
  * This method is like `_.pullAll` except that it accepts `iteratee` which is
@@ -6925,10 +8973,10 @@ module.exports = pullAllBy;
 
 
 /***/ }),
-/* 194 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var basePullAll = __webpack_require__(50);
+var basePullAll = __webpack_require__(58);
 
 /**
  * This method is like `_.pullAll` except that it accepts `comparator` which
@@ -6963,15 +9011,15 @@ module.exports = pullAllWith;
 
 
 /***/ }),
-/* 195 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayMap = __webpack_require__(7),
-    baseAt = __webpack_require__(196),
-    basePullAt = __webpack_require__(79),
-    compareAscending = __webpack_require__(199),
-    flatRest = __webpack_require__(200),
-    isIndex = __webpack_require__(11);
+    baseAt = __webpack_require__(223),
+    basePullAt = __webpack_require__(93),
+    compareAscending = __webpack_require__(226),
+    flatRest = __webpack_require__(227),
+    isIndex = __webpack_require__(12);
 
 /**
  * Removes elements from `array` corresponding to `indexes` and returns an
@@ -7012,10 +9060,10 @@ module.exports = pullAt;
 
 
 /***/ }),
-/* 196 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var get = __webpack_require__(74);
+var get = __webpack_require__(88);
 
 /**
  * The base implementation of `_.at` without support for individual paths.
@@ -7041,13 +9089,13 @@ module.exports = baseAt;
 
 
 /***/ }),
-/* 197 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var castPath = __webpack_require__(31),
+var castPath = __webpack_require__(37),
     last = __webpack_require__(8),
-    parent = __webpack_require__(198),
-    toKey = __webpack_require__(17);
+    parent = __webpack_require__(225),
+    toKey = __webpack_require__(21);
 
 /**
  * The base implementation of `_.unset`.
@@ -7067,10 +9115,10 @@ module.exports = baseUnset;
 
 
 /***/ }),
-/* 198 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGet = __webpack_require__(46),
+var baseGet = __webpack_require__(54),
     baseSlice = __webpack_require__(5);
 
 /**
@@ -7089,10 +9137,10 @@ module.exports = parent;
 
 
 /***/ }),
-/* 199 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isSymbol = __webpack_require__(12);
+var isSymbol = __webpack_require__(13);
 
 /**
  * Compares values to sort them in ascending order.
@@ -7136,12 +9184,12 @@ module.exports = compareAscending;
 
 
 /***/ }),
-/* 200 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var flatten = __webpack_require__(77),
-    overRest = __webpack_require__(59),
-    setToString = __webpack_require__(61);
+var flatten = __webpack_require__(91),
+    overRest = __webpack_require__(73),
+    setToString = __webpack_require__(75);
 
 /**
  * A specialized version of `baseRest` which flattens the rest array.
@@ -7158,11 +9206,11 @@ module.exports = flatRest;
 
 
 /***/ }),
-/* 201 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIteratee = __webpack_require__(1),
-    basePullAt = __webpack_require__(79);
+    basePullAt = __webpack_require__(93);
 
 /**
  * Removes all elements from `array` that `predicate` returns truthy for
@@ -7217,7 +9265,7 @@ module.exports = remove;
 
 
 /***/ }),
-/* 202 */
+/* 229 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -7257,11 +9305,11 @@ module.exports = reverse;
 
 
 /***/ }),
-/* 203 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseSlice = __webpack_require__(5),
-    isIterateeCall = __webpack_require__(35),
+    isIterateeCall = __webpack_require__(43),
     toInteger = __webpack_require__(2);
 
 /**
@@ -7300,10 +9348,10 @@ module.exports = slice;
 
 
 /***/ }),
-/* 204 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSortedIndex = __webpack_require__(33);
+var baseSortedIndex = __webpack_require__(39);
 
 /**
  * Uses a binary search to determine the lowest index at which `value`
@@ -7330,11 +9378,11 @@ module.exports = sortedIndex;
 
 
 /***/ }),
-/* 205 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIteratee = __webpack_require__(1),
-    baseSortedIndexBy = __webpack_require__(51);
+    baseSortedIndexBy = __webpack_require__(59);
 
 /**
  * This method is like `_.sortedIndex` except that it accepts `iteratee`
@@ -7369,11 +9417,11 @@ module.exports = sortedIndexBy;
 
 
 /***/ }),
-/* 206 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSortedIndex = __webpack_require__(33),
-    eq = __webpack_require__(10);
+var baseSortedIndex = __webpack_require__(39),
+    eq = __webpack_require__(11);
 
 /**
  * This method is like `_.indexOf` except that it performs a binary
@@ -7406,10 +9454,10 @@ module.exports = sortedIndexOf;
 
 
 /***/ }),
-/* 207 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSortedIndex = __webpack_require__(33);
+var baseSortedIndex = __webpack_require__(39);
 
 /**
  * This method is like `_.sortedIndex` except that it returns the highest
@@ -7437,11 +9485,11 @@ module.exports = sortedLastIndex;
 
 
 /***/ }),
-/* 208 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIteratee = __webpack_require__(1),
-    baseSortedIndexBy = __webpack_require__(51);
+    baseSortedIndexBy = __webpack_require__(59);
 
 /**
  * This method is like `_.sortedLastIndex` except that it accepts `iteratee`
@@ -7476,11 +9524,11 @@ module.exports = sortedLastIndexBy;
 
 
 /***/ }),
-/* 209 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSortedIndex = __webpack_require__(33),
-    eq = __webpack_require__(10);
+var baseSortedIndex = __webpack_require__(39),
+    eq = __webpack_require__(11);
 
 /**
  * This method is like `_.lastIndexOf` except that it performs a binary
@@ -7513,10 +9561,10 @@ module.exports = sortedLastIndexOf;
 
 
 /***/ }),
-/* 210 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSortedUniq = __webpack_require__(80);
+var baseSortedUniq = __webpack_require__(94);
 
 /**
  * This method is like `_.uniq` except that it's designed and optimized
@@ -7543,11 +9591,11 @@ module.exports = sortedUniq;
 
 
 /***/ }),
-/* 211 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIteratee = __webpack_require__(1),
-    baseSortedUniq = __webpack_require__(80);
+    baseSortedUniq = __webpack_require__(94);
 
 /**
  * This method is like `_.uniqBy` except that it's designed and optimized
@@ -7575,7 +9623,7 @@ module.exports = sortedUniqBy;
 
 
 /***/ }),
-/* 212 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseSlice = __webpack_require__(5);
@@ -7603,7 +9651,7 @@ module.exports = tail;
 
 
 /***/ }),
-/* 213 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseSlice = __webpack_require__(5),
@@ -7646,7 +9694,7 @@ module.exports = take;
 
 
 /***/ }),
-/* 214 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseSlice = __webpack_require__(5),
@@ -7691,11 +9739,11 @@ module.exports = takeRight;
 
 
 /***/ }),
-/* 215 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIteratee = __webpack_require__(1),
-    baseWhile = __webpack_require__(32);
+    baseWhile = __webpack_require__(38);
 
 /**
  * Creates a slice of `array` with elements taken from the end. Elements are
@@ -7742,11 +9790,11 @@ module.exports = takeRightWhile;
 
 
 /***/ }),
-/* 216 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIteratee = __webpack_require__(1),
-    baseWhile = __webpack_require__(32);
+    baseWhile = __webpack_require__(38);
 
 /**
  * Creates a slice of `array` with elements taken from the beginning. Elements
@@ -7793,12 +9841,12 @@ module.exports = takeWhile;
 
 
 /***/ }),
-/* 217 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseFlatten = __webpack_require__(4),
     baseRest = __webpack_require__(0),
-    baseUniq = __webpack_require__(14),
+    baseUniq = __webpack_require__(15),
     isArrayLikeObject = __webpack_require__(3);
 
 /**
@@ -7825,12 +9873,12 @@ module.exports = union;
 
 
 /***/ }),
-/* 218 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Set = __webpack_require__(71),
-    noop = __webpack_require__(219),
-    setToArray = __webpack_require__(45);
+var Set = __webpack_require__(85),
+    noop = __webpack_require__(246),
+    setToArray = __webpack_require__(53);
 
 /** Used as references for various `Number` constants. */
 var INFINITY = 1 / 0;
@@ -7850,7 +9898,7 @@ module.exports = createSet;
 
 
 /***/ }),
-/* 219 */
+/* 246 */
 /***/ (function(module, exports) {
 
 /**
@@ -7873,13 +9921,13 @@ module.exports = noop;
 
 
 /***/ }),
-/* 220 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseFlatten = __webpack_require__(4),
     baseIteratee = __webpack_require__(1),
     baseRest = __webpack_require__(0),
-    baseUniq = __webpack_require__(14),
+    baseUniq = __webpack_require__(15),
     isArrayLikeObject = __webpack_require__(3),
     last = __webpack_require__(8);
 
@@ -7918,12 +9966,12 @@ module.exports = unionBy;
 
 
 /***/ }),
-/* 221 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseFlatten = __webpack_require__(4),
     baseRest = __webpack_require__(0),
-    baseUniq = __webpack_require__(14),
+    baseUniq = __webpack_require__(15),
     isArrayLikeObject = __webpack_require__(3),
     last = __webpack_require__(8);
 
@@ -7958,10 +10006,10 @@ module.exports = unionWith;
 
 
 /***/ }),
-/* 222 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseUniq = __webpack_require__(14);
+var baseUniq = __webpack_require__(15);
 
 /**
  * Creates a duplicate-free version of an array, using
@@ -7989,11 +10037,11 @@ module.exports = uniq;
 
 
 /***/ }),
-/* 223 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIteratee = __webpack_require__(1),
-    baseUniq = __webpack_require__(14);
+    baseUniq = __webpack_require__(15);
 
 /**
  * This method is like `_.uniq` except that it accepts `iteratee` which is
@@ -8026,10 +10074,10 @@ module.exports = uniqBy;
 
 
 /***/ }),
-/* 224 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseUniq = __webpack_require__(14);
+var baseUniq = __webpack_require__(15);
 
 /**
  * This method is like `_.uniq` except that it accepts `comparator` which
@@ -8060,10 +10108,10 @@ module.exports = uniqWith;
 
 
 /***/ }),
-/* 225 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseDifference = __webpack_require__(20),
+var baseDifference = __webpack_require__(24),
     baseRest = __webpack_require__(0),
     isArrayLikeObject = __webpack_require__(3);
 
@@ -8097,12 +10145,12 @@ module.exports = without;
 
 
 /***/ }),
-/* 226 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayFilter = __webpack_require__(21),
+var arrayFilter = __webpack_require__(25),
     baseRest = __webpack_require__(0),
-    baseXor = __webpack_require__(53),
+    baseXor = __webpack_require__(61),
     isArrayLikeObject = __webpack_require__(3);
 
 /**
@@ -8131,13 +10179,13 @@ module.exports = xor;
 
 
 /***/ }),
-/* 227 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayFilter = __webpack_require__(21),
+var arrayFilter = __webpack_require__(25),
     baseIteratee = __webpack_require__(1),
     baseRest = __webpack_require__(0),
-    baseXor = __webpack_require__(53),
+    baseXor = __webpack_require__(61),
     isArrayLikeObject = __webpack_require__(3),
     last = __webpack_require__(8);
 
@@ -8176,12 +10224,12 @@ module.exports = xorBy;
 
 
 /***/ }),
-/* 228 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayFilter = __webpack_require__(21),
+var arrayFilter = __webpack_require__(25),
     baseRest = __webpack_require__(0),
-    baseXor = __webpack_require__(53),
+    baseXor = __webpack_require__(61),
     isArrayLikeObject = __webpack_require__(3),
     last = __webpack_require__(8);
 
@@ -8216,11 +10264,11 @@ module.exports = xorWith;
 
 
 /***/ }),
-/* 229 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseRest = __webpack_require__(0),
-    unzip = __webpack_require__(52);
+    unzip = __webpack_require__(60);
 
 /**
  * Creates an array of grouped elements, the first of which contains the
@@ -8244,11 +10292,11 @@ module.exports = zip;
 
 
 /***/ }),
-/* 230 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var assignValue = __webpack_require__(82),
-    baseZipObject = __webpack_require__(83);
+var assignValue = __webpack_require__(96),
+    baseZipObject = __webpack_require__(97);
 
 /**
  * This method is like `_.fromPairs` except that it accepts two arrays,
@@ -8274,10 +10322,10 @@ module.exports = zipObject;
 
 
 /***/ }),
-/* 231 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var defineProperty = __webpack_require__(62);
+var defineProperty = __webpack_require__(76);
 
 /**
  * The base implementation of `assignValue` and `assignMergeValue` without
@@ -8305,11 +10353,11 @@ module.exports = baseAssignValue;
 
 
 /***/ }),
-/* 232 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSet = __webpack_require__(233),
-    baseZipObject = __webpack_require__(83);
+var baseSet = __webpack_require__(260),
+    baseZipObject = __webpack_require__(97);
 
 /**
  * This method is like `_.zipObject` except that it supports property paths.
@@ -8334,14 +10382,14 @@ module.exports = zipObjectDeep;
 
 
 /***/ }),
-/* 233 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var assignValue = __webpack_require__(82),
-    castPath = __webpack_require__(31),
-    isIndex = __webpack_require__(11),
-    isObject = __webpack_require__(15),
-    toKey = __webpack_require__(17);
+var assignValue = __webpack_require__(96),
+    castPath = __webpack_require__(37),
+    isIndex = __webpack_require__(12),
+    isObject = __webpack_require__(19),
+    toKey = __webpack_require__(21);
 
 /**
  * The base implementation of `_.set`.
@@ -8387,11 +10435,11 @@ module.exports = baseSet;
 
 
 /***/ }),
-/* 234 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseRest = __webpack_require__(0),
-    unzipWith = __webpack_require__(81);
+    unzipWith = __webpack_require__(95);
 
 /**
  * This method is like `_.zip` except that it accepts `iteratee` to specify
@@ -8425,150 +10473,1823 @@ module.exports = zipWith;
 
 
 /***/ }),
-/* 235 */
+/* 262 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var PositioningDecorator_1 = __webpack_require__(63);
+var BottomLockPositioningDecorator = (function (_super) {
+    __extends(BottomLockPositioningDecorator, _super);
+    function BottomLockPositioningDecorator(view, bottomPadding) {
+        var _this = _super.call(this, view) || this;
+        _this.padding = 0;
+        _this.offsetY = 0;
+        _this.padding = bottomPadding;
+        return _this;
+    }
+    BottomLockPositioningDecorator.prototype.hover = function () {
+        //do nothing
+    };
+    BottomLockPositioningDecorator.prototype.preRender = function () {
+        //do nothing
+    };
+    BottomLockPositioningDecorator.prototype.render = function (context, width, height) {
+        this.offsetY = height - this.height - this.padding;
+        this.view.y = this.offsetY;
+        this.view.render(context, width, height);
+    };
+    BottomLockPositioningDecorator.prototype.update = function () {
+        throw new Error("Method not implemented.");
+    };
+    BottomLockPositioningDecorator.prototype.getGlobalY = function () {
+        return this.offsetY + this.parent.y;
+    };
+    BottomLockPositioningDecorator.prototype.accept = function (visitor) {
+        this.view.accept(visitor);
+    };
+    return BottomLockPositioningDecorator;
+}(PositioningDecorator_1.PositioningDecorator));
+exports.BottomLockPositioningDecorator = BottomLockPositioningDecorator;
+
+
+/***/ }),
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var array = __webpack_require__(34);
-var RenderEngine = (function () {
-    function RenderEngine(context, canvas) {
-        this.observers = [];
-        this.isRunning = false;
-        this.context = context;
-        this.canvas = canvas;
+var StagedReference = (function () {
+    function StagedReference(object, stage) {
+        this.object = object;
+        this.stage = stage;
     }
-    /*
-    * starts the render loop
-    */
-    RenderEngine.prototype.start = function () {
-        var _this = this;
-        this.isRunning = true;
-        requestAnimationFrame(function () { _this.run(); });
+    return StagedReference;
+}());
+exports.StagedReference = StagedReference;
+
+
+/***/ }),
+/* 264 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
-    /*
-    * stops the render loop
-    */
-    RenderEngine.prototype.stop = function () {
-        this.isRunning = false;
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ClickableViewObject_1 = __webpack_require__(16);
+var ScoreKeeper_1 = __webpack_require__(40);
+var ScoreViewObject = (function (_super) {
+    __extends(ScoreViewObject, _super);
+    function ScoreViewObject(x, y, width, height, angle, drawingStratgegy, clickStrategy, callback) {
+        var _this = _super.call(this, x, y, width, height, angle, drawingStratgegy, clickStrategy, callback) || this;
+        _this.score = 0;
+        ScoreKeeper_1.ScoreKeeper.getInstance().register(_this);
+        _this.update();
+        return _this;
+    }
+    ScoreViewObject.prototype.preRender = function () {
+        this.context.beginPath();
+        this.context.clearRect(0, 0, this.width, this.height);
+        this.context.font = " bold 24px Arial";
+        this.context.fillStyle = "#ffffff";
+        this.context.fillText("Score: " + this.score, (this.width - this.context.measureText("Score: " + this.score).width) / 2, (this.height + 12) / 2);
     };
-    /*
-    * controls the timing at which the tick is called,
-    * for visuals we will relyon the screenrefreshrate from the browser
-    */
-    RenderEngine.prototype.run = function () {
-        var _this = this;
-        //do the timing and call tick a lot
-        if (this.isRunning) {
-            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.tick();
-            requestAnimationFrame(function () { _this.run(); });
+    ScoreViewObject.prototype.update = function () {
+        this.score = ScoreKeeper_1.ScoreKeeper.getInstance().score;
+        this.preRender();
+    };
+    ScoreViewObject.prototype.hover = function () {
+        throw new Error('Not implemented yet.');
+    };
+    return ScoreViewObject;
+}(ClickableViewObject_1.ClickableViewObject));
+exports.ScoreViewObject = ScoreViewObject;
+
+
+/***/ }),
+/* 265 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var DoubleBufferedViewObject_1 = __webpack_require__(26);
+var DebugViewObject = (function (_super) {
+    __extends(DebugViewObject, _super);
+    function DebugViewObject(x, y, width, height, angle, subject, strategy) {
+        var _this = _super.call(this, x, y, width, height, angle, strategy) || this;
+        _this.subject = subject;
+        _this.color = "pink";
+        return _this;
+    }
+    Object.defineProperty(DebugViewObject.prototype, "subject", {
+        get: function () {
+            return this._subject;
+        },
+        set: function (subject) {
+            this._subject = subject;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DebugViewObject.prototype, "color", {
+        get: function () {
+            return this._color;
+        },
+        set: function (color) {
+            this._color = color;
+            this.preRender();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    DebugViewObject.prototype.preRender = function () {
+        this.context.beginPath();
+        this.context.fillStyle = this.color;
+        this.context.rect(0, 0, this.width, this.height);
+        this.context.fill();
+    };
+    DebugViewObject.prototype.update = function () {
+        this.height = this.subject.height;
+        this.width = this.subject.width;
+    };
+    DebugViewObject.prototype.accept = function (visitor) {
+        throw new Error("Method not implemented.");
+    };
+    return DebugViewObject;
+}(DoubleBufferedViewObject_1.DoubleBufferedViewObject));
+exports.DebugViewObject = DebugViewObject;
+
+
+/***/ }),
+/* 266 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var DrawRouteClickStrategy_1 = __webpack_require__(267);
+var RouteDrawingStageVisitor = (function () {
+    function RouteDrawingStageVisitor(clickManager, gameArea) {
+        this.clickManager = clickManager;
+        this.gameArea = gameArea;
+    }
+    RouteDrawingStageVisitor.prototype.visitPlayerObject = function (subject) {
+        console.log("visitingPlayerObject");
+        subject.clickStrategy = new DrawRouteClickStrategy_1.DrawRouteClickStrategy(this.clickManager, this.gameArea);
+        this.clickManager.addClickable(subject);
+    };
+    RouteDrawingStageVisitor.prototype.visitFieldObject = function (subject) {
+        throw new Error("Method not implemented.");
+    };
+    return RouteDrawingStageVisitor;
+}());
+exports.RouteDrawingStageVisitor = RouteDrawingStageVisitor;
+
+
+/***/ }),
+/* 267 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var StickerTextViewObject_1 = __webpack_require__(100);
+var HorizontalCenterPositioningDecorator_1 = __webpack_require__(64);
+var RenderEngine_1 = __webpack_require__(10);
+var RouteViewObject_1 = __webpack_require__(268);
+var RouteClickHandler_1 = __webpack_require__(269);
+var Coordinate_1 = __webpack_require__(41);
+var ClickStrategy_1 = __webpack_require__(270);
+var Route_1 = __webpack_require__(102);
+var TopLeftDrawingStrategy_1 = __webpack_require__(65);
+var DrawRouteClickStrategy = (function (_super) {
+    __extends(DrawRouteClickStrategy, _super);
+    function DrawRouteClickStrategy(clickableManager, gameArea) {
+        var _this = _super.call(this) || this;
+        _this.clickableManager = clickableManager;
+        _this.gameArea = gameArea;
+        console.log("created clickable ");
+        return _this;
+    }
+    DrawRouteClickStrategy.prototype.execute = function (object) {
+        console.log("draw route strategy called");
+        //needs to go into a route drawing mode
+        var route = [];
+        this.player = object.subject;
+        console.log("bloopely");
+        route.push(new Coordinate_1.Coordinate(this.player.x, this.player.y));
+        var routeView = new RouteViewObject_1.RouteViewObject(0, 0, this.gameArea.width, this.gameArea.height, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy());
+        RenderEngine_1.RenderEngine.getInstance().addReferenceToStage(routeView, 'routeStage');
+        this.clickableManager.clickInterceptor = new RouteClickHandler_1.RouteClickHandler(this.player, route, routeView, this.gameArea, this.clickableManager, this);
+        this.gameArea.addView(routeView);
+        var text = new StickerTextViewObject_1.StickerTextViewObject(10, 20, 280, 50, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), null, null, "Click Endzone");
+        text.backgroundColor = '#2ecc71';
+        var text2 = new StickerTextViewObject_1.StickerTextViewObject(10, 60, 280, 50, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), null, null, "To Save Route");
+        text2.backgroundColor = '#2ecc71';
+        this.text = new HorizontalCenterPositioningDecorator_1.HorizontalCenterPositioningDecorator(text);
+        this.gameArea.addView(this.text);
+        this.text2 = new HorizontalCenterPositioningDecorator_1.HorizontalCenterPositioningDecorator(text2);
+        this.gameArea.addView(this.text2);
+        //grey out everything else and message that says click the player again to finalize the route
+        //also create the route route view object
+        //let controller = player.controller as RouteController;
+        //controller.route = new Route(route);//TODO: fix 
+    };
+    DrawRouteClickStrategy.prototype.finish = function (route) {
+        route.splice(0, 1);
+        this.player.controller.route = new Route_1.Route(route);
+        console.log(this.player.controller.route);
+        this.gameArea.remove(this.text);
+        this.gameArea.remove(this.text2);
+    };
+    return DrawRouteClickStrategy;
+}(ClickStrategy_1.ClickStrategy));
+exports.DrawRouteClickStrategy = DrawRouteClickStrategy;
+
+
+/***/ }),
+/* 268 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var DoubleBufferedViewObject_1 = __webpack_require__(26);
+var RouteViewObject = (function (_super) {
+    __extends(RouteViewObject, _super);
+    function RouteViewObject() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.route = [];
+        return _this;
+    }
+    RouteViewObject.prototype.preRender = function () {
+        if (this.route && this.route.length > 1) {
+            this.context.beginPath();
+            this.context.moveTo(this.route[0].x, this.route[0].y);
+            this.context.strokeStyle = "#ffff00";
+            this.context.lineWidth = 8;
+            for (var i = 1; i < this.route.length; ++i) {
+                this.context.lineTo(this.route[i].x, this.route[i].y);
+                this.context.stroke();
+            }
         }
     };
-    /*
-    * updates all of the view objects
-    */
-    RenderEngine.prototype.tick = function () {
-        var _this = this;
-        this.observers.forEach(function (obj, index) { return obj.render(_this.context, _this.canvas.width, _this.canvas.height); });
+    RouteViewObject.prototype.update = function () {
+        this.preRender();
     };
-    /*
-    * register a view object to be updated by the game engine
-    */
-    RenderEngine.prototype.register = function (obj) {
-        this.observers.push(obj);
+    RouteViewObject.prototype.accept = function (visitor) {
+        //do nothing
     };
-    /*
-    * unregister a view object to be updated by the game engine
-    */
-    RenderEngine.prototype.unregister = function (obj) {
-        array.pull(this.observers, obj);
+    RouteViewObject.prototype.updateRoute = function (route) {
+        this.route = route;
+        this.update();
     };
-    return RenderEngine;
-}());
-exports.RenderEngine = RenderEngine;
-//# sourceMappingURL=RenderEngine.js.map
+    return RouteViewObject;
+}(DoubleBufferedViewObject_1.DoubleBufferedViewObject));
+exports.RouteViewObject = RouteViewObject;
+
 
 /***/ }),
-/* 236 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var array = __webpack_require__(34);
-var TestGameObject = (function () {
-    function TestGameObject(x, y) {
-        this.xPos = 0;
-        this.yPos = 0;
-        this.observers = [];
-        this.xPos = x;
-        this.yPos = y;
+var Coordinate_1 = __webpack_require__(41);
+var RouteClickHandler = (function () {
+    function RouteClickHandler(gameObject, route, viewObject, gameArea, clickManager, drawRouteClickStrategy) {
+        this.gameObject = gameObject;
+        this.route = route;
+        this.viewObject = viewObject;
+        this.gameArea = gameArea;
+        this.clickManager = clickManager;
+        this.drawRouteClickStrategy = drawRouteClickStrategy;
     }
-    TestGameObject.prototype.getXPosition = function () {
-        return this.xPos;
+    RouteClickHandler.prototype.handle = function (event) {
+        console.log('handling intercepted click');
+        if (event.y - this.gameArea.y < 120) {
+            console.log("what");
+            this.clickManager.clickInterceptor = null;
+            this.drawRouteClickStrategy.finish(this.route);
+            return;
+        }
+        this.route.push(new Coordinate_1.Coordinate(event.x - this.gameArea.x, event.y - this.gameArea.y));
+        this.viewObject.updateRoute(this.route);
     };
-    TestGameObject.prototype.getYPosition = function () {
-        return this.yPos;
+    return RouteClickHandler;
+}());
+exports.RouteClickHandler = RouteClickHandler;
+
+
+/***/ }),
+/* 270 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ClickStrategy = (function () {
+    function ClickStrategy() {
+    }
+    return ClickStrategy;
+}());
+exports.ClickStrategy = ClickStrategy;
+
+
+/***/ }),
+/* 271 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
-    TestGameObject.prototype.tick = function () {
-        console.log('model', this.xPos, this.yPos);
-        this.xPos += .1;
-        this.yPos += .1;
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var PositioningDecorator_1 = __webpack_require__(63);
+var RightLockPositioningDecorator = (function (_super) {
+    __extends(RightLockPositioningDecorator, _super);
+    function RightLockPositioningDecorator(view, rightPadding) {
+        var _this = _super.call(this, view) || this;
+        _this.padding = 0;
+        _this.offsetX = 0;
+        _this.padding = rightPadding;
+        return _this;
+    }
+    RightLockPositioningDecorator.prototype.hover = function () {
+        //do nothing
+    };
+    RightLockPositioningDecorator.prototype.preRender = function () {
+        //do nothing
+    };
+    RightLockPositioningDecorator.prototype.render = function (context, width, height) {
+        this.offsetX = width - this.width - this.padding;
+        this.view.x = this.offsetX;
+        this.view.render(context, width, height);
+    };
+    RightLockPositioningDecorator.prototype.update = function () {
+        throw new Error("Method not implemented.");
+    };
+    RightLockPositioningDecorator.prototype.getGlobalX = function () {
+        return this.offsetX + this.parent.x;
+    };
+    RightLockPositioningDecorator.prototype.accept = function (visitor) {
+        this.view.accept(visitor);
+    };
+    return RightLockPositioningDecorator;
+}(PositioningDecorator_1.PositioningDecorator));
+exports.RightLockPositioningDecorator = RightLockPositioningDecorator;
+
+
+/***/ }),
+/* 272 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var CollidableGameObject_1 = __webpack_require__(42);
+var Wall = (function (_super) {
+    __extends(Wall, _super);
+    function Wall() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Wall.prototype.tick = function () {
+        //do nothing right now
+    };
+    Wall.prototype.collide = function (object) {
+        // throw new Error('Not implemented yet.');
+    };
+    return Wall;
+}(CollidableGameObject_1.CollidableGameObject));
+exports.Wall = Wall;
+
+
+/***/ }),
+/* 273 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var RenderEngine_1 = __webpack_require__(10);
+var MatchTemplater_1 = __webpack_require__(62);
+var FindMatchClickStrategy = (function () {
+    function FindMatchClickStrategy() {
+    }
+    FindMatchClickStrategy.prototype.execute = function (object) {
+        MatchTemplater_1.MatchTemplater.getInstance().createGame();
+        //RenderEngine.getInstance().unregister(object as IViewObject);
+        var refs = RenderEngine_1.RenderEngine.getInstance().getReferencesForStage('menuStage');
+        refs.forEach(function (element) {
+            RenderEngine_1.RenderEngine.getInstance().unregister(element);
+        });
+    };
+    return FindMatchClickStrategy;
+}());
+exports.FindMatchClickStrategy = FindMatchClickStrategy;
+
+
+/***/ }),
+/* 274 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var RenderEngine_1 = __webpack_require__(10);
+var ClickableManager = (function () {
+    function ClickableManager(canvas) {
+        var _this = this;
+        this.clickables = [];
+        canvas.addEventListener('click', function (evt) {
+            _this.clickEvents(evt);
+        }, false);
+        // canvas.addEventListener('mouseover', (evt) => {
+        //     this.hoverEvents(evt);
+        // },false);
+        // canvas.addEventListener('click', (evt) => {
+        //     this.clickEvents(evt);
+        // },false);
+    }
+    Object.defineProperty(ClickableManager.prototype, "scale", {
+        get: function () {
+            return RenderEngine_1.RenderEngine.getInstance().scale;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ClickableManager.prototype.add = function (object) {
+        try {
+            this.clickables.push(object);
+        }
+        catch (err) {
+            console.log("You can only add objects of type Clickable to the ClickableManager");
+        }
+    };
+    ClickableManager.prototype.remove = function (object) {
+        var clickable = object;
+        this.clickables = this.clickables.filter(function (element) {
+            if (element != clickable)
+                return element;
+        });
+    };
+    ClickableManager.prototype.clickEvents = function (event) {
+        //console.log(event.x, event.y)
+        var x = event.x / this.scale;
+        var y = event.y / this.scale;
+        if (this.clickInterceptor)
+            this.clickInterceptor.handle(event);
+        else {
+            this.clickables.forEach(function (obj, index) {
+                if (x >= obj.getGlobalX() && x <= (obj.getGlobalX() + obj.getWidth()) &&
+                    y >= obj.getGlobalY() && y <= (obj.getGlobalY() + obj.getHeight())) {
+                    console.log("click match found ", obj);
+                    obj.click();
+                }
+                ;
+                ///obj.click()
+            });
+        }
+    };
+    // private hoverEvents(event: MouseEvent){
+    //     //console.log(event.x, event.y)
+    //     console.log(this.clickables);
+    //     this.clickables.forEach((obj: Clickable, index) => {
+    //         if(event.x >= obj.getGlobalX() && event.x <= (obj.getGlobalX() + obj.getWidth()) &&
+    //             event.y >= obj.getGlobalY() && event.y <= (obj.getGlobalY() + obj.getHeight())) {
+    //                 console.log("hover match found :)");
+    //                 obj.hover();
+    //             };
+    //         ///obj.click()
+    //     });
+    // }
+    ClickableManager.prototype.addClickable = function (clickable) {
+        this.clickables.push(clickable);
+    };
+    return ClickableManager;
+}());
+exports.ClickableManager = ClickableManager;
+
+
+/***/ }),
+/* 275 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ClickableViewObject_1 = __webpack_require__(16);
+var PauseViewObject = (function (_super) {
+    __extends(PauseViewObject, _super);
+    function PauseViewObject() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    PauseViewObject.prototype.preRender = function () {
+        //draw a beautiful pause button :p
+        this.context.beginPath();
+        this.context.rect(0, 0, this.width / 3, this.height);
+        this.context.fill();
+        this.context.rect(this.width / 3 * 2, 0, this.width / 3, this.height);
+        this.context.fill();
+    };
+    PauseViewObject.prototype.update = function () {
+        //probably do nothing?
+        throw new Error("Method not implemented.");
+    };
+    PauseViewObject.prototype.hover = function () {
+        //do nothing
+    };
+    return PauseViewObject;
+}(ClickableViewObject_1.ClickableViewObject));
+exports.PauseViewObject = PauseViewObject;
+
+
+/***/ }),
+/* 276 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameEngine_1 = __webpack_require__(17);
+var PauseGameClickStrategy = (function () {
+    function PauseGameClickStrategy() {
+    }
+    PauseGameClickStrategy.prototype.execute = function (object) {
+        GameEngine_1.GameEngine.getInstance().stop();
+    };
+    return PauseGameClickStrategy;
+}());
+exports.PauseGameClickStrategy = PauseGameClickStrategy;
+
+
+/***/ }),
+/* 277 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ComposableViewDecorator_1 = __webpack_require__(104);
+var RenderEngine_1 = __webpack_require__(10);
+var HorizontalCenterDecorator = (function (_super) {
+    __extends(HorizontalCenterDecorator, _super);
+    function HorizontalCenterDecorator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    HorizontalCenterDecorator.prototype.render = function (context, width, height) {
+        //can set x/y here
+        this.view.x = (width / 2 - (this.width * RenderEngine_1.RenderEngine.getInstance().scale) / 2) / RenderEngine_1.RenderEngine.getInstance().scale;
+        this.view.render(context, width, height);
+    };
+    return HorizontalCenterDecorator;
+}(ComposableViewDecorator_1.ComposableViewDecorator));
+exports.HorizontalCenterDecorator = HorizontalCenterDecorator;
+
+
+/***/ }),
+/* 278 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Hitbox_1 = __webpack_require__(279);
+var HitBoxFactory = (function () {
+    function HitBoxFactory(collisionManager) {
+        this.collisionManager = collisionManager;
+    }
+    HitBoxFactory.prototype.CreateActiveSquareHitBox = function (width, height, subject) {
+        var hitbox = new Hitbox_1.Hitbox(width, height, subject);
+        this.collisionManager.addActiveHitbox(hitbox);
+        return hitbox;
+    };
+    HitBoxFactory.prototype.CreatePassiveSquareHitBox = function (width, height, subject) {
+        var hitbox = new Hitbox_1.Hitbox(width, height, subject);
+        console.log("added passive hitbox");
+        this.collisionManager.addPassiveHitbox(hitbox);
+        return hitbox;
+    };
+    HitBoxFactory.prototype.CreateCircleHitBox = function () {
+        throw Error("not yet implemented");
+    };
+    return HitBoxFactory;
+}());
+exports.HitBoxFactory = HitBoxFactory;
+
+
+/***/ }),
+/* 279 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Hitbox = (function () {
+    function Hitbox(width, height, subject) {
+        this._width = width;
+        this._height = height;
+        this._subject = subject;
+    }
+    Object.defineProperty(Hitbox.prototype, "subject", {
+        get: function () {
+            return this._subject;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Hitbox.prototype, "width", {
+        get: function () {
+            return this._width;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Hitbox.prototype, "height", {
+        get: function () {
+            return this._height;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Hitbox.prototype, "x", {
+        get: function () {
+            return this.subject.x;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Hitbox.prototype, "y", {
+        get: function () {
+            return this.subject.y;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Hitbox.prototype, "angle", {
+        get: function () {
+            return this.subject.angle;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Hitbox.prototype.collide = function (hitbox) {
+        this.subject.collide(hitbox.subject);
+    };
+    return Hitbox;
+}());
+exports.Hitbox = Hitbox;
+
+
+/***/ }),
+/* 280 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var DefenderController_1 = __webpack_require__(281);
+var BlockerController_1 = __webpack_require__(282);
+var GameEngine_1 = __webpack_require__(17);
+var InputController_1 = __webpack_require__(284);
+var RouteController_1 = __webpack_require__(66);
+var ControllerFactory = (function () {
+    function ControllerFactory(collisionManager) {
+        this.collisionManager = collisionManager;
+    }
+    ControllerFactory.prototype.createRouteController = function (subject, route) {
+        var controller = new RouteController_1.RouteController(subject, route, this.collisionManager);
+        GameEngine_1.GameEngine.getInstance().register(controller);
+        return controller;
+    };
+    ControllerFactory.prototype.createInputController = function (subject) {
+        var controller = new InputController_1.InputController(subject, this.collisionManager);
+        GameEngine_1.GameEngine.getInstance().register(controller);
+        return controller;
+    };
+    ControllerFactory.prototype.createBlockerController = function (subject, route) {
+        var controller = new BlockerController_1.BlockerController(subject, route, this.collisionManager);
+        GameEngine_1.GameEngine.getInstance().register(controller);
+        return controller;
+    };
+    ControllerFactory.prototype.createDefenderController = function (subject, route) {
+        var controller = new DefenderController_1.DefenderController(subject, route, this.collisionManager);
+        GameEngine_1.GameEngine.getInstance().register(controller);
+        return controller;
+    };
+    return ControllerFactory;
+}());
+exports.ControllerFactory = ControllerFactory;
+
+
+/***/ }),
+/* 281 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ScoreKeeper_1 = __webpack_require__(40);
+var GameEngine_1 = __webpack_require__(17);
+var GameMap_1 = __webpack_require__(18);
+var RouteController_1 = __webpack_require__(66);
+var DefenderController = (function (_super) {
+    __extends(DefenderController, _super);
+    function DefenderController() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.speed = 1.5;
+        _this.fps = 5;
+        _this.counter = 0;
+        _this.juked = 0;
+        return _this;
+    }
+    DefenderController.prototype.decide = function () {
+        if (this.colliding == false) {
+            if (this.speed < this.originalSpeed - .01) {
+                this.speed += .01;
+            }
+            this.subject.speed = this.speed;
+        }
+        if (this.counter % this.fps == 0) {
+            if (!this.routeComplete()) {
+                this.followRoute();
+            }
+            else {
+                if (this.juked <= 0) {
+                    //look for runner to tackle
+                    var runners = GameMap_1.GameMap.getInstance().getAllOfType('runner');
+                    var target = runners[0];
+                    var distance = this.calculateDistance(target);
+                    //based on distance we want to aim in front of the runner
+                    //add some randomness into how good the players are at estimating maybe?
+                    var newTargetX = distance / 2.5 * Math.cos(target.object.angle);
+                    var newTargetY = distance / 2.5 * Math.sin(target.object.angle);
+                    //target located now go towards it
+                    this.subject.angle = Math.atan2((target.object.y + newTargetY) - this.subject.y, (target.object.x + newTargetX) - this.subject.x);
+                }
+            }
+        }
+        if (this.juked > 0)
+            this.juked--;
+    };
+    DefenderController.prototype.collide = function (object) {
+        if (object.type == 'blocker') {
+            this.colliding = true;
+            this.subject.speed = this.originalSpeed / 2.5;
+            this.speed = 1.5;
+            this.endRoute();
+            //console.log('being slowed by a blocker!');
+        }
+        if (object.type == 'defender') {
+            this.endRoute();
+            //console.log('being slowed by a blocker!');
+        }
+        if (object.type == 'runner') {
+            GameEngine_1.GameEngine.getInstance().stop();
+            ScoreKeeper_1.ScoreKeeper.getInstance().resetScore();
+        }
+    };
+    return DefenderController;
+}(RouteController_1.RouteController));
+exports.DefenderController = DefenderController;
+
+
+/***/ }),
+/* 282 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameMap_1 = __webpack_require__(18);
+var RouteController_1 = __webpack_require__(66);
+var BlockerHivemind_1 = __webpack_require__(283);
+var BlockerController = (function (_super) {
+    __extends(BlockerController, _super);
+    function BlockerController() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    BlockerController.prototype.decide = function () {
+        var _this = this;
+        if (this.colliding == false) {
+            this.subject.speed = this.originalSpeed;
+            BlockerHivemind_1.BlockerHivemind.getInstance().removeBlock(this.subject);
+        }
+        if (!this.routeComplete()) {
+            this.followRoute();
+        }
+        else {
+            //look for defenders to tackle
+            var defenders = GameMap_1.GameMap.getInstance().getAllOfType('defender');
+            //remove all already blocked ones here
+            var blockedDefenders_1 = BlockerHivemind_1.BlockerHivemind.getInstance().getBlockeesImNotBlocking(this.subject);
+            //console.log("blocked", blockedDefenders);
+            var unblockedDefenders = defenders.filter(function (x) { return blockedDefenders_1.indexOf(x.object) == -1; });
+            //console.log(defenders);
+            //console.log("unblocked", unblockedDefenders);
+            var min_1 = Number.MAX_VALUE;
+            var target_1;
+            unblockedDefenders.forEach(function (element) {
+                var tmp = _this.calculateDistance(element);
+                if (tmp < min_1) {
+                    min_1 = tmp;
+                    target_1 = element;
+                }
+            });
+            var distance = this.calculateDistance(target_1);
+            //based on distance we want to aim in front of the runner
+            //add some randomness into how good the players are at estimating maybe?
+            var newTargetX = distance / 2 * Math.cos(target_1.object.angle);
+            var newTargetY = distance / 2 * Math.sin(target_1.object.angle);
+            //target located now go towards it
+            this.subject.angle = Math.atan2((target_1.object.y + newTargetY) - this.subject.y, (target_1.object.x + newTargetX) - this.subject.x);
+        }
+    };
+    BlockerController.prototype.collide = function (object) {
+        if (object.type == 'defender') {
+            this.colliding = true;
+            this.subject.speed = this.originalSpeed / 2;
+            BlockerHivemind_1.BlockerHivemind.getInstance().nowBlocking(this.subject, object);
+            this.endRoute();
+            //console.log('harassing a defender!');
+        }
+        if (object.type == 'blocker') {
+            this.endRoute();
+            //console.log('harassing a defender!');
+        }
+    };
+    return BlockerController;
+}(RouteController_1.RouteController));
+exports.BlockerController = BlockerController;
+
+
+/***/ }),
+/* 283 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var BlockerHivemind = (function () {
+    function BlockerHivemind() {
+        this.blocks = [];
+        if (BlockerHivemind._instance) {
+            throw new Error("Error: Instantiation failed: Use BlockerHivemind.getInstance() instead of new.");
+        }
+        BlockerHivemind._instance = this;
+    }
+    BlockerHivemind.getInstance = function () {
+        return BlockerHivemind._instance;
+    };
+    BlockerHivemind.prototype.nowBlocking = function (blocker, defender) {
+        var alreadyInaBlock = false;
+        this.blocks.forEach(function (block) {
+            if (block[0] == blocker) {
+                alreadyInaBlock = true;
+            }
+            if (block[1] == defender) {
+                alreadyInaBlock = true;
+            }
+        });
+        if (!alreadyInaBlock) {
+            //console.log("BLOCK ADDED!!!");
+            this.blocks.push([blocker, defender]);
+            //console.log("blocks now",this.blocks);
+        }
+        //console.log("no add");
+    };
+    BlockerHivemind.prototype.removeBlock = function (blocker) {
+        this.blocks = this.blocks.filter(function (block) {
+            if (block[0] != blocker)
+                return block;
+        });
+    };
+    BlockerHivemind.prototype.getBlockeesImNotBlocking = function (blocker) {
+        //console.log("before", this.blocks);
+        var blocks = this.blocks.filter(function (block) {
+            if (block[0] != blocker)
+                return block;
+        });
+        //console.log("blocks", blocks);
+        if (blocks.length > 0) {
+            return blocks.map(function (block) {
+                return block[1];
+            });
+        }
+        else
+            return [];
+    };
+    BlockerHivemind._instance = new BlockerHivemind();
+    return BlockerHivemind;
+}());
+exports.BlockerHivemind = BlockerHivemind;
+
+
+/***/ }),
+/* 284 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameMap_1 = __webpack_require__(18);
+var Controller_1 = __webpack_require__(106);
+var InputController = (function (_super) {
+    __extends(InputController, _super);
+    function InputController(subject, collisionManager) {
+        var _this = _super.call(this, subject) || this;
+        _this.angle = 0;
+        _this.right = false;
+        _this.left = false;
+        _this.speed = 1.5;
+        _this.turning = false;
+        _this.releasedLeft = 0;
+        _this.releasedRight = 0;
+        _this.jumpLeft = 0;
+        _this.jumpRight = 0;
+        _this.jumped = 0;
+        _this.collisionManager = collisionManager;
+        _this.angle = _this.subject.angle * Math.PI / 180 || 0;
+        _this.subject.angle = _this.angle;
+        window.addEventListener('keydown', function (event) { _this.onKeyDown(event); }, false);
+        window.addEventListener('keyup', function (event) { _this.onKeyUp(event); }, false);
+        return _this;
+    }
+    InputController.prototype.onKeyDown = function (event) {
+        if (event.keyCode == 37) {
+            this.left = true;
+        }
+        if (event.keyCode == 39) {
+            this.right = true;
+        }
+    };
+    InputController.prototype.onKeyUp = function (event) {
+        if (event.keyCode == 37) {
+            this.left = false;
+            this.releasedLeft = 3;
+        }
+        if (event.keyCode == 39) {
+            this.right = false;
+            this.releasedRight = 3;
+        }
+    };
+    InputController.prototype.decide = function () {
+        this.turning = false;
+        if (this.right) {
+            if (this.releasedRight > 0 && this.jumped <= 0) {
+                this.jumpRight = 6;
+                this.jumped = 60;
+                this.releasedRight = 0;
+                this.juked();
+                return;
+            }
+            this.angle += (5 - this.subject.speed) * 2 * Math.PI / 180;
+            this.turning = true;
+        }
+        if (this.left) {
+            if (this.releasedLeft > 0 && this.jumped <= 0) {
+                this.jumpLeft = 6;
+                this.jumped = 60;
+                this.releasedLeft = 0;
+                this.juked();
+                return;
+            }
+            this.angle -= (5 - this.subject.speed) * 2 * Math.PI / 180;
+            this.turning = true;
+        }
+        this.subject.angle = this.angle;
+        if (this.releasedLeft > 0)
+            this.releasedLeft--;
+        if (this.releasedRight > 0)
+            this.releasedRight--;
+        if (this.jumped > 0)
+            this.jumped--;
+    };
+    InputController.prototype.act = function () {
+        //console.log(this.jump);
+        if (this.jumpLeft > 0 || this.jumpRight > 0) {
+            if (this.jumpLeft > 0) {
+                var angle = this.subject.angle - (60 * Math.PI / 180);
+                if (!this.collisionManager.collisionCheckAtPosition(this.subject, this.subject.x + this.subject.speed * Math.cos(this.subject.angle), this.subject.y)
+                    && !this.collisionManager.wallCollisionCheckAtPosition(this.subject, this.subject.x + this.subject.speed * Math.cos(this.subject.angle), this.subject.y)) {
+                    this.subject.x += 3 * Math.cos(angle);
+                }
+                if (!this.collisionManager.collisionCheckAtPosition(this.subject, this.subject.x, this.subject.y + this.subject.speed * Math.sin(this.subject.angle))
+                    && !this.collisionManager.wallCollisionCheckAtPosition(this.subject, this.subject.x, this.subject.y + this.subject.speed * Math.sin(this.subject.angle))) {
+                    this.subject.y += 3 * Math.sin(angle);
+                }
+                this.jumpLeft--;
+            }
+            if (this.jumpRight > 0) {
+                var angle = this.subject.angle + (60 * Math.PI / 180);
+                if (!this.collisionManager.collisionCheckAtPosition(this.subject, this.subject.x + this.subject.speed * Math.cos(this.subject.angle), this.subject.y)
+                    && !this.collisionManager.wallCollisionCheckAtPosition(this.subject, this.subject.x + this.subject.speed * Math.cos(this.subject.angle), this.subject.y)) {
+                    this.subject.x += 3 * Math.cos(angle);
+                }
+                if (!this.collisionManager.collisionCheckAtPosition(this.subject, this.subject.x, this.subject.y + this.subject.speed * Math.sin(this.subject.angle))
+                    && !this.collisionManager.wallCollisionCheckAtPosition(this.subject, this.subject.x, this.subject.y + this.subject.speed * Math.sin(this.subject.angle))) {
+                    this.subject.y += 3 * Math.sin(angle);
+                }
+                this.jumpRight--;
+            }
+        }
+        else {
+            if (this.turning) {
+                if (this.speed > 1.3)
+                    this.speed -= .015;
+            }
+            else {
+                if (this.speed < this.subject.speed - ((this.speed * 2) / 75))
+                    this.speed += ((this.speed * 2) / 75);
+            }
+            //console.log(this.speed);
+            //console.log(this.subject.x + (this.subject.speed * Math.cos(this.angle)));
+            // this.subject.x += this.subject.speed * Math.cos(this.angle);
+            // this.subject.y += this.subject.speed * Math.sin(this.angle);
+            if (!this.collisionManager.collisionCheckAtPosition(this.subject, this.subject.x + this.subject.speed * Math.cos(this.subject.angle), this.subject.y)
+                && !this.collisionManager.wallCollisionCheckAtPosition(this.subject, this.subject.x + this.subject.speed * Math.cos(this.subject.angle), this.subject.y)) {
+                this.subject.x += this.speed * Math.cos(this.subject.angle);
+            }
+            if (!this.collisionManager.collisionCheckAtPosition(this.subject, this.subject.x, this.subject.y + this.subject.speed * Math.sin(this.subject.angle))
+                && !this.collisionManager.wallCollisionCheckAtPosition(this.subject, this.subject.x, this.subject.y + this.subject.speed * Math.sin(this.subject.angle))) {
+                this.subject.y += this.speed * Math.sin(this.subject.angle);
+            }
+        }
+    };
+    InputController.prototype.collide = function (object) {
+    };
+    InputController.prototype.juked = function () {
+        var defenders = GameMap_1.GameMap.getInstance().getAllOfType('defender');
+        defenders.forEach(function (defender) {
+            defender.object.controller.juked = 15;
+        });
+    };
+    return InputController;
+}(Controller_1.Controller));
+exports.InputController = InputController;
+
+
+/***/ }),
+/* 285 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var CollisionManager = (function () {
+    function CollisionManager() {
+        this.activeCollidables = [];
+        this.passiveCollidables = [];
+    }
+    //there has been some pivot on how this works, and could all be eventually superceded by IAT
+    //however for now active hitboxes will be circular and passive collision will be a square collision
+    //I think this provides the most adaptability while not overcomplicating code
+    //square hitboxs (not rotation support), eventual plan is to implement intersecting axis
+    // tick(): void {
+    //     for(let i = 0; i < this.activeCollidables.length; ++i){
+    //         let object1: Hitbox = this.activeCollidables[i];
+    //         //active v passive collisions
+    //         for(let j = 0; j < this.passiveCollidables.length; ++j){
+    //             let object2: Hitbox = this.passiveCollidables[j];
+    //             if (object1.x <= object2.x + object2.width  && object1.x + object1.width  >= object2.x &&
+    //                 object1.y <= object2.y + object2.height && object1.y + object1.height >= object2.y){
+    //                 // collision
+    //                 console.log('collision with passive');
+    //                 object1.collide(object2);
+    //                 object2.collide(object1);
+    //             }
+    //         }
+    //         //active v active collisions
+    //         for(let j = i + 1; j < this.activeCollidables.length; ++j){
+    //             let object2: Hitbox = this.activeCollidables[j];
+    //             if (object1.x <= object2.x + object2.width  && object1.x + object1.width  >= object2.x &&
+    //                 object1.y <= object2.y + object2.height && object1.y + object1.height >= object2.y){
+    //                 // collision
+    //                 console.log('collision with active');
+    //                 object1.collide(object2);
+    //                 object2.collide(object1);
+    //             }
+    //         }
+    //     }
+    // }
+    CollisionManager.prototype.tick = function () {
+        for (var i = 0; i < this.activeCollidables.length; ++i) {
+            var object1 = this.activeCollidables[i];
+            //active v passive collisions
+            for (var j = 0; j < this.passiveCollidables.length; ++j) {
+                var object2 = this.passiveCollidables[j];
+                if (object1.x - object1.width / 2 <= object2.x + object2.width && object1.x + object1.width / 2 >= object2.x &&
+                    object1.y - object1.height / 2 <= object2.y + object2.height && object1.y + object1.height / 2 >= object2.y) {
+                    // collision
+                    console.log('collision with passive');
+                    object1.collide(object2);
+                    object2.collide(object1);
+                }
+            }
+            //NOTE: Below is the circular collision code
+            // for(let j = 0; j < this.passiveCollidables.length; ++j){
+            //     let object2: Hitbox = this.passiveCollidables[j];
+            //     var dx = object1.x - object2.x;
+            //     var dy = object1.y - object2.y;
+            //     var distance = Math.sqrt(dx * dx + dy * dy);
+            //     if (distance < object1.width/2 + object2.width/2 + 1) {
+            //         // collision detected!
+            //         // collision
+            //         //console.log('collision with passive');
+            //         object1.collide(object2);
+            //         object2.collide(object1);
+            //     }
+            // }
+            //active v active collisions
+            for (var j = i + 1; j < this.activeCollidables.length; ++j) {
+                var object2 = this.activeCollidables[j];
+                var dx = object1.x - object2.x;
+                var dy = object1.y - object2.y;
+                var distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < object1.width / 2 + object2.width / 2 + 1) {
+                    // collision detected!
+                    // collision
+                    //console.log('collision with active');
+                    object1.collide(object2);
+                    object2.collide(object1);
+                }
+            }
+        }
+    };
+    CollisionManager.prototype.addActiveHitbox = function (hitbox) {
+        this.activeCollidables.push(hitbox);
+    };
+    CollisionManager.prototype.addPassiveHitbox = function (hitbox) {
+        this.passiveCollidables.push(hitbox);
+    };
+    CollisionManager.prototype.wallCollisionCheckAtPosition = function (object, x, y) {
+        for (var j = 0; j < this.passiveCollidables.length; ++j) {
+            var object2 = this.passiveCollidables[j];
+            if (x - object.width / 2 <= object2.x + object2.width && x + object.width / 2 >= object2.x &&
+                y - object.height / 2 <= object2.y + object2.height && y + object.height / 2 >= object2.y) {
+                // collision
+                //console.log('collision with passive');
+                //console.log("player", object.x, object.width);
+                //console.log(object2.x, object2.width);
+                if (object2.subject.type == 'wall')
+                    return true;
+                //object.collide(object2);
+                //object2.collide(object);
+            }
+        }
+        return false;
+    };
+    CollisionManager.prototype.collisionCheckAtPosition = function (object, x, y) {
+        //active v active collisions
+        for (var i = 0; i < this.activeCollidables.length; ++i) {
+            var object2 = this.activeCollidables[i];
+            if (object.getHitbox() != object2) {
+                var dx = x - object2.x;
+                var dy = y - object2.y;
+                var distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < object.width / 2 + object2.width / 2) {
+                    // collision detected!
+                    // collision
+                    //console.log('collision check came back as true');
+                    return true;
+                }
+            }
+            else {
+                //console.log("omg im finding myself");
+            }
+        }
+        return false;
+    };
+    CollisionManager.prototype.add = function (object) {
+        throw new Error('Not implemented yet.');
+    };
+    CollisionManager.prototype.dumpActiveHitboxes = function () {
+        this.activeCollidables = [];
+    };
+    CollisionManager.prototype.remove = function (object) {
+        var gameObject = object;
+        if (!gameObject.getHitbox)
+            return;
+        console.log(gameObject);
+        console.log(this.activeCollidables);
+        this.activeCollidables = this.activeCollidables.filter(function (element) {
+            if (element != gameObject.getHitbox())
+                return element;
+        });
+        console.log('after removing collidable');
+        console.log(this.activeCollidables);
+        this.passiveCollidables = this.passiveCollidables.filter(function (element) {
+            if (element != gameObject.getHitbox())
+                return element;
+        });
+    };
+    return CollisionManager;
+}());
+exports.CollisionManager = CollisionManager;
+
+
+/***/ }),
+/* 286 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameMap_1 = __webpack_require__(18);
+var GameEngine_1 = __webpack_require__(17);
+var Player_1 = __webpack_require__(287);
+var PlayerFactory = (function () {
+    function PlayerFactory(hitboxFactory, controllerFactory) {
+        this.hitBoxFactory = hitboxFactory;
+        this.controllerFactory = controllerFactory;
+    }
+    PlayerFactory.prototype.createRunner = function (x, y, angle) {
+        var player = new Player_1.Player(x, y, 16, 16, 'runner', 2.1);
+        player.angle = angle;
+        player.setHitbox(this.hitBoxFactory.CreateActiveSquareHitBox(16, 16, player));
+        var controller = this.controllerFactory.createInputController(player);
+        player.controller = controller;
+        GameEngine_1.GameEngine.getInstance().register(player);
+        GameMap_1.GameMap.getInstance().addMapObject(player, 'runner');
+        return player;
+    };
+    PlayerFactory.prototype.createBlocker = function (x, y, route, area) {
+        var player = new Player_1.Player(x, y, 16, 16, 'blocker', 1.5);
+        player.setHitbox(this.hitBoxFactory.CreateActiveSquareHitBox(16, 16, player));
+        var controller = this.controllerFactory.createBlockerController(player, route);
+        player.controller = controller;
+        GameEngine_1.GameEngine.getInstance().register(player);
+        GameMap_1.GameMap.getInstance().addMapObject(player, 'blocker');
+        return player;
+    };
+    PlayerFactory.prototype.createDefender = function (x, y, route, area) {
+        var player = new Player_1.Player(x, y, 16, 16, 'defender', 1.8);
+        GameEngine_1.GameEngine.getInstance().addReferenceToStage(player, "gameplayStage");
+        player.setHitbox(this.hitBoxFactory.CreateActiveSquareHitBox(16, 16, player));
+        var controller = this.controllerFactory.createDefenderController(player, route);
+        player.controller = controller;
+        GameEngine_1.GameEngine.getInstance().register(player);
+        GameMap_1.GameMap.getInstance().addMapObject(player, 'defender');
+        return player;
+    };
+    PlayerFactory.removeDefenderInArea = function (player, area) {
+        // player.setHitbox(HitBoxFactory.CreateActiveSquareHitBox(16,16,player));
+        // let controller = ControllerFactory.createDefenderController(player, route);
+        // player.setController(controller);
+        // GameEngine.getInstance().register(player);
+        // let playerVO = new SquarePlayerViewObject(x,y,16,16,0,player, new CenterDrawingStrategy());
+        // playerVO.color = '#e74c3c';
+        // player.register(playerVO);
+        // area.addView(playerVO);
+        // GameMap.getInstance().addMapObject(player, 'defender');
+        // return player;
+    };
+    return PlayerFactory;
+}());
+exports.PlayerFactory = PlayerFactory;
+
+
+/***/ }),
+/* 287 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ControllableGameObeject_1 = __webpack_require__(288);
+var Player = (function (_super) {
+    __extends(Player, _super);
+    function Player() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Player.prototype.collide = function (object) {
+        //console.log("colliding", this.x);
+        //this.x = 100;
+        //GameEngine.getInstance().stop();
+        this.controller.collide(object);
+    };
+    Player.prototype.tick = function () {
+        //this.x += 1;
         this.updateObservers();
     };
-    /*
-    * Register adds game objects to the list of observers
-    * to be updated throught the game as time passes
-    */
-    TestGameObject.prototype.register = function (obj) {
-        this.observers.push(obj);
-    };
-    /*
-     * Unregister removes game objects from being updated as time
-     * progresses in the game
-     */
-    TestGameObject.prototype.unregister = function (obj) {
-        array.pull(this.observers, obj);
-    };
-    TestGameObject.prototype.updateObservers = function () {
-        this.observers.forEach(function (obj, index) { return obj.update(); });
-    };
-    return TestGameObject;
-}());
-exports.TestGameObject = TestGameObject;
-//# sourceMappingURL=TestGameObject.js.map
+    return Player;
+}(ControllableGameObeject_1.ControllableGameObject));
+exports.Player = Player;
+
 
 /***/ }),
-/* 237 */
+/* 288 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameEngine_1 = __webpack_require__(17);
+var CollidableGameObject_1 = __webpack_require__(42);
+var ControllableGameObject = (function (_super) {
+    __extends(ControllableGameObject, _super);
+    function ControllableGameObject(x, y, width, height, type, speed) {
+        var _this = _super.call(this, x, y, width, height, type) || this;
+        _this.speed = speed;
+        return _this;
+    }
+    Object.defineProperty(ControllableGameObject.prototype, "speed", {
+        get: function () {
+            return this._speed;
+        },
+        set: function (speed) {
+            this._speed = speed;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ControllableGameObject.prototype, "controller", {
+        get: function () {
+            return this._controller;
+        },
+        set: function (controller) {
+            this._controller = controller;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ControllableGameObject.prototype.removeController = function () {
+        this._controller = null;
+    };
+    ControllableGameObject.prototype.dispose = function () {
+        _super.prototype.dispose.call(this);
+        GameEngine_1.GameEngine.getInstance().unregister(this.controller);
+    };
+    return ControllableGameObject;
+}(CollidableGameObject_1.CollidableGameObject));
+exports.ControllableGameObject = ControllableGameObject;
+
+
+/***/ }),
+/* 289 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var DoubleBufferedViewObject_1 = __webpack_require__(26);
+var FieldViewObject = (function (_super) {
+    __extends(FieldViewObject, _super);
+    function FieldViewObject() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    FieldViewObject.prototype.preRender = function () {
+        //white lines around field
+        for (var i = 0; i < 4; ++i) {
+            this.context.beginPath();
+            i % 2 == 0 ? this.context.fillStyle = '#2ecc71' : this.context.fillStyle = '#00b168';
+            this.context.rect(0, this.height / 4 * i, this.width, this.height / 4);
+            this.context.fill();
+            this.context.closePath();
+        }
+        this.context.beginPath();
+        this.context.rect(0, 0, this.width, this.height);
+        this.context.lineWidth = 16;
+        this.context.strokeStyle = 'white';
+        this.context.stroke();
+        this.context.closePath();
+        this.context.beginPath();
+        this.context.rect(5, this.height / 4 - 3, 1, 1);
+        this.context.lineWidth = 4;
+        this.context.strokeStyle = 'orange';
+        this.context.stroke();
+        this.context.closePath();
+        this.context.beginPath();
+        this.context.rect(this.width - 6, this.height / 4 - 3, 1, 1);
+        this.context.lineWidth = 4;
+        this.context.strokeStyle = 'orange';
+        this.context.stroke();
+        this.context.closePath();
+        this.context.beginPath();
+        //this.context.clearRect(0,0,this.width,this.height); 
+        this.context.font = " bold 50px Arial";
+        this.context.fillStyle = "#00b168";
+        this.context.fillText('WILDCAT!', (this.width - this.context.measureText('WILDCAT!').width) / 2, 82);
+        this.context.closePath();
+    };
+    FieldViewObject.prototype.update = function () {
+        throw new Error("Method not implemented.");
+        //possible set to cheering or set to something else
+    };
+    FieldViewObject.prototype.accept = function (visitor) {
+        visitor.visitFieldObject(this);
+    };
+    return FieldViewObject;
+}(DoubleBufferedViewObject_1.DoubleBufferedViewObject));
+exports.FieldViewObject = FieldViewObject;
+
+
+/***/ }),
+/* 290 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var RenderEngine_1 = __webpack_require__(10);
+var ComposableViewDecorator_1 = __webpack_require__(104);
+var VerticalCenterDecorator = (function (_super) {
+    __extends(VerticalCenterDecorator, _super);
+    function VerticalCenterDecorator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    VerticalCenterDecorator.prototype.render = function (context, width, height) {
+        //can set x/y here
+        this.view.y = (height / 2 - (this.height * RenderEngine_1.RenderEngine.getInstance().scale) / 2) / RenderEngine_1.RenderEngine.getInstance().scale;
+        this.view.render(context, width, height);
+    };
+    return VerticalCenterDecorator;
+}(ComposableViewDecorator_1.ComposableViewDecorator));
+exports.VerticalCenterDecorator = VerticalCenterDecorator;
+
+
+/***/ }),
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var TestViewObject = (function () {
-    function TestViewObject(model) {
-        this.subject = model;
+var CenterDrawingStrategy_1 = __webpack_require__(292);
+var SquarePlayerViewObject_1 = __webpack_require__(293);
+var AbilityDots_1 = __webpack_require__(294);
+var PlayerViewObjectFactory = (function () {
+    function PlayerViewObjectFactory() {
     }
-    TestViewObject.prototype.render = function (context, width, height) {
-        console.log('view', this.xPos, this.yPos);
-        context.beginPath();
-        context.arc(this.xPos, this.yPos, 10, 0, 2 * Math.PI, false);
-        context.fillStyle = 'green';
-        context.fill();
-        context.lineWidth = 5;
-        context.strokeStyle = '#003300';
-        context.stroke();
+    PlayerViewObjectFactory.prototype.CreateRunnerInArea = function (runner, area) {
+        var playerVO = new SquarePlayerViewObject_1.SquarePlayerViewObject(runner.x, runner.y, 16, 16, 0, runner, new CenterDrawingStrategy_1.CenterDrawingStrategy());
+        playerVO.color = '#3498db';
+        playerVO.outline = '#ffffff';
+        runner.register(playerVO);
+        area.addView(playerVO);
+        return playerVO;
     };
-    TestViewObject.prototype.update = function () {
-        this.xPos = this.subject.getXPosition();
-        this.yPos = this.subject.getYPosition();
+    PlayerViewObjectFactory.prototype.PlayAbilityDots = function (runner, area) {
+        var abilityDots = new AbilityDots_1.AbilityDots(runner.x, runner.y + 14, 14, 3, 0, new CenterDrawingStrategy_1.CenterDrawingStrategy(), runner);
+        runner.register(abilityDots);
+        area.addView(abilityDots);
+        return abilityDots;
     };
-    return TestViewObject;
+    PlayerViewObjectFactory.prototype.CreateBlockerInArea = function (blocker, area) {
+        var playerVO = new SquarePlayerViewObject_1.SquarePlayerViewObject(blocker.x, blocker.y, 16, 16, 0, blocker, new CenterDrawingStrategy_1.CenterDrawingStrategy());
+        playerVO.color = '#3498db';
+        blocker.register(playerVO);
+        area.addView(playerVO);
+        return playerVO;
+    };
+    PlayerViewObjectFactory.prototype.CreateDefenderInArea = function (defender, area) {
+        var playerVO = new SquarePlayerViewObject_1.SquarePlayerViewObject(defender.x, defender.y, 16, 16, 0, defender, new CenterDrawingStrategy_1.CenterDrawingStrategy());
+        playerVO.color = '#e74c3c';
+        defender.register(playerVO);
+        area.addView(playerVO);
+        return playerVO;
+    };
+    return PlayerViewObjectFactory;
 }());
-exports.TestViewObject = TestViewObject;
-//# sourceMappingURL=TestViewObject.js.map
+exports.PlayerViewObjectFactory = PlayerViewObjectFactory;
+
+
+/***/ }),
+/* 292 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var CenterDrawingStrategy = (function () {
+    function CenterDrawingStrategy() {
+    }
+    CenterDrawingStrategy.prototype.calculateGlobalPositionXEffect = function (width) {
+        return width / 2 * -1;
+    };
+    CenterDrawingStrategy.prototype.calculateGlobalPositionYEffect = function (height) {
+        return height / 2 * -1;
+    };
+    CenterDrawingStrategy.prototype.draw = function (context, canvas, x, y, width, height) {
+        context.drawImage(canvas, x - width / 2, y - height / 2);
+    };
+    return CenterDrawingStrategy;
+}());
+exports.CenterDrawingStrategy = CenterDrawingStrategy;
+
+
+/***/ }),
+/* 293 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ClickableViewObject_1 = __webpack_require__(16);
+var SquarePlayerViewObject = (function (_super) {
+    __extends(SquarePlayerViewObject, _super);
+    function SquarePlayerViewObject(x, y, width, height, angle, subject, strategy) {
+        var _this = _super.call(this, x, y, width, height, angle, strategy, null, null) || this;
+        _this._color = 'white';
+        _this._outline = 'black';
+        _this.subject = subject;
+        _this.angle = _this.subject.angle;
+        return _this;
+    }
+    Object.defineProperty(SquarePlayerViewObject.prototype, "subject", {
+        get: function () {
+            return this._subject;
+        },
+        set: function (subject) {
+            this._subject = subject;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SquarePlayerViewObject.prototype, "color", {
+        get: function () {
+            return this._color;
+        },
+        set: function (color) {
+            this._color = color;
+            this.preRender();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(SquarePlayerViewObject.prototype, "outline", {
+        get: function () {
+            return this._outline;
+        },
+        set: function (outline) {
+            this._outline = outline;
+            this.preRender();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    SquarePlayerViewObject.prototype.preRender = function () {
+        this.context.beginPath();
+        if (this.color) {
+            this.context.fillStyle = this.color;
+            this.context.rect(0, 0, this.width, this.height);
+            this.context.fill();
+        }
+        if (this.outline) {
+            this.context.strokeStyle = this.outline;
+        }
+        this.context.rect(0, 0, this.width, this.height);
+        this.context.stroke();
+    };
+    SquarePlayerViewObject.prototype.update = function () {
+        this.x = this.subject.x;
+        this.y = this.subject.y;
+        this.angle = this.subject.angle;
+    };
+    SquarePlayerViewObject.prototype.accept = function (visitor) {
+        visitor.visitPlayerObject(this);
+    };
+    SquarePlayerViewObject.prototype.hover = function () {
+        throw new Error("Method not implemented.");
+    };
+    return SquarePlayerViewObject;
+}(ClickableViewObject_1.ClickableViewObject));
+exports.SquarePlayerViewObject = SquarePlayerViewObject;
+
+
+/***/ }),
+/* 294 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var DoubleBufferedViewObject_1 = __webpack_require__(26);
+var AbilityDots = (function (_super) {
+    __extends(AbilityDots, _super);
+    function AbilityDots(x, y, width, height, angle, drawingStrategy, subject) {
+        var _this = _super.call(this, x, y, width, height, angle, drawingStrategy) || this;
+        _this.cooldown = 0;
+        _this.uses = 2;
+        _this.subject = subject;
+        _this.preRender();
+        return _this;
+    }
+    AbilityDots.prototype.preRender = function () {
+        //bar bg
+        this.context.beginPath();
+        this.context.fillStyle = 'black';
+        this.context.rect(0, 0, this.width, this.height); // Outer circle 
+        this.context.fill();
+        this.context.closePath();
+        //bar
+        this.context.beginPath();
+        this.context.fillStyle = 'white';
+        console.log('cooldown', this.cooldown);
+        this.context.rect(0, 0, this.width * ((60 - this.cooldown) / 60), this.height);
+        this.context.fill();
+        this.context.closePath();
+    };
+    AbilityDots.prototype.update = function () {
+        this.x = this.subject.x;
+        this.y = this.subject.y + 14;
+        if (this.subject.controller.jumped > 0) {
+            this.cooldown = this.subject.controller.jumped;
+            this.preRender();
+        }
+        else {
+            this.cooldown = 0;
+        }
+    };
+    AbilityDots.prototype.accept = function (visitor) {
+        throw new Error("Method not implemented.");
+    };
+    return AbilityDots;
+}(DoubleBufferedViewObject_1.DoubleBufferedViewObject));
+exports.AbilityDots = AbilityDots;
+
 
 /***/ })
 /******/ ]);
