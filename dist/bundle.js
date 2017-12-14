@@ -4805,14 +4805,15 @@ var PlayerViewObjectFactory_1 = __webpack_require__(291);
  */
 var canvas = document.getElementById("myCanvas");
 var context = canvas.getContext("2d");
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
+var wrapper = document.getElementById("canvasWrapper");
+canvas.height = wrapper.clientHeight;
+canvas.width = wrapper.clientWidth;
 var gameEngine = GameEngine_1.GameEngine.getInstance();
 var renderEngine = RenderEngine_1.RenderEngine.getInstance();
 var scale = 0;
 function resize() {
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
+    canvas.height = wrapper.clientHeight;
+    canvas.width = wrapper.clientWidth;
     var yScale = canvas.height / 480;
     var xScale = canvas.width / 320;
     scale = (xScale <= yScale) ? xScale : yScale;
@@ -11006,9 +11007,9 @@ var ClickableManager = (function () {
         });
     };
     ClickableManager.prototype.clickEvents = function (event) {
-        //console.log(event.x, event.y)
-        var x = event.x / this.scale;
-        var y = event.y / this.scale;
+        console.log(event.offsetX, event.offsetY);
+        var x = event.offsetX / this.scale;
+        var y = event.offsetY / this.scale;
         if (this.clickInterceptor)
             this.clickInterceptor.handle(event);
         else {
