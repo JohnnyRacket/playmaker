@@ -30,6 +30,12 @@ export class ClickableManager implements IViewService{
         canvas.addEventListener('click', (evt) => {
             this.clickEvents(evt);
         },false);
+        canvas.addEventListener('mousedown', (evt) => {
+            this.mouseDownEvents(evt);
+        },false);
+        canvas.addEventListener('mouseup', (evt) => {
+            this.mouseUpEvents(evt);
+        },false);
 
         // canvas.addEventListener('mouseover', (evt) => {
         //     this.hoverEvents(evt);
@@ -40,22 +46,35 @@ export class ClickableManager implements IViewService{
         // },false);
     }
 
+    private mouseUpEvents(event: MouseEvent){
+        let x = event.offsetX / this.scale;
+        let y = event.offsetY / this.scale;
+        if(this.clickInterceptor) this.clickInterceptor.handleMouseUp(event, this.scale);
 
+
+    }
+    private mouseDownEvents(event: MouseEvent){
+        let x = event.offsetX / this.scale;
+        let y = event.offsetY / this.scale;
+        if(this.clickInterceptor) this.clickInterceptor.handleMouseDown(event, this.scale);
+
+
+    }
     private clickEvents(event: MouseEvent){
         console.log(event.offsetX, event.offsetY)
         let x = event.offsetX / this.scale;
         let y = event.offsetY / this.scale;
-        if(this.clickInterceptor) this.clickInterceptor.handle(event);
-        else{
-            this.clickables.forEach((obj: Clickable, index) => {
-                if(x  >= obj.getGlobalX() && x <= (obj.getGlobalX() + obj.getWidth()) &&
-                    y >= obj.getGlobalY() && y <= (obj.getGlobalY() + obj.getHeight())) {
-                        console.log("click match found ", obj);
-                        obj.click();
-                    };
-                ///obj.click()
-            });
-        }
+        if(this.clickInterceptor) this.clickInterceptor.handleClick(event, this.scale);
+
+        this.clickables.forEach((obj: Clickable, index) => {
+            if(x  >= obj.getGlobalX() && x <= (obj.getGlobalX() + obj.getWidth()) &&
+                y >= obj.getGlobalY() && y <= (obj.getGlobalY() + obj.getHeight())) {
+                    console.log("click match found ", obj);
+                    obj.click();
+                };
+            ///obj.click()
+        });
+    
     }
 
     // private hoverEvents(event: MouseEvent){

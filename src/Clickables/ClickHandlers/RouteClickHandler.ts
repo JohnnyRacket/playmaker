@@ -24,7 +24,7 @@ export class RouteClickHandler implements ClickHandler{
         this.drawRouteClickStrategy = drawRouteClickStrategy;
     }
 
-    handle(event: MouseEvent) {
+    handleClick(event: MouseEvent, scale: number) {
         console.log('handling intercepted click');
         if(event.y - this.gameArea.y < 120){
             console.log("what");
@@ -35,5 +35,8 @@ export class RouteClickHandler implements ClickHandler{
         this.route.push(new Coordinate(event.x - this.gameArea.x, event.y - this.gameArea.y));
         this.viewObject.updateRoute(this.route);
     }
+
+    handleMouseDown(event: MouseEvent, scale: number){}
+    handleMouseUp(event: MouseEvent, scale: number){}
 
 }

@@ -5,6 +5,8 @@ import { CollidableGameObject } from "../GameObjects/CollidableGameObject";
 import { CollisionManager } from "../Engines/CollisionManager";
 import { Player } from '../GameObjects/Samples/Player';
 import { DefenderController } from './DefenderController';
+import { TouchPlayHandler } from '../Clickables/ClickHandlers/TouchPlayHandler';
+import { ClickableManager } from '../Engines/ClickableManager';
 
 export class InputController extends Controller{
     
@@ -19,33 +21,36 @@ export class InputController extends Controller{
     private jumpLeft: number = 0;
     private jumpRight: number = 0;
     public jumped: number = 0;
+    private touchHandler: TouchPlayHandler;
     
 
 
-    public constructor(subject: ControllableGameObject, collisionManager: CollisionManager){
+    public constructor(subject: ControllableGameObject, collisionManager: CollisionManager, clickableManager: ClickableManager){
         super(subject);
         this.collisionManager = collisionManager;
         this.angle = this.subject.angle * Math.PI/180 || 0;
         this.subject.angle = this.angle;
-        window.addEventListener('keydown', (event) => {this.onKeyDown(event);}, false);
-        window.addEventListener('keyup', (event) => {this.onKeyUp(event);}, false);
+        window.addEventListener('keydown', (event) => {this.onKeyDown(event.keyCode);}, false);
+        window.addEventListener('keyup', (event) => {this.onKeyUp(event.keyCode);}, false);
+        this.touchHandler = new TouchPlayHandler(this);
+        clickableManager.clickInterceptor = this.touchHandler;
     }
 
-    private onKeyDown(event: KeyboardEvent){
-        if(event.keyCode == 37){//left
+    public onKeyDown(keyCode: number){
+        if(keyCode == 37){//left
             this.left = true;
         }
-        if(event.keyCode == 39){//right
+        if(keyCode == 39){//right
             this.right = true;
         }
     }
 
-    private onKeyUp(event: KeyboardEvent){
-        if(event.keyCode == 37){//left
+    public onKeyUp(keyCode: number){
+        if(keyCode == 37){//left
             this.left = false;
             this.releasedLeft = 3;
         }
-        if(event.keyCode == 39){//right
+        if(keyCode == 39){//right
             this.right = false;
             this.releasedRight = 3;
         }

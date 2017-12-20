@@ -1,3 +1,4 @@
+import { ClickableManager } from '../Engines/ClickableManager';
 import { CollisionManager } from '../Engines/CollisionManager';
 import { DefenderController } from './DefenderController';
 import { BlockerController } from './BlockerController';
@@ -10,9 +11,11 @@ import { RouteController } from './RouteController';
 export class ControllerFactory{
 
     private collisionManager: CollisionManager;
+    private clickableManager: ClickableManager;
 
-    public constructor (collisionManager: CollisionManager){
+    public constructor (collisionManager: CollisionManager, clickableManager: ClickableManager){
         this.collisionManager = collisionManager;
+        this.clickableManager = clickableManager;
     }
 
     public createRouteController(subject: ControllableGameObject, route: Route): RouteController{
@@ -22,7 +25,7 @@ export class ControllerFactory{
     }
 
     public createInputController(subject: ControllableGameObject): InputController{
-        let controller = new InputController(subject, this.collisionManager);
+        let controller = new InputController(subject, this.collisionManager,this.clickableManager);
         GameEngine.getInstance().register(controller);
         return controller;
     }

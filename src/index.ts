@@ -77,7 +77,7 @@ renderEngine.addService(clickManager);
 //factories
 
 let hitBoxFactory = new HitBoxFactory(collisionManager);
-let controllerFactory = new ControllerFactory(collisionManager);
+let controllerFactory = new ControllerFactory(collisionManager, clickManager);
 let playerFactory = new PlayerFactory(hitBoxFactory, controllerFactory);
 let playerViewObjectFactory = new PlayerViewObjectFactory();
 let fieldFactory = new FieldFactory(hitBoxFactory, controllerFactory);

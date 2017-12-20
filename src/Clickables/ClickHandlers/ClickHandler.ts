@@ -1,3 +1,5 @@
 export interface ClickHandler{
-    handle(event: MouseEvent);
+    handleClick(event: MouseEvent, scale: number);
+    handleMouseDown(event: MouseEvent, scale: number);
+    handleMouseUp(event: MouseEvent, scale: number);
 }

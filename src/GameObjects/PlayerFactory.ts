@@ -10,12 +10,12 @@ import { RenderEngine } from '../Engines/RenderEngine';
 import { SquarePlayerViewObject } from '../ViewObjects/Samples/SquarePlayerViewObject';
 import { Player } from './Samples/Player';
 import { Coordinate } from "../Controllers/Coordinate";
+import { ClickableManager } from '../Engines/ClickableManager';
 
 export class PlayerFactory{
 
     private hitBoxFactory: HitBoxFactory;
     private controllerFactory: ControllerFactory;
-
     
 
 
