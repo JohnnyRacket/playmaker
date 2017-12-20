@@ -12,7 +12,6 @@ import { XViewObject } from '../../MenuViewObjects/XViewObject';
 import { RenderEngine } from '../../Engines/RenderEngine';
 import { ComposableView } from '../../ViewComposition/ComposableView';
 import { RouteViewObject } from '../../ViewObjects/Samples/RouteViewObject';
-import { RouteClickHandler } from '../ClickHandlers/RouteClickHandler';
 import { ClickableManager } from '../../Engines/ClickableManager';
 import { Coordinate } from '../../Controllers/Coordinate';
 import { RouteController } from '../../Controllers/RouteController';
@@ -47,7 +46,7 @@ export class DrawRouteClickStrategy extends ClickStrategy {
         route.push(new Coordinate(this.player.x, this.player.y));
         let routeView = new RouteViewObject(0,0,this.gameArea.width, this.gameArea.height,0,new TopLeftDrawingStrategy());
         RenderEngine.getInstance().addReferenceToStage(routeView, 'routeStage');
-        this.clickableManager.clickInterceptor = new RouteClickHandler(this.player, route, routeView, this.gameArea, this.clickableManager, this);
+        //this.clickableManager.clickInterceptor = new RouteClickHandler(this.player, route, routeView, this.gameArea, this.clickableManager, this);
         this.gameArea.addView(routeView);
 
         let text = new StickerTextViewObject(10,20, 280, 50, 0, new TopLeftDrawingStrategy(), null, null, "Click Endzone");

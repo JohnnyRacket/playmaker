@@ -7,6 +7,7 @@ export class ClickableManager implements IViewService{
 
     private clickables: Clickable[] = [];
     public clickInterceptor: ClickHandler;
+    private canvas: HTMLCanvasElement;
     private get scale(){
         return RenderEngine.getInstance().scale;
     }
@@ -27,13 +28,14 @@ export class ClickableManager implements IViewService{
 
 
     public constructor(canvas : HTMLCanvasElement){
+        this.canvas = canvas;
         canvas.addEventListener('click', (evt) => {
             this.clickEvents(evt);
         },false);
-        canvas.addEventListener('mousedown', (evt) => {
+        canvas.addEventListener('touchstart', (evt) => {
             this.mouseDownEvents(evt);
         },false);
-        canvas.addEventListener('mouseup', (evt) => {
+        canvas.addEventListener('touchend', (evt) => {
             this.mouseUpEvents(evt);
         },false);
 
@@ -46,17 +48,19 @@ export class ClickableManager implements IViewService{
         // },false);
     }
 
-    private mouseUpEvents(event: MouseEvent){
-        let x = event.offsetX / this.scale;
-        let y = event.offsetY / this.scale;
-        if(this.clickInterceptor) this.clickInterceptor.handleMouseUp(event, this.scale);
+    private mouseUpEvents(event: TouchEvent){
+        let rect = this.canvas.getBoundingClientRect();
+
+        if(this.clickInterceptor) this.clickInterceptor.handleMouseUp(0,0);
 
 
     }
-    private mouseDownEvents(event: MouseEvent){
-        let x = event.offsetX / this.scale;
-        let y = event.offsetY / this.scale;
-        if(this.clickInterceptor) this.clickInterceptor.handleMouseDown(event, this.scale);
+    private mouseDownEvents(event: TouchEvent){
+        let rect = this.canvas.getBoundingClientRect();
+        if(!event.targetTouches[0].clientX) return;
+        let x = (event.targetTouches[0].clientX - rect.left) / this.scale;
+        let y = (event.targetTouches[0].clientY - rect.top )/ this.scale;
+        if(this.clickInterceptor) this.clickInterceptor.handleMouseDown(x, y);
 
 
     }
@@ -64,7 +68,7 @@ export class ClickableManager implements IViewService{
         console.log(event.offsetX, event.offsetY)
         let x = event.offsetX / this.scale;
         let y = event.offsetY / this.scale;
-        if(this.clickInterceptor) this.clickInterceptor.handleClick(event, this.scale);
+        if(this.clickInterceptor) this.clickInterceptor.handleClick(x, y);
 
         this.clickables.forEach((obj: Clickable, index) => {
             if(x  >= obj.getGlobalX() && x <= (obj.getGlobalX() + obj.getWidth()) &&

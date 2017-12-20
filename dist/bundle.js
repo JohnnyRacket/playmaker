@@ -169,7 +169,7 @@ module.exports = toInteger;
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isArrayLike = __webpack_require__(44),
+var isArrayLike = __webpack_require__(43),
     isObjectLike = __webpack_require__(20);
 
 /**
@@ -208,7 +208,7 @@ module.exports = isArrayLikeObject;
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(46),
+var arrayPush = __webpack_require__(45),
     isFlattenable = __webpack_require__(121);
 
 /**
@@ -624,11 +624,11 @@ module.exports = getNative;
 /***/ (function(module, exports, __webpack_require__) {
 
 var SetCache = __webpack_require__(28),
-    arrayIncludes = __webpack_require__(50),
-    arrayIncludesWith = __webpack_require__(52),
+    arrayIncludes = __webpack_require__(49),
+    arrayIncludesWith = __webpack_require__(51),
     cacheHas = __webpack_require__(35),
     createSet = __webpack_require__(245),
-    setToArray = __webpack_require__(53);
+    setToArray = __webpack_require__(52);
 
 /** Used as the size to enable large array optimizations. */
 var LARGE_ARRAY_SIZE = 200;
@@ -1058,8 +1058,8 @@ module.exports = Symbol;
 /***/ (function(module, exports, __webpack_require__) {
 
 var SetCache = __webpack_require__(28),
-    arrayIncludes = __webpack_require__(50),
-    arrayIncludesWith = __webpack_require__(52),
+    arrayIncludes = __webpack_require__(49),
+    arrayIncludesWith = __webpack_require__(51),
     arrayMap = __webpack_require__(7),
     baseUnary = __webpack_require__(34),
     cacheHas = __webpack_require__(35);
@@ -1305,7 +1305,7 @@ module.exports = {
   'uniq': __webpack_require__(249),
   'uniqBy': __webpack_require__(250),
   'uniqWith': __webpack_require__(251),
-  'unzip': __webpack_require__(60),
+  'unzip': __webpack_require__(59),
   'unzipWith': __webpack_require__(95),
   'without': __webpack_require__(252),
   'xor': __webpack_require__(253),
@@ -1322,7 +1322,7 @@ module.exports = {
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var MapCache = __webpack_require__(48),
+var MapCache = __webpack_require__(47),
     setCacheAdd = __webpack_require__(145),
     setCacheHas = __webpack_require__(146);
 
@@ -1553,7 +1553,7 @@ module.exports = identity;
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArray = __webpack_require__(6),
-    isKey = __webpack_require__(55),
+    isKey = __webpack_require__(54),
     stringToPath = __webpack_require__(183),
     toString = __webpack_require__(186);
 
@@ -1611,7 +1611,7 @@ module.exports = baseWhile;
 /* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseSortedIndexBy = __webpack_require__(59),
+var baseSortedIndexBy = __webpack_require__(58),
     identity = __webpack_require__(36),
     isSymbol = __webpack_require__(13);
 
@@ -1662,7 +1662,7 @@ module.exports = baseSortedIndex;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var MatchTemplater_1 = __webpack_require__(62);
+var MatchTemplater_1 = __webpack_require__(61);
 var array = __webpack_require__(27);
 var ScoreKeeper = (function () {
     function ScoreKeeper() {
@@ -1747,23 +1747,6 @@ exports.ScoreKeeper = ScoreKeeper;
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-var Coordinate = (function () {
-    function Coordinate(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-    return Coordinate;
-}());
-exports.Coordinate = Coordinate;
-
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -1798,11 +1781,11 @@ exports.CollidableGameObject = CollidableGameObject;
 
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var eq = __webpack_require__(11),
-    isArrayLike = __webpack_require__(44),
+    isArrayLike = __webpack_require__(43),
     isIndex = __webpack_require__(12),
     isObject = __webpack_require__(19);
 
@@ -1834,11 +1817,11 @@ module.exports = isIterateeCall;
 
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isFunction = __webpack_require__(68),
-    isLength = __webpack_require__(45);
+    isLength = __webpack_require__(44);
 
 /**
  * Checks if `value` is array-like. A value is considered array-like if it's
@@ -1873,7 +1856,7 @@ module.exports = isArrayLike;
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports) {
 
 /** Used as references for various `Number` constants. */
@@ -1914,7 +1897,7 @@ module.exports = isLength;
 
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports) {
 
 /**
@@ -1940,7 +1923,7 @@ module.exports = arrayPush;
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsArguments = __webpack_require__(122),
@@ -1982,7 +1965,7 @@ module.exports = isArguments;
 
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var mapCacheClear = __webpack_require__(124),
@@ -2020,7 +2003,7 @@ module.exports = MapCache;
 
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(14),
@@ -2033,10 +2016,10 @@ module.exports = Map;
 
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIndexOf = __webpack_require__(51);
+var baseIndexOf = __webpack_require__(50);
 
 /**
  * A specialized version of `_.includes` for arrays without support for
@@ -2056,7 +2039,7 @@ module.exports = arrayIncludes;
 
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseFindIndex = __webpack_require__(33),
@@ -2082,7 +2065,7 @@ module.exports = baseIndexOf;
 
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports) {
 
 /**
@@ -2110,7 +2093,7 @@ module.exports = arrayIncludesWith;
 
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports) {
 
 /**
@@ -2134,7 +2117,7 @@ module.exports = setToArray;
 
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var castPath = __webpack_require__(37),
@@ -2164,7 +2147,7 @@ module.exports = baseGet;
 
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArray = __webpack_require__(6),
@@ -2199,12 +2182,12 @@ module.exports = isKey;
 
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var SetCache = __webpack_require__(28),
-    arrayIncludes = __webpack_require__(50),
-    arrayIncludesWith = __webpack_require__(52),
+    arrayIncludes = __webpack_require__(49),
+    arrayIncludesWith = __webpack_require__(51),
     arrayMap = __webpack_require__(7),
     baseUnary = __webpack_require__(34),
     cacheHas = __webpack_require__(35);
@@ -2279,7 +2262,7 @@ module.exports = baseIntersection;
 
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isArrayLikeObject = __webpack_require__(3);
@@ -2299,11 +2282,11 @@ module.exports = castArrayLikeObject;
 
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayMap = __webpack_require__(7),
-    baseIndexOf = __webpack_require__(51),
+    baseIndexOf = __webpack_require__(50),
     baseIndexOfWith = __webpack_require__(219),
     baseUnary = __webpack_require__(34),
     copyArray = __webpack_require__(70);
@@ -2356,7 +2339,7 @@ module.exports = basePullAll;
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isSymbol = __webpack_require__(13);
@@ -2426,7 +2409,7 @@ module.exports = baseSortedIndexBy;
 
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayFilter = __webpack_require__(25),
@@ -2477,7 +2460,7 @@ module.exports = unzip;
 
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseDifference = __webpack_require__(24),
@@ -2519,7 +2502,7 @@ module.exports = baseXor;
 
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2530,15 +2513,15 @@ var ScoreViewObject_1 = __webpack_require__(264);
 var StickerTextViewObject_1 = __webpack_require__(100);
 var DebugViewObject_1 = __webpack_require__(265);
 var RenderEngine_1 = __webpack_require__(10);
-var HorizontalCenterPositioningDecorator_1 = __webpack_require__(64);
-var TopLeftDrawingStrategy_1 = __webpack_require__(65);
+var HorizontalCenterPositioningDecorator_1 = __webpack_require__(63);
+var TopLeftDrawingStrategy_1 = __webpack_require__(64);
 var ButtonViewObject_1 = __webpack_require__(101);
 var GameMap_1 = __webpack_require__(18);
 var Route_1 = __webpack_require__(102);
-var Coordinate_1 = __webpack_require__(41);
+var Coordinate_1 = __webpack_require__(65);
 var GameEngine_1 = __webpack_require__(17);
 var RouteDrawingStageVisitor_1 = __webpack_require__(266);
-var RightLockPositioningDecorator_1 = __webpack_require__(271);
+var RightLockPositioningDecorator_1 = __webpack_require__(270);
 var ScoreKeeper_1 = __webpack_require__(40);
 var LogoViewObject_1 = __webpack_require__(103);
 var MatchTemplater = (function () {
@@ -2913,7 +2896,7 @@ exports.MatchTemplater = MatchTemplater;
 
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2998,7 +2981,7 @@ exports.PositioningDecorator = PositioningDecorator;
 
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3014,7 +2997,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var PositioningDecorator_1 = __webpack_require__(63);
+var PositioningDecorator_1 = __webpack_require__(62);
 var HorizontalCenterPositioningDecorator = (function (_super) {
     __extends(HorizontalCenterPositioningDecorator, _super);
     function HorizontalCenterPositioningDecorator() {
@@ -3048,7 +3031,7 @@ exports.HorizontalCenterPositioningDecorator = HorizontalCenterPositioningDecora
 
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3072,6 +3055,23 @@ exports.TopLeftDrawingStrategy = TopLeftDrawingStrategy;
 
 
 /***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Coordinate = (function () {
+    function Coordinate(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    return Coordinate;
+}());
+exports.Coordinate = Coordinate;
+
+
+/***/ }),
 /* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3089,7 +3089,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var Controller_1 = __webpack_require__(106);
-var Coordinate_1 = __webpack_require__(41);
+var Coordinate_1 = __webpack_require__(65);
 var RouteController = (function (_super) {
     __extends(RouteController, _super);
     //more to come, need ot think through collisions first
@@ -3613,7 +3613,7 @@ module.exports = equalArrays;
 
 var arrayLikeKeys = __webpack_require__(169),
     baseKeys = __webpack_require__(173),
-    isArrayLike = __webpack_require__(44);
+    isArrayLike = __webpack_require__(43);
 
 /**
  * Creates an array of the own enumerable property names of `object`.
@@ -3846,7 +3846,7 @@ module.exports = matchesStrictComparable;
 /* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGet = __webpack_require__(54);
+var baseGet = __webpack_require__(53);
 
 /**
  * Gets the value at `path` of `object`. If the resolved value is
@@ -3962,7 +3962,7 @@ module.exports = flatten;
 /* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var basePullAll = __webpack_require__(58);
+var basePullAll = __webpack_require__(57);
 
 /**
  * This method is like `_.pull` except that it accepts an array of values to remove.
@@ -4078,7 +4078,7 @@ module.exports = baseSortedUniq;
 
 var apply = __webpack_require__(74),
     arrayMap = __webpack_require__(7),
-    unzip = __webpack_require__(60);
+    unzip = __webpack_require__(59);
 
 /**
  * This method is like `_.unzip` except that it accepts `iteratee` to specify
@@ -4780,18 +4780,18 @@ exports.Controller = Controller;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var FieldFactory_1 = __webpack_require__(108);
-var FindMatchClickStrategy_1 = __webpack_require__(273);
-var MatchTemplater_1 = __webpack_require__(62);
-var HorizontalCenterPositioningDecorator_1 = __webpack_require__(64);
+var FindMatchClickStrategy_1 = __webpack_require__(272);
+var MatchTemplater_1 = __webpack_require__(61);
+var HorizontalCenterPositioningDecorator_1 = __webpack_require__(63);
 var LogoViewObject_1 = __webpack_require__(103);
-var ClickableManager_1 = __webpack_require__(274);
-var PauseViewObject_1 = __webpack_require__(275);
-var PauseGameClickStrategy_1 = __webpack_require__(276);
-var HorizontalCenterDecorator_1 = __webpack_require__(277);
-var TopLeftDrawingStrategy_1 = __webpack_require__(65);
+var ClickableManager_1 = __webpack_require__(273);
+var PauseViewObject_1 = __webpack_require__(274);
+var PauseGameClickStrategy_1 = __webpack_require__(275);
+var HorizontalCenterDecorator_1 = __webpack_require__(276);
+var TopLeftDrawingStrategy_1 = __webpack_require__(64);
 var ComposableView_1 = __webpack_require__(105);
-var HitBoxFactory_1 = __webpack_require__(278);
-var ControllerFactory_1 = __webpack_require__(280);
+var HitBoxFactory_1 = __webpack_require__(277);
+var ControllerFactory_1 = __webpack_require__(279);
 var CollisionManager_1 = __webpack_require__(285);
 var GameEngine_1 = __webpack_require__(17);
 var RenderEngine_1 = __webpack_require__(10);
@@ -4837,7 +4837,7 @@ gameEngine.addService(collisionManager); //should be added first for consistent 
 renderEngine.addService(clickManager);
 //factories
 var hitBoxFactory = new HitBoxFactory_1.HitBoxFactory(collisionManager);
-var controllerFactory = new ControllerFactory_1.ControllerFactory(collisionManager);
+var controllerFactory = new ControllerFactory_1.ControllerFactory(collisionManager, clickManager);
 var playerFactory = new PlayerFactory_1.PlayerFactory(hitBoxFactory, controllerFactory);
 var playerViewObjectFactory = new PlayerViewObjectFactory_1.PlayerViewObjectFactory();
 var fieldFactory = new FieldFactory_1.FieldFactory(hitBoxFactory, controllerFactory);
@@ -4897,7 +4897,7 @@ RenderEngine_1.RenderEngine.getInstance().addReferenceToStage(defenseButtonCente
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameMap_1 = __webpack_require__(18);
 var Endzone_1 = __webpack_require__(110);
-var Wall_1 = __webpack_require__(272);
+var Wall_1 = __webpack_require__(271);
 var FieldFactory = (function () {
     function FieldFactory(hitboxFactory, controllerFactory) {
         this.hitBoxFactory = hitboxFactory;
@@ -4955,7 +4955,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var CollidableGameObject_1 = __webpack_require__(42);
+var CollidableGameObject_1 = __webpack_require__(41);
 var ScoreKeeper_1 = __webpack_require__(40);
 var Endzone = (function (_super) {
     __extends(Endzone, _super);
@@ -5078,7 +5078,7 @@ exports.ObservableGameObject = ObservableGameObject;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseSlice = __webpack_require__(5),
-    isIterateeCall = __webpack_require__(43),
+    isIterateeCall = __webpack_require__(42),
     toInteger = __webpack_require__(2);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
@@ -5397,7 +5397,7 @@ module.exports = compact;
 /* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(46),
+var arrayPush = __webpack_require__(45),
     baseFlatten = __webpack_require__(4),
     copyArray = __webpack_require__(70),
     isArray = __webpack_require__(6);
@@ -5447,7 +5447,7 @@ module.exports = concat;
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(23),
-    isArguments = __webpack_require__(47),
+    isArguments = __webpack_require__(46),
     isArray = __webpack_require__(6);
 
 /** Built-in value references. */
@@ -5537,7 +5537,7 @@ module.exports = difference;
 
 var Hash = __webpack_require__(125),
     ListCache = __webpack_require__(30),
-    Map = __webpack_require__(49);
+    Map = __webpack_require__(48);
 
 /**
  * Removes all key-value entries from the map.
@@ -6513,8 +6513,8 @@ module.exports = stackHas;
 /***/ (function(module, exports, __webpack_require__) {
 
 var ListCache = __webpack_require__(30),
-    Map = __webpack_require__(49),
-    MapCache = __webpack_require__(48);
+    Map = __webpack_require__(48),
+    MapCache = __webpack_require__(47);
 
 /** Used as the size to enable large array optimizations. */
 var LARGE_ARRAY_SIZE = 200;
@@ -6675,7 +6675,7 @@ var Symbol = __webpack_require__(23),
     eq = __webpack_require__(11),
     equalArrays = __webpack_require__(79),
     mapToArray = __webpack_require__(163),
-    setToArray = __webpack_require__(53);
+    setToArray = __webpack_require__(52);
 
 /** Used to compose bitmasks for value comparisons. */
 var COMPARE_PARTIAL_FLAG = 1,
@@ -6941,7 +6941,7 @@ module.exports = getAllKeys;
 /* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayPush = __webpack_require__(46),
+var arrayPush = __webpack_require__(45),
     isArray = __webpack_require__(6);
 
 /**
@@ -7033,7 +7033,7 @@ module.exports = stubArray;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseTimes = __webpack_require__(81),
-    isArguments = __webpack_require__(47),
+    isArguments = __webpack_require__(46),
     isArray = __webpack_require__(6),
     isBuffer = __webpack_require__(82),
     isIndex = __webpack_require__(12),
@@ -7112,7 +7112,7 @@ module.exports = stubFalse;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseGetTag = __webpack_require__(22),
-    isLength = __webpack_require__(45),
+    isLength = __webpack_require__(44),
     isObjectLike = __webpack_require__(20);
 
 /** `Object#toString` result references. */
@@ -7300,7 +7300,7 @@ module.exports = overArg;
 /***/ (function(module, exports, __webpack_require__) {
 
 var DataView = __webpack_require__(178),
-    Map = __webpack_require__(49),
+    Map = __webpack_require__(48),
     Promise = __webpack_require__(179),
     Set = __webpack_require__(85),
     WeakMap = __webpack_require__(180),
@@ -7435,7 +7435,7 @@ module.exports = getMatchData;
 var baseIsEqual = __webpack_require__(78),
     get = __webpack_require__(88),
     hasIn = __webpack_require__(188),
-    isKey = __webpack_require__(55),
+    isKey = __webpack_require__(54),
     isStrictComparable = __webpack_require__(86),
     matchesStrictComparable = __webpack_require__(87),
     toKey = __webpack_require__(21);
@@ -7537,7 +7537,7 @@ module.exports = memoizeCapped;
 /* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var MapCache = __webpack_require__(48);
+var MapCache = __webpack_require__(47);
 
 /** Error message constants. */
 var FUNC_ERROR_TEXT = 'Expected a function';
@@ -7753,10 +7753,10 @@ module.exports = baseHasIn;
 /***/ (function(module, exports, __webpack_require__) {
 
 var castPath = __webpack_require__(37),
-    isArguments = __webpack_require__(47),
+    isArguments = __webpack_require__(46),
     isArray = __webpack_require__(6),
     isIndex = __webpack_require__(12),
-    isLength = __webpack_require__(45),
+    isLength = __webpack_require__(44),
     toKey = __webpack_require__(21);
 
 /**
@@ -7799,7 +7799,7 @@ module.exports = hasPath;
 
 var baseProperty = __webpack_require__(89),
     basePropertyDeep = __webpack_require__(192),
-    isKey = __webpack_require__(55),
+    isKey = __webpack_require__(54),
     toKey = __webpack_require__(21);
 
 /**
@@ -7835,7 +7835,7 @@ module.exports = property;
 /* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGet = __webpack_require__(54);
+var baseGet = __webpack_require__(53);
 
 /**
  * A specialized version of `baseProperty` which supports deep paths.
@@ -8095,7 +8095,7 @@ module.exports = dropWhile;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseFill = __webpack_require__(199),
-    isIterateeCall = __webpack_require__(43);
+    isIterateeCall = __webpack_require__(42);
 
 /**
  * Fills elements of `array` with `value` from `start` up to, but not
@@ -8492,7 +8492,7 @@ module.exports = fromPairs;
 /* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseIndexOf = __webpack_require__(51),
+var baseIndexOf = __webpack_require__(50),
     toInteger = __webpack_require__(2);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
@@ -8569,9 +8569,9 @@ module.exports = initial;
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayMap = __webpack_require__(7),
-    baseIntersection = __webpack_require__(56),
+    baseIntersection = __webpack_require__(55),
     baseRest = __webpack_require__(0),
-    castArrayLikeObject = __webpack_require__(57);
+    castArrayLikeObject = __webpack_require__(56);
 
 /**
  * Creates an array of unique values that are included in all given arrays
@@ -8605,10 +8605,10 @@ module.exports = intersection;
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayMap = __webpack_require__(7),
-    baseIntersection = __webpack_require__(56),
+    baseIntersection = __webpack_require__(55),
     baseIteratee = __webpack_require__(1),
     baseRest = __webpack_require__(0),
-    castArrayLikeObject = __webpack_require__(57),
+    castArrayLikeObject = __webpack_require__(56),
     last = __webpack_require__(8);
 
 /**
@@ -8656,9 +8656,9 @@ module.exports = intersectionBy;
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayMap = __webpack_require__(7),
-    baseIntersection = __webpack_require__(56),
+    baseIntersection = __webpack_require__(55),
     baseRest = __webpack_require__(0),
-    castArrayLikeObject = __webpack_require__(57),
+    castArrayLikeObject = __webpack_require__(56),
     last = __webpack_require__(8);
 
 /**
@@ -8939,7 +8939,7 @@ module.exports = baseIndexOfWith;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIteratee = __webpack_require__(1),
-    basePullAll = __webpack_require__(58);
+    basePullAll = __webpack_require__(57);
 
 /**
  * This method is like `_.pullAll` except that it accepts `iteratee` which is
@@ -8977,7 +8977,7 @@ module.exports = pullAllBy;
 /* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var basePullAll = __webpack_require__(58);
+var basePullAll = __webpack_require__(57);
 
 /**
  * This method is like `_.pullAll` except that it accepts `comparator` which
@@ -9119,7 +9119,7 @@ module.exports = baseUnset;
 /* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGet = __webpack_require__(54),
+var baseGet = __webpack_require__(53),
     baseSlice = __webpack_require__(5);
 
 /**
@@ -9310,7 +9310,7 @@ module.exports = reverse;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseSlice = __webpack_require__(5),
-    isIterateeCall = __webpack_require__(43),
+    isIterateeCall = __webpack_require__(42),
     toInteger = __webpack_require__(2);
 
 /**
@@ -9383,7 +9383,7 @@ module.exports = sortedIndex;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIteratee = __webpack_require__(1),
-    baseSortedIndexBy = __webpack_require__(59);
+    baseSortedIndexBy = __webpack_require__(58);
 
 /**
  * This method is like `_.sortedIndex` except that it accepts `iteratee`
@@ -9490,7 +9490,7 @@ module.exports = sortedLastIndex;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIteratee = __webpack_require__(1),
-    baseSortedIndexBy = __webpack_require__(59);
+    baseSortedIndexBy = __webpack_require__(58);
 
 /**
  * This method is like `_.sortedLastIndex` except that it accepts `iteratee`
@@ -9879,7 +9879,7 @@ module.exports = union;
 
 var Set = __webpack_require__(85),
     noop = __webpack_require__(246),
-    setToArray = __webpack_require__(53);
+    setToArray = __webpack_require__(52);
 
 /** Used as references for various `Number` constants. */
 var INFINITY = 1 / 0;
@@ -10151,7 +10151,7 @@ module.exports = without;
 
 var arrayFilter = __webpack_require__(25),
     baseRest = __webpack_require__(0),
-    baseXor = __webpack_require__(61),
+    baseXor = __webpack_require__(60),
     isArrayLikeObject = __webpack_require__(3);
 
 /**
@@ -10186,7 +10186,7 @@ module.exports = xor;
 var arrayFilter = __webpack_require__(25),
     baseIteratee = __webpack_require__(1),
     baseRest = __webpack_require__(0),
-    baseXor = __webpack_require__(61),
+    baseXor = __webpack_require__(60),
     isArrayLikeObject = __webpack_require__(3),
     last = __webpack_require__(8);
 
@@ -10230,7 +10230,7 @@ module.exports = xorBy;
 
 var arrayFilter = __webpack_require__(25),
     baseRest = __webpack_require__(0),
-    baseXor = __webpack_require__(61),
+    baseXor = __webpack_require__(60),
     isArrayLikeObject = __webpack_require__(3),
     last = __webpack_require__(8);
 
@@ -10269,7 +10269,7 @@ module.exports = xorWith;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseRest = __webpack_require__(0),
-    unzip = __webpack_require__(60);
+    unzip = __webpack_require__(59);
 
 /**
  * Creates an array of grouped elements, the first of which contains the
@@ -10490,7 +10490,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var PositioningDecorator_1 = __webpack_require__(63);
+var PositioningDecorator_1 = __webpack_require__(62);
 var BottomLockPositioningDecorator = (function (_super) {
     __extends(BottomLockPositioningDecorator, _super);
     function BottomLockPositioningDecorator(view, bottomPadding) {
@@ -10698,14 +10698,13 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var StickerTextViewObject_1 = __webpack_require__(100);
-var HorizontalCenterPositioningDecorator_1 = __webpack_require__(64);
+var HorizontalCenterPositioningDecorator_1 = __webpack_require__(63);
 var RenderEngine_1 = __webpack_require__(10);
 var RouteViewObject_1 = __webpack_require__(268);
-var RouteClickHandler_1 = __webpack_require__(269);
-var Coordinate_1 = __webpack_require__(41);
-var ClickStrategy_1 = __webpack_require__(270);
+var Coordinate_1 = __webpack_require__(65);
+var ClickStrategy_1 = __webpack_require__(269);
 var Route_1 = __webpack_require__(102);
-var TopLeftDrawingStrategy_1 = __webpack_require__(65);
+var TopLeftDrawingStrategy_1 = __webpack_require__(64);
 var DrawRouteClickStrategy = (function (_super) {
     __extends(DrawRouteClickStrategy, _super);
     function DrawRouteClickStrategy(clickableManager, gameArea) {
@@ -10724,7 +10723,7 @@ var DrawRouteClickStrategy = (function (_super) {
         route.push(new Coordinate_1.Coordinate(this.player.x, this.player.y));
         var routeView = new RouteViewObject_1.RouteViewObject(0, 0, this.gameArea.width, this.gameArea.height, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy());
         RenderEngine_1.RenderEngine.getInstance().addReferenceToStage(routeView, 'routeStage');
-        this.clickableManager.clickInterceptor = new RouteClickHandler_1.RouteClickHandler(this.player, route, routeView, this.gameArea, this.clickableManager, this);
+        //this.clickableManager.clickInterceptor = new RouteClickHandler(this.player, route, routeView, this.gameArea, this.clickableManager, this);
         this.gameArea.addView(routeView);
         var text = new StickerTextViewObject_1.StickerTextViewObject(10, 20, 280, 50, 0, new TopLeftDrawingStrategy_1.TopLeftDrawingStrategy(), null, null, "Click Endzone");
         text.backgroundColor = '#2ecc71';
@@ -10810,39 +10809,6 @@ exports.RouteViewObject = RouteViewObject;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Coordinate_1 = __webpack_require__(41);
-var RouteClickHandler = (function () {
-    function RouteClickHandler(gameObject, route, viewObject, gameArea, clickManager, drawRouteClickStrategy) {
-        this.gameObject = gameObject;
-        this.route = route;
-        this.viewObject = viewObject;
-        this.gameArea = gameArea;
-        this.clickManager = clickManager;
-        this.drawRouteClickStrategy = drawRouteClickStrategy;
-    }
-    RouteClickHandler.prototype.handle = function (event) {
-        console.log('handling intercepted click');
-        if (event.y - this.gameArea.y < 120) {
-            console.log("what");
-            this.clickManager.clickInterceptor = null;
-            this.drawRouteClickStrategy.finish(this.route);
-            return;
-        }
-        this.route.push(new Coordinate_1.Coordinate(event.x - this.gameArea.x, event.y - this.gameArea.y));
-        this.viewObject.updateRoute(this.route);
-    };
-    return RouteClickHandler;
-}());
-exports.RouteClickHandler = RouteClickHandler;
-
-
-/***/ }),
-/* 270 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
 var ClickStrategy = (function () {
     function ClickStrategy() {
     }
@@ -10852,7 +10818,7 @@ exports.ClickStrategy = ClickStrategy;
 
 
 /***/ }),
-/* 271 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10868,7 +10834,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var PositioningDecorator_1 = __webpack_require__(63);
+var PositioningDecorator_1 = __webpack_require__(62);
 var RightLockPositioningDecorator = (function (_super) {
     __extends(RightLockPositioningDecorator, _super);
     function RightLockPositioningDecorator(view, rightPadding) {
@@ -10904,7 +10870,7 @@ exports.RightLockPositioningDecorator = RightLockPositioningDecorator;
 
 
 /***/ }),
-/* 272 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10920,7 +10886,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var CollidableGameObject_1 = __webpack_require__(42);
+var CollidableGameObject_1 = __webpack_require__(41);
 var Wall = (function (_super) {
     __extends(Wall, _super);
     function Wall() {
@@ -10938,14 +10904,14 @@ exports.Wall = Wall;
 
 
 /***/ }),
-/* 273 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var RenderEngine_1 = __webpack_require__(10);
-var MatchTemplater_1 = __webpack_require__(62);
+var MatchTemplater_1 = __webpack_require__(61);
 var FindMatchClickStrategy = (function () {
     function FindMatchClickStrategy() {
     }
@@ -10963,7 +10929,7 @@ exports.FindMatchClickStrategy = FindMatchClickStrategy;
 
 
 /***/ }),
-/* 274 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10974,8 +10940,15 @@ var ClickableManager = (function () {
     function ClickableManager(canvas) {
         var _this = this;
         this.clickables = [];
+        this.canvas = canvas;
         canvas.addEventListener('click', function (evt) {
             _this.clickEvents(evt);
+        }, false);
+        canvas.addEventListener('touchstart', function (evt) {
+            _this.mouseDownEvents(evt);
+        }, false);
+        canvas.addEventListener('touchend', function (evt) {
+            _this.mouseUpEvents(evt);
         }, false);
         // canvas.addEventListener('mouseover', (evt) => {
         //     this.hoverEvents(evt);
@@ -11006,23 +10979,35 @@ var ClickableManager = (function () {
                 return element;
         });
     };
+    ClickableManager.prototype.mouseUpEvents = function (event) {
+        var rect = this.canvas.getBoundingClientRect();
+        if (this.clickInterceptor)
+            this.clickInterceptor.handleMouseUp(0, 0);
+    };
+    ClickableManager.prototype.mouseDownEvents = function (event) {
+        var rect = this.canvas.getBoundingClientRect();
+        if (!event.targetTouches[0].clientX)
+            return;
+        var x = (event.targetTouches[0].clientX - rect.left) / this.scale;
+        var y = (event.targetTouches[0].clientY - rect.top) / this.scale;
+        if (this.clickInterceptor)
+            this.clickInterceptor.handleMouseDown(x, y);
+    };
     ClickableManager.prototype.clickEvents = function (event) {
         console.log(event.offsetX, event.offsetY);
         var x = event.offsetX / this.scale;
         var y = event.offsetY / this.scale;
         if (this.clickInterceptor)
-            this.clickInterceptor.handle(event);
-        else {
-            this.clickables.forEach(function (obj, index) {
-                if (x >= obj.getGlobalX() && x <= (obj.getGlobalX() + obj.getWidth()) &&
-                    y >= obj.getGlobalY() && y <= (obj.getGlobalY() + obj.getHeight())) {
-                    console.log("click match found ", obj);
-                    obj.click();
-                }
-                ;
-                ///obj.click()
-            });
-        }
+            this.clickInterceptor.handleClick(x, y);
+        this.clickables.forEach(function (obj, index) {
+            if (x >= obj.getGlobalX() && x <= (obj.getGlobalX() + obj.getWidth()) &&
+                y >= obj.getGlobalY() && y <= (obj.getGlobalY() + obj.getHeight())) {
+                console.log("click match found ", obj);
+                obj.click();
+            }
+            ;
+            ///obj.click()
+        });
     };
     // private hoverEvents(event: MouseEvent){
     //     //console.log(event.x, event.y)
@@ -11045,7 +11030,7 @@ exports.ClickableManager = ClickableManager;
 
 
 /***/ }),
-/* 275 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11088,7 +11073,7 @@ exports.PauseViewObject = PauseViewObject;
 
 
 /***/ }),
-/* 276 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11107,7 +11092,7 @@ exports.PauseGameClickStrategy = PauseGameClickStrategy;
 
 
 /***/ }),
-/* 277 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11141,13 +11126,13 @@ exports.HorizontalCenterDecorator = HorizontalCenterDecorator;
 
 
 /***/ }),
-/* 278 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Hitbox_1 = __webpack_require__(279);
+var Hitbox_1 = __webpack_require__(278);
 var HitBoxFactory = (function () {
     function HitBoxFactory(collisionManager) {
         this.collisionManager = collisionManager;
@@ -11172,7 +11157,7 @@ exports.HitBoxFactory = HitBoxFactory;
 
 
 /***/ }),
-/* 279 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11235,20 +11220,21 @@ exports.Hitbox = Hitbox;
 
 
 /***/ }),
-/* 280 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var DefenderController_1 = __webpack_require__(281);
-var BlockerController_1 = __webpack_require__(282);
+var DefenderController_1 = __webpack_require__(280);
+var BlockerController_1 = __webpack_require__(281);
 var GameEngine_1 = __webpack_require__(17);
-var InputController_1 = __webpack_require__(284);
+var InputController_1 = __webpack_require__(283);
 var RouteController_1 = __webpack_require__(66);
 var ControllerFactory = (function () {
-    function ControllerFactory(collisionManager) {
+    function ControllerFactory(collisionManager, clickableManager) {
         this.collisionManager = collisionManager;
+        this.clickableManager = clickableManager;
     }
     ControllerFactory.prototype.createRouteController = function (subject, route) {
         var controller = new RouteController_1.RouteController(subject, route, this.collisionManager);
@@ -11256,7 +11242,7 @@ var ControllerFactory = (function () {
         return controller;
     };
     ControllerFactory.prototype.createInputController = function (subject) {
-        var controller = new InputController_1.InputController(subject, this.collisionManager);
+        var controller = new InputController_1.InputController(subject, this.collisionManager, this.clickableManager);
         GameEngine_1.GameEngine.getInstance().register(controller);
         return controller;
     };
@@ -11276,7 +11262,7 @@ exports.ControllerFactory = ControllerFactory;
 
 
 /***/ }),
-/* 281 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11358,7 +11344,7 @@ exports.DefenderController = DefenderController;
 
 
 /***/ }),
-/* 282 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11376,7 +11362,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameMap_1 = __webpack_require__(18);
 var RouteController_1 = __webpack_require__(66);
-var BlockerHivemind_1 = __webpack_require__(283);
+var BlockerHivemind_1 = __webpack_require__(282);
 var BlockerController = (function (_super) {
     __extends(BlockerController, _super);
     function BlockerController() {
@@ -11437,7 +11423,7 @@ exports.BlockerController = BlockerController;
 
 
 /***/ }),
-/* 283 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11499,7 +11485,7 @@ exports.BlockerHivemind = BlockerHivemind;
 
 
 /***/ }),
-/* 284 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11517,9 +11503,10 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameMap_1 = __webpack_require__(18);
 var Controller_1 = __webpack_require__(106);
+var TouchPlayHandler_1 = __webpack_require__(284);
 var InputController = (function (_super) {
     __extends(InputController, _super);
-    function InputController(subject, collisionManager) {
+    function InputController(subject, collisionManager, clickableManager) {
         var _this = _super.call(this, subject) || this;
         _this.angle = 0;
         _this.right = false;
@@ -11534,24 +11521,26 @@ var InputController = (function (_super) {
         _this.collisionManager = collisionManager;
         _this.angle = _this.subject.angle * Math.PI / 180 || 0;
         _this.subject.angle = _this.angle;
-        window.addEventListener('keydown', function (event) { _this.onKeyDown(event); }, false);
-        window.addEventListener('keyup', function (event) { _this.onKeyUp(event); }, false);
+        window.addEventListener('keydown', function (event) { _this.onKeyDown(event.keyCode); }, false);
+        window.addEventListener('keyup', function (event) { _this.onKeyUp(event.keyCode); }, false);
+        _this.touchHandler = new TouchPlayHandler_1.TouchPlayHandler(_this);
+        clickableManager.clickInterceptor = _this.touchHandler;
         return _this;
     }
-    InputController.prototype.onKeyDown = function (event) {
-        if (event.keyCode == 37) {
+    InputController.prototype.onKeyDown = function (keyCode) {
+        if (keyCode == 37) {
             this.left = true;
         }
-        if (event.keyCode == 39) {
+        if (keyCode == 39) {
             this.right = true;
         }
     };
-    InputController.prototype.onKeyUp = function (event) {
-        if (event.keyCode == 37) {
+    InputController.prototype.onKeyUp = function (keyCode) {
+        if (keyCode == 37) {
             this.left = false;
             this.releasedLeft = 3;
         }
-        if (event.keyCode == 39) {
+        if (keyCode == 39) {
             this.right = false;
             this.releasedRight = 3;
         }
@@ -11650,6 +11639,39 @@ var InputController = (function (_super) {
     return InputController;
 }(Controller_1.Controller));
 exports.InputController = InputController;
+
+
+/***/ }),
+/* 284 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var TouchPlayHandler = (function () {
+    function TouchPlayHandler(inputController) {
+        this.inputController = inputController;
+    }
+    TouchPlayHandler.prototype.handleClick = function (x, y) {
+        console.log(event);
+        //do nothing
+    };
+    TouchPlayHandler.prototype.handleMouseDown = function (x, y) {
+        console.log(event);
+        if (x > 160) {
+            this.inputController.onKeyDown(39);
+        }
+        if (x < 160) {
+            this.inputController.onKeyDown(37);
+        }
+    };
+    TouchPlayHandler.prototype.handleMouseUp = function (x, y) {
+        this.inputController.onKeyUp(39);
+        this.inputController.onKeyUp(37);
+    };
+    return TouchPlayHandler;
+}());
+exports.TouchPlayHandler = TouchPlayHandler;
 
 
 /***/ }),
@@ -11928,7 +11950,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var GameEngine_1 = __webpack_require__(17);
-var CollidableGameObject_1 = __webpack_require__(42);
+var CollidableGameObject_1 = __webpack_require__(41);
 var ControllableGameObject = (function (_super) {
     __extends(ControllableGameObject, _super);
     function ControllableGameObject(x, y, width, height, type, speed) {
